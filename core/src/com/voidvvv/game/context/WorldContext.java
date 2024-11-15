@@ -1,6 +1,7 @@
 package com.voidvvv.game.context;
 
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Pool;
 import com.voidvvv.game.base.b2d.UserData;
 
 public class WorldContext {
@@ -11,6 +12,7 @@ public class WorldContext {
     public static final short OBSTACLE = 1<<1;
 
     private static VWorld world;
+
     public static VWorld getWorld () {
         if (world == null) {
             world = new VWorld();

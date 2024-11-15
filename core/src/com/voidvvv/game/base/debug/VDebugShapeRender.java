@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VPhysicAttr;
 import com.voidvvv.game.base.shape.VBaseShape;
@@ -25,9 +26,9 @@ public class VDebugShapeRender {
     Matrix4 matrix4;
 
     public VDebugShapeRender() {
-        this.shapeRenderer = new ShapeRenderer();
+        this.shapeRenderer = ActGame.gameInstance().getDrawManager().getShapeRenderer();
         shapeRenderer.setAutoShapeType(true);
-        box2DDebugRenderer = new Box2DDebugRenderer();
+        box2DDebugRenderer = ActGame.gameInstance().getDrawManager().getBox2DDebugRenderer();
     }
 
     public void begin (Matrix4 matrix4) {
@@ -45,7 +46,7 @@ public class VDebugShapeRender {
         for (VActor act : vWorld.allActors()) {
             render(act);
         }
-        box2DDebugRenderer.render(vWorld.getBox2dWorld(),matrix4);
+//        box2DDebugRenderer.render(vWorld.getBox2dWorld(),matrix4);
     }
 
     public void render(VActor act) {

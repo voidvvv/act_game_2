@@ -15,9 +15,16 @@ public class Bob extends VCharacter {
 
 
     @Override
-    public void update(float delta) {
-        super.update(delta);
+    public void act(float delta) {
+        super.act(delta);
+        determineDirect();
+        if (Gdx.input.isKeyPressed(Input.Keys.K)) {
+            this.jump();
+        }
+    }
 
+    @Override
+    protected void determineDirect() {
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             baseMove.y = 20;
         }else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
@@ -31,10 +38,6 @@ public class Bob extends VCharacter {
             baseMove.x = -20;
         }else {
             baseMove.x = 0f;
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.K)) {
-            this.jump();
         }
     }
 

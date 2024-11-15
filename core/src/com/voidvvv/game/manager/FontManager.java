@@ -1,27 +1,14 @@
-package com.voidvvv.game.asset.font;
+package com.voidvvv.game.manager;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.utils.Disposable;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-public class FontManager {
-    private static FontManager instance = new FontManager();
+public class FontManager implements Disposable {
     BitmapFont baseFont;
 
-    public static FontManager getInstance() {
-        return instance;
-    }
-
-    private FontManager() {
-    }
 
     public BitmapFont getBaseFont() {
         if (baseFont == null) {
@@ -52,5 +39,10 @@ public class FontManager {
 //        }
         baseFont = new BitmapFont(Gdx.files.internal("font/yizi.fnt"), new TextureRegion(new Texture(Gdx.files.internal("font/yizi.png"))));
 
+    }
+
+    @Override
+    public void dispose() {
+        this.baseFont.dispose();
     }
 }

@@ -1,26 +1,16 @@
 package com.voidvvv.game.screen.test;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.voidvvv.game.asset.font.FontManager;
-import com.voidvvv.game.base.VPhysicAttr;
+import com.voidvvv.game.ActGame;
+import com.voidvvv.game.manager.FontManager;
 import com.voidvvv.game.base.debug.VDebugShapeRender;
-import com.voidvvv.game.base.shape.VCube;
 import com.voidvvv.game.base.test.Bob;
 import com.voidvvv.game.base.test.VObstacle;
-import com.voidvvv.game.context.VWorld;
-import com.voidvvv.game.context.VWorldRunnable;
 import com.voidvvv.game.context.WorldContext;
 
 public class TestScreen extends ScreenAdapter {
@@ -62,6 +52,10 @@ public class TestScreen extends ScreenAdapter {
 
     @Override
     public void show() {
+        WorldContext.getWorld().init();
+        font = ActGame.gameInstance().getFontManager().getBaseFont();
+        spriteBatch = ActGame.gameInstance().getDrawManager().getSpriteBatch();
+
         bob = new Bob();
         bob.init();
         VObstacle obs = new VObstacle();
@@ -73,8 +67,6 @@ public class TestScreen extends ScreenAdapter {
         debugShapeRender = new VDebugShapeRender();
         orthographicCamera = new OrthographicCamera();
 
-        font = FontManager.getInstance().getBaseFont();
-        spriteBatch = new SpriteBatch();
-        WorldContext.getWorld().init();
+
     }
 }

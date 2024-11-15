@@ -50,7 +50,7 @@ public class VActor extends Actor {
         this.body = fixture.getBody();
     }
 
-    public void update(float delta) {
+    public void act(float delta) {
         updateFrameIndex();
         Transform transform = body.getTransform();
         Vector2 position1 = transform.getPosition();
@@ -58,6 +58,10 @@ public class VActor extends Actor {
         UserData cast = ReflectUtil.cast(fixture.getUserData(), UserData.class);
         this.position.x = position1.x;
         this.position.y = position1.y + cast.getSubShifting();
+    }
+
+    public void update (float delta) {
+        act(delta);
     }
 
     protected void updateFrameIndex() {

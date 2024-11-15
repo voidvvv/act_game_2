@@ -1,6 +1,6 @@
 sourceSets.main.java.srcDirs = [ "src/" ]
 
-sourceCompatibility = '1.7'
+sourceCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 ext {
@@ -14,6 +14,10 @@ createIPA.dependsOn build
 
 robovm {
 	archs = "thumbv7:arm64"
+}
+
+dependencies {
+    implementation project(':core')
 }
 
 eclipse.project.name = appName + "-ios"
