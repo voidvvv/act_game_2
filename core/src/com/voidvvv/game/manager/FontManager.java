@@ -12,7 +12,7 @@ public class FontManager implements Disposable {
 
     public BitmapFont getBaseFont() {
         if (baseFont == null) {
-
+            initFont();
         }
         return baseFont;
     }

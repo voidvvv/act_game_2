@@ -14,9 +14,9 @@ import java.util.List;
  */
 public class VCharacter extends VActor implements Attackable {
 
-    BattleAttr battleAttr = new BattleAttr();
+    protected BattleAttr battleAttr = new BattleAttr();
 
-    protected Vector3 baseMove = new Vector3();
+    public Vector3 baseMove = new Vector3();
 
     Vector3[] velAffect = new Vector3[10];
     int velAffectCap = 0;
@@ -117,7 +117,4 @@ public class VCharacter extends VActor implements Attackable {
         return battleAttr.magicSpeed;
     }
 
-    protected void determineDirect () {
-        // nothing
-    }
 }

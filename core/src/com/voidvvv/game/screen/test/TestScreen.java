@@ -7,10 +7,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.voidvvv.game.ActGame;
-import com.voidvvv.game.manager.FontManager;
+import com.voidvvv.game.base.test.VObstacle;
+import com.voidvvv.game.context.VWorld;
+import com.voidvvv.game.context.input.CharacterInputListener;
 import com.voidvvv.game.base.debug.VDebugShapeRender;
 import com.voidvvv.game.base.test.Bob;
-import com.voidvvv.game.base.test.VObstacle;
 import com.voidvvv.game.context.WorldContext;
 
 public class TestScreen extends ScreenAdapter {
@@ -32,13 +33,14 @@ public class TestScreen extends ScreenAdapter {
     public void render(float delta) {
         ScreenUtils.clear(0.2f, 0.5f, 0.5f, 1);
         // UPDATE
-        WorldContext.getWorld().update(delta);
+        VWorld vWorld = ActGame.gameInstance().currentWorld();
+        vWorld.update(delta);
 
         orthographicCamera.position.lerp(cameraPosLerp.set(bob.position.x,bob.position.y,0.f),0.1f);
         orthographicCamera.update();
 
         debugShapeRender.begin(orthographicCamera.combined);
-        debugShapeRender.render(WorldContext.getWorld());
+        debugShapeRender.render(vWorld);
         debugShapeRender.end();
 
     }
@@ -52,18 +54,16 @@ public class TestScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        WorldContext.getWorld().init();
+        VWorld vWorld = ActGame.gameInstance().currentWorld();
         font = ActGame.gameInstance().getFontManager().getBaseFont();
         spriteBatch = ActGame.gameInstance().getDrawManager().getSpriteBatch();
 
-        bob = new Bob();
-        bob.init();
-        VObstacle obs = new VObstacle();
-        obs.initX = 60;
-        obs.initY = 100;
-        obs.hx = 20;
-        obs.hy = 30;
-        obs.init();
+        bob = vWorld.spawnVActor(Bob.class,60, 100, 4, 4);
+        vWorld.spawnVActorObstacle(VObstacle.class,1, 1, 20, 30);
+        CharacterInputListener characterInputListener = new CharacterInputListener();
+        characterInputListener.setCharacter(bob);
+        vWorld.addListener(characterInputListener);
+
         debugShapeRender = new VDebugShapeRender();
         orthographicCamera = new OrthographicCamera();
 

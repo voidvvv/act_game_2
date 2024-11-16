@@ -25,21 +25,17 @@ public class VObstacle extends VActor {
         }
         initFlag = true;
         super.init();
-        VWorld world = WorldContext.getWorld();
-        world.registerActor(this);
 
         // physics
-        VPhysicAttr physicAttr = new VPhysicAttr();
         VCube cube = new VCube();
+        this.hx = this.physicAttr.box2dHx;
+        this.hy = this.physicAttr.box2dHy;
         cube.xLength = hx * 2;
         cube.yLength = hy * 2;
         cube.zLength = 30f;
 
         physicAttr.setBaseShape(cube);
-        this.setPhysicAttr(physicAttr);
 
-        Fixture roleFixture = WorldContext.createObstacle(BodyDef.BodyType.StaticBody, initX, initY, hx, hy);
-        this.setFixture(roleFixture);
     }
 
     @Override

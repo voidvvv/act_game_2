@@ -46,6 +46,9 @@ public class VDebugShapeRender {
         for (VActor act : vWorld.allActors()) {
             render(act);
         }
+        // render bound
+        Rectangle boundingBox = vWorld.getBoundingBox();
+        shapeRenderer.rect(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
 //        box2DDebugRenderer.render(vWorld.getBox2dWorld(),matrix4);
     }
 

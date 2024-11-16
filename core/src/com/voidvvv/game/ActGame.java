@@ -4,6 +4,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.voidvvv.game.context.VWorld;
+import com.voidvvv.game.context.WorldContext;
 import com.voidvvv.game.manager.CameraManager;
 import com.voidvvv.game.manager.DrawManager;
 import com.voidvvv.game.manager.FontManager;
@@ -14,6 +16,10 @@ public class ActGame extends Game {
 
     private long frameId = 0;
     private static ActGame gameInstance;
+
+    // context
+    private WorldContext worldContext;
+
 
     // input
     InputMultiplexer inputMultiplexer;
@@ -32,6 +38,8 @@ public class ActGame extends Game {
         fontManager = new FontManager();
         cameraManager = new CameraManager();
         vWorldEventManager = new VWorldEventManager();
+        worldContext = new WorldContext();
+        inputMultiplexer = new InputMultiplexer();
     }
 
     ;
@@ -55,7 +63,7 @@ public class ActGame extends Game {
     }
 
     private void initOpt() {
-        inputMultiplexer = new InputMultiplexer();
+
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
@@ -64,6 +72,7 @@ public class ActGame extends Game {
         fontManager.initFont();
         cameraManager.init();
         vWorldEventManager.init();
+        worldContext.init();
     }
 
     public long getFrameId() {
@@ -95,5 +104,13 @@ public class ActGame extends Game {
 
     public void addInputProcessor(InputProcessor inputProcessor) {
         inputMultiplexer.addProcessor(inputProcessor);
+    }
+
+    public void removeInputProcessor(InputProcessor inputProcessor) {
+        inputMultiplexer.removeProcessor(inputProcessor);
+    }
+
+    public VWorld currentWorld() {
+        return worldContext.currentWorld();
     }
 }
