@@ -6,8 +6,6 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VPhysicAttr;
@@ -31,31 +29,33 @@ public class VDebugShapeRender {
         box2DDebugRenderer = ActGame.gameInstance().getDrawManager().getBox2DDebugRenderer();
     }
 
-    public void begin (Matrix4 matrix4) {
+    public void begin(Matrix4 matrix4) {
         shapeRenderer.setProjectionMatrix(matrix4);
         shapeRenderer.begin();
         this.matrix4 = matrix4;
 
     }
 
-    public void end () {
+    public void end() {
         shapeRenderer.end();
     }
 
-    public void render (VWorld vWorld) {
+    public void render(VWorld vWorld) {
         for (VActor act : vWorld.allActors()) {
-            render(act);
+            if (act.isVisible())
+                render(act);
         }
         // render bound
         Rectangle boundingBox = vWorld.getBoundingBox();
         shapeRenderer.rect(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
+        vWorld.getStage().getPinpoint().draw(null, 1f);
 //        box2DDebugRenderer.render(vWorld.getBox2dWorld(),matrix4);
     }
 
     public void render(VActor act) {
         VPhysicAttr physicAttr = act.getPhysicAttr();
         if (physicAttr != null) {
-            render(act,physicAttr.getBaseShape());
+            render(act, physicAttr.getBaseShape());
         }
     }
 
@@ -63,26 +63,26 @@ public class VDebugShapeRender {
         if (baseShape == null) {
             return;
         }
-        VCube cube = ReflectUtil.cast(baseShape,VCube.class);
+        VCube cube = ReflectUtil.cast(baseShape, VCube.class);
         if (cube != null) {
             Rectangle front = cube.frontShape(act.position);
             Rectangle top = cube.topShape(act.position);
             shapeRenderer.setColor(Color.YELLOW);
-            shapeRenderer.rect(top.x,top.y,top.width,top.height);
+            shapeRenderer.rect(top.x, top.y, top.width, top.height);
 
             shapeRenderer.setColor(Color.BLUE);
-            shapeRenderer.rect(front.x,front.y,front.width,front.height);
+            shapeRenderer.rect(front.x, front.y, front.width, front.height);
             return;
         }
-        VSphere sphere = ReflectUtil.cast(baseShape,VSphere.class);
+        VSphere sphere = ReflectUtil.cast(baseShape, VSphere.class);
         if (sphere != null) {
             Circle front = sphere.frontShape(act.position);
             Circle top = sphere.topShape(act.position);
             shapeRenderer.setColor(Color.YELLOW);
-            shapeRenderer.circle(top.x,top.y,top.radius);
+            shapeRenderer.circle(top.x, top.y, top.radius);
 
             shapeRenderer.setColor(Color.BLUE);
-            shapeRenderer.circle(front.x,front.y,front.radius);
+            shapeRenderer.circle(front.x, front.y, front.radius);
             return;
         }
     }

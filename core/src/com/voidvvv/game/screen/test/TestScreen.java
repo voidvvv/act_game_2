@@ -59,13 +59,16 @@ public class TestScreen extends ScreenAdapter {
         spriteBatch = ActGame.gameInstance().getDrawManager().getSpriteBatch();
 
         bob = vWorld.spawnVActor(Bob.class,60, 100, 4, 4);
-        vWorld.spawnVActorObstacle(VObstacle.class,1, 1, 20, 30);
+        // input
         CharacterInputListener characterInputListener = new CharacterInputListener();
         characterInputListener.setCharacter(bob);
         vWorld.addListener(characterInputListener);
+        // obstacle
+        vWorld.spawnVActorObstacle(VObstacle.class,1, 1, 20, 30);
+
 
         debugShapeRender = new VDebugShapeRender();
-        orthographicCamera = new OrthographicCamera();
+        orthographicCamera = ActGame.gameInstance().getCameraManager().getMainCamera();
 
 
     }

@@ -82,7 +82,8 @@ public class CharacterInputListener extends InputListener {
     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
         float stageX = event.getStageX();
         float stageY = event.getStageY();
-
-        return false;
+        Pinpoint pinpoint = character.getWorld().getStage().getPinpoint();
+        pinpoint.begin(stageX,stageY);
+        return true;
     }
 }

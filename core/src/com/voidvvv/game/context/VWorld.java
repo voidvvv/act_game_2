@@ -13,6 +13,7 @@ import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VPhysicAttr;
 import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.base.test.VObstacle;
+import com.voidvvv.game.base.wall.Wall;
 import com.voidvvv.game.context.map.VMap;
 
 import java.lang.reflect.Constructor;
@@ -27,7 +28,7 @@ public class VWorld {
 
     boolean initialized = false;
 
-    private Stage stage;
+    private PinpointStage stage;
 
     private final List<VActor> actorList = new ArrayList<>();
 
@@ -79,6 +80,22 @@ public class VWorld {
         initGraph();
 
         initialized = true;
+        // after init
+        afterInit();
+    }
+
+    private void afterInit() {
+        // build four wall to prevent actor out of range
+        final Rectangle bb = boundingBox;
+        // horizon wall
+        float horizon_breadth = 50f;
+        float verticalHeight = 50f;
+        spawnVActorObstacle(Wall.class, boundingBox.x - horizon_breadth,bb.y + bb.height/2,horizon_breadth,bb.height/2); // left
+        spawnVActorObstacle(Wall.class, boundingBox.x + horizon_breadth + boundingBox.width,bb.y + bb.height/2,horizon_breadth,bb.height/2); // right
+        // vertical wall
+        spawnVActorObstacle(Wall.class, boundingBox.x + bb.width/2,bb.y - verticalHeight,bb.width,verticalHeight); // up
+        spawnVActorObstacle(Wall.class, boundingBox.x + bb.width/2,bb.y + bb.height + verticalHeight,bb.width,verticalHeight); // down
+
     }
 
     private void initGraph() {
@@ -93,7 +110,7 @@ public class VWorld {
         if (stage != null) {
             ActGame.gameInstance().removeInputProcessor(stage);
         }
-        stage = new Stage(new ScreenViewport(ActGame.gameInstance().getCameraManager().getMainCamera())
+        stage = new PinpointStage(new ScreenViewport(ActGame.gameInstance().getCameraManager().getMainCamera())
                 , ActGame.gameInstance().getDrawManager().getSpriteBatch());
         ActGame.gameInstance().addInputProcessor(stage);
     }
@@ -217,5 +234,9 @@ public class VWorld {
         polygonShape.dispose();
 
         return fixture;
+    }
+
+    public PinpointStage getStage() {
+        return stage;
     }
 }
