@@ -48,7 +48,6 @@ public class VDebugShapeRender {
         // render bound
         Rectangle boundingBox = vWorld.getBoundingBox();
         shapeRenderer.rect(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
-        vWorld.getStage().getPinpoint().draw(null, 1f);
 //        box2DDebugRenderer.render(vWorld.getBox2dWorld(),matrix4);
     }
 

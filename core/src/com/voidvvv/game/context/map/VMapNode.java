@@ -7,6 +7,8 @@ import com.badlogic.gdx.utils.Array;
 public class VMapNode {
     private int index;
 
+    public float x;
+    public float y;
 
     private final Array<Connection<VMapNode>> connections = new Array<Connection<VMapNode>>();
 
@@ -18,6 +20,10 @@ public class VMapNode {
         this.index = index;
     }
 
+    public VMapNode(int index) {
+        this.index = index;
+    }
+
     public void addConnection(VMapNode toNode) {
         if (toNode != null) {
             connections.add(new DefaultConnection<>(this, toNode));
@@ -25,6 +31,7 @@ public class VMapNode {
     }
 
     public Array<Connection<VMapNode>> getConnections(){
+        connections.clear();
         return connections;
     }
 }

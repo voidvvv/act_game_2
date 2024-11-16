@@ -43,9 +43,11 @@ public class PinpointStage extends Stage {
     @Override
     public void draw() {
         ShapeRenderer shapeRenderer = ActGame.gameInstance().getDrawManager().getShapeRenderer();
-        shapeRenderer.setTransformMatrix(getCamera().combined);
+        shapeRenderer.setProjectionMatrix(getCamera().combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         super.draw();
         shapeRenderer.end();
     }
+
+
 }

@@ -39,9 +39,12 @@ public class TestScreen extends ScreenAdapter {
         orthographicCamera.position.lerp(cameraPosLerp.set(bob.position.x,bob.position.y,0.f),0.1f);
         orthographicCamera.update();
 
+
         debugShapeRender.begin(orthographicCamera.combined);
         debugShapeRender.render(vWorld);
         debugShapeRender.end();
+
+        vWorld.getStage().draw();
 
     }
 
@@ -50,6 +53,10 @@ public class TestScreen extends ScreenAdapter {
         super.resize(width, height);
         orthographicCamera.setToOrtho(false,width/3f,height/3f);
         orthographicCamera.update();
+
+        VWorld vWorld = ActGame.gameInstance().currentWorld();
+        vWorld.getStage().getViewport().update(width, height, true);
+
     }
 
     @Override

@@ -23,7 +23,7 @@ public class Bob extends VCharacter {
         VCube cube = new VCube();
         cube.xLength = this.physicAttr.box2dHx * 2f;
         cube.yLength = this.physicAttr.box2dHy * 2f;
-        cube.zLength = 25.f;
+        cube.zLength = 10f;
         physicAttr.setBaseShape(cube);
         this.setPhysicAttr(physicAttr);
 

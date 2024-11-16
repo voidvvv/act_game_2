@@ -1,6 +1,6 @@
 package com.voidvvv.game.context.input;
 
-import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.voidvvv.game.base.VCharacter;
@@ -80,10 +80,15 @@ public class CharacterInputListener extends InputListener {
 
     @Override
     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+        if (button == Input.Buttons.LEFT)
+            leftEvent(event, x, y, pointer);
+        return true;
+    }
+
+    private void leftEvent(InputEvent event, float x, float y, int pointer) {
         float stageX = event.getStageX();
         float stageY = event.getStageY();
         Pinpoint pinpoint = character.getWorld().getStage().getPinpoint();
-        pinpoint.begin(stageX,stageY);
-        return true;
+        pinpoint.begin(stageX, stageY);
     }
 }

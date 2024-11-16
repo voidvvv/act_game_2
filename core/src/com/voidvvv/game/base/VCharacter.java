@@ -37,15 +37,16 @@ public class VCharacter extends VActor implements Attackable {
     }
 
     private void fixVelocity(float delta) {
-        vJump.update(delta);
-        this.velocity.set(vJump.vel).add(baseMove.nor().scl(battleAttr.moveSpeed * delta));
-        for (int x=0; x<velAffectCap; x++) {
-            this.velocity.add(velAffect[x]);
-        }
         this.position.z += this.velocity.z * delta;
         if (this.position.z <= 0.f) {
             this.position.z = 0.f;
             vJump.reset();
+        }
+
+        vJump.update(delta);
+        this.velocity.set(vJump.vel).add(baseMove.nor().scl(battleAttr.moveSpeed * delta));
+        for (int x=0; x<velAffectCap; x++) {
+            this.velocity.add(velAffect[x]);
         }
         this.getBody().setLinearVelocity(this.velocity.x,this.velocity.y);
     }

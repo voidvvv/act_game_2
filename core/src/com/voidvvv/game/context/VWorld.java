@@ -1,5 +1,7 @@
 package com.voidvvv.game.context;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.collision.BoundingBox;
@@ -7,7 +9,10 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VPhysicAttr;
@@ -110,7 +115,12 @@ public class VWorld {
         if (stage != null) {
             ActGame.gameInstance().removeInputProcessor(stage);
         }
-        stage = new PinpointStage(new ScreenViewport(ActGame.gameInstance().getCameraManager().getMainCamera())
+
+
+        OrthographicCamera mainCamera = ActGame.gameInstance().getCameraManager().getMainCamera();
+        ScalingViewport scalingViewport = new ScalingViewport(Scaling.fill, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), mainCamera);
+//        ScreenViewport screenViewport = new ScreenViewport(mainCamera);
+        stage = new PinpointStage(scalingViewport
                 , ActGame.gameInstance().getDrawManager().getSpriteBatch());
         ActGame.gameInstance().addInputProcessor(stage);
     }
