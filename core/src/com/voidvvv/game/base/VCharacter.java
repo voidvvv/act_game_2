@@ -1,6 +1,7 @@
 package com.voidvvv.game.base;
 
 import com.badlogic.gdx.ai.steer.behaviors.Jump;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.voidvvv.game.ActGame;
@@ -38,6 +39,11 @@ public class VCharacter extends VActor implements Attackable {
     public void act(float delta) {
         super.act(delta);
         fixVelocity(delta);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        finder.draw();
     }
 
     @Override

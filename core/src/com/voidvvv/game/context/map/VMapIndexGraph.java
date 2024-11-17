@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.voidvvv.game.context.VWorld;
 
+import java.util.List;
+
 public class VMapIndexGraph implements IndexedGraph<VMapNode> {
     int nodeCount;
     Rectangle boundingBox;
@@ -26,6 +28,8 @@ public class VMapIndexGraph implements IndexedGraph<VMapNode> {
                 VMapNode node = new VMapNode(i++);
                 node.x = boundingBox.x + col * unit + unit/2;
                 node.y = boundingBox.y + row * unit + unit/2;
+                node.row = row;
+                node.col = col;
                 nodeMap[row][col] = node;
                 nodeCount++;
             }
@@ -73,15 +77,23 @@ public class VMapIndexGraph implements IndexedGraph<VMapNode> {
         VMapNode vMapNode = nodeMap[row][col];
         for (int[] dir : dirs) {
             if (row+dir[0]>=0 && row+dir[0]<nodeMap.length && col+dir[1]>=0 && col+dir[1]<nodeMap[0].length) {
-                vMapNode.getConnections().add(new DefaultConnection<>(vMapNode, nodeMap[row+dir[0]][col+dir[1]]));
+                VMapNode to = nodeMap[row + dir[0]][col + dir[1]];
+                DefaultConnection<VMapNode> conn = new DefaultConnection<>(vMapNode, to);
+                vMapNode.getConnections().add(conn);
+                to.addNodeComeThis(conn);
             }
         }
     }
 
     public VMapNode getNode(int row, int col) {
-        if (row < 0 || row >= nodeCount || col < 0 || col >= nodeCount) {
+        if (row < 0 || row >= nodeMap.length || col < 0 || col >= nodeMap[0].length) {
             return null;
         }
         return nodeMap[row][col];
     }
+
+    public VMapNode[][] mapData () {
+        return nodeMap;
+    }
+
 }

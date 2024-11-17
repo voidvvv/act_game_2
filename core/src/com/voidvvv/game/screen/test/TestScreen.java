@@ -13,6 +13,7 @@ import com.voidvvv.game.context.input.CharacterInputListener;
 import com.voidvvv.game.base.debug.VDebugShapeRender;
 import com.voidvvv.game.base.test.Bob;
 import com.voidvvv.game.context.WorldContext;
+import com.voidvvv.game.context.map.VMapNode;
 
 public class TestScreen extends ScreenAdapter {
 
@@ -39,7 +40,6 @@ public class TestScreen extends ScreenAdapter {
         orthographicCamera.position.lerp(cameraPosLerp.set(bob.position.x,bob.position.y,0.f),0.1f);
         orthographicCamera.update();
 
-
         debugShapeRender.begin(orthographicCamera.combined);
         debugShapeRender.render(vWorld);
         debugShapeRender.end();
@@ -47,15 +47,18 @@ public class TestScreen extends ScreenAdapter {
         vWorld.getStage().draw();
 
     }
-
+    Vector3 v3 = new Vector3();
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
+        v3.set(orthographicCamera.position);
         orthographicCamera.setToOrtho(false,width/3f,height/3f);
-        orthographicCamera.update();
+        orthographicCamera.position.set(v3);
 
+        orthographicCamera.update();
         VWorld vWorld = ActGame.gameInstance().currentWorld();
         vWorld.getStage().getViewport().update(width, height, true);
+
 
     }
 

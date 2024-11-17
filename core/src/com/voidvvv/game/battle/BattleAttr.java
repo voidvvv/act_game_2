@@ -1,7 +1,7 @@
 package com.voidvvv.game.battle;
 
 public class BattleAttr {
-    public float moveSpeed = 3000f;
+    public float moveSpeed = 1000f;
     public float attackSpeed = 300f;
     public float magicSpeed = 300f;
 

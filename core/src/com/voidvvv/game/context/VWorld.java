@@ -122,7 +122,7 @@ public class VWorld {
 
 
         OrthographicCamera mainCamera = ActGame.gameInstance().getCameraManager().getMainCamera();
-        ScalingViewport scalingViewport = new ScalingViewport(Scaling.fill, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), mainCamera);
+        ScalingViewport scalingViewport = new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), mainCamera);
 //        ScreenViewport screenViewport = new ScreenViewport(mainCamera);
         stage = new PinpointStage(scalingViewport
                 , ActGame.gameInstance().getDrawManager().getSpriteBatch());
@@ -131,7 +131,7 @@ public class VWorld {
 
     private void initWorld() {
         box2dWorld = new World(new Vector2(0,0),false);
-        boundingBox.set(-100,-100,200,200);
+        boundingBox.set(-100,-100,500,600);
     }
 
     public void addListener(EventListener listener) {
@@ -147,7 +147,7 @@ public class VWorld {
 
     }
 
-    public static final float DEFAULT_UNIT = 5f;
+    public static final float DEFAULT_UNIT = 1f;
     public float unit() {
         return DEFAULT_UNIT;
     }
@@ -199,6 +199,10 @@ public class VWorld {
             physicAttr.box2dHy = hy;
             t.setPhysicAttr(physicAttr);
             Fixture roleFixture = createObstacle(BodyDef.BodyType.StaticBody, initX, initY, hx, hy);
+            // fill map graph
+            VMap currentMap = getMap();
+//            currentMap.
+            currentMap.addObstacle(initX - hx, initY - hy, hx*2, hy*2);
             updateMapForFinder(initX,initY,hx,hx);
             t.setFixture(roleFixture);
             t.init();
