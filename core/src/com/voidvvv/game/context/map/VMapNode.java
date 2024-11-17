@@ -38,7 +38,7 @@ public class VMapNode {
 
     public void addConnection(VMapNode toNode) {
         if (toNode != null) {
-            connections.add(new DefaultConnection<>(this, toNode));
+            connections.add(new ValueConnection<>(this, toNode));
         }
     }
 

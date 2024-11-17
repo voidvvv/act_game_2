@@ -58,7 +58,7 @@ public class VMapIndexGraph implements IndexedGraph<VMapNode> {
         return fromNode.getConnections();
     }
 
-    static final int[][] dirs = {
+    public static final int[][] dirs = {
             {-1, 0},
             {-1, -1},
             {-1, 1},
@@ -78,7 +78,7 @@ public class VMapIndexGraph implements IndexedGraph<VMapNode> {
         for (int[] dir : dirs) {
             if (row+dir[0]>=0 && row+dir[0]<nodeMap.length && col+dir[1]>=0 && col+dir[1]<nodeMap[0].length) {
                 VMapNode to = nodeMap[row + dir[0]][col + dir[1]];
-                DefaultConnection<VMapNode> conn = new DefaultConnection<>(vMapNode, to);
+                ValueConnection<VMapNode> conn = new ValueConnection<>(vMapNode, to);
                 vMapNode.getConnections().add(conn);
                 to.addNodeComeThis(conn);
             }

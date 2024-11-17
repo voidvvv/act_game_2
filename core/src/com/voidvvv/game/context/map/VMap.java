@@ -66,6 +66,20 @@ public class VMap {
                         VMapNode fromNode = connection.getFromNode();
                         fromNode.getConnections().removeValue(connection, true);
                     }
+                    // corner
+                    if ((i == leftDown.row && j == leftDown.col) || (i == rightUp.row && j == rightUp.col)
+                    || (i == leftDown.row && j == rightUp.col) || (i == rightUp.row && j == leftDown.col)) {
+                        for (int[] dir : VMapIndexGraph.dirs) {
+                            VMapNode sideNode = mapGraph.getNode(i + dir[0], j + dir[1]);
+                            if (sideNode !=  null) {
+                                Array<Connection<VMapNode>> comeToThis1 = sideNode.getComeToThis();
+                                for (Connection<VMapNode> connection : comeToThis1) {
+                                    final ValueConnection valueConnection = (ValueConnection) connection;
+                                    valueConnection.setValue(5f);
+                                }
+                            }
+                        }
+                    }
                     comeToThis.clear();
 
                 }
