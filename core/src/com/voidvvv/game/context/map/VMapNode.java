@@ -10,6 +10,8 @@ public class VMapNode {
     public float x;
     public float y;
 
+
+
     private final Array<Connection<VMapNode>> connections = new Array<Connection<VMapNode>>();
 
     public int getIndex() {
@@ -31,7 +33,6 @@ public class VMapNode {
     }
 
     public Array<Connection<VMapNode>> getConnections(){
-        connections.clear();
         return connections;
     }
 }

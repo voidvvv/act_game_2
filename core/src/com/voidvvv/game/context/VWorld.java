@@ -47,6 +47,10 @@ public class VWorld {
 
     protected VMap map;
 
+    public VMap getMap() {
+        return map;
+    }
+
     public Rectangle getBoundingBox() {
         return boundingBox;
     }

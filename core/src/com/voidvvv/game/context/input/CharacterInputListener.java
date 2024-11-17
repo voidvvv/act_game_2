@@ -90,5 +90,6 @@ public class CharacterInputListener extends InputListener {
         float stageY = event.getStageY();
         Pinpoint pinpoint = character.getWorld().getStage().getPinpoint();
         pinpoint.begin(stageX, stageY);
+        character.findPath(stageX,stageY);
     }
 }

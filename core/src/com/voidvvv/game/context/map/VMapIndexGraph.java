@@ -24,6 +24,8 @@ public class VMapIndexGraph implements IndexedGraph<VMapNode> {
         for (int row = 0; row < rowNum; row++) {
             for (int col = 0; col < colNum; col++) {
                 VMapNode node = new VMapNode(i++);
+                node.x = boundingBox.x + col * unit + unit/2;
+                node.y = boundingBox.y + row * unit + unit/2;
                 nodeMap[row][col] = node;
                 nodeCount++;
             }
@@ -54,13 +56,16 @@ public class VMapIndexGraph implements IndexedGraph<VMapNode> {
 
     static final int[][] dirs = {
             {-1, 0},
-            {1, 0},
+            {-1, -1},
+            {-1, 1},
+
             {0, -1},
             {0, 1},
-            {-1, -1},
+
+
+            {1, 0},
             {1, -1},
-            {1,-1},
-            {-1, 1},
+            {1,1},
 
     };
 
@@ -73,4 +78,10 @@ public class VMapIndexGraph implements IndexedGraph<VMapNode> {
         }
     }
 
+    public VMapNode getNode(int row, int col) {
+        if (row < 0 || row >= nodeCount || col < 0 || col >= nodeCount) {
+            return null;
+        }
+        return nodeMap[row][col];
+    }
 }
