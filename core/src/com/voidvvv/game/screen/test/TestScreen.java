@@ -5,9 +5,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.test.VObstacle;
+import com.voidvvv.game.context.VActorSpawnHelper;
 import com.voidvvv.game.context.VWorld;
 import com.voidvvv.game.context.input.CharacterInputListener;
 import com.voidvvv.game.base.debug.VDebugShapeRender;
@@ -68,14 +70,38 @@ public class TestScreen extends ScreenAdapter {
         font = ActGame.gameInstance().getFontManager().getBaseFont();
         spriteBatch = ActGame.gameInstance().getDrawManager().getSpriteBatch();
 
-        bob = vWorld.spawnVActor(Bob.class,60, 100, 4, 4);
+        VActorSpawnHelper helper = VActorSpawnHelper.VActorSpawnHelperBuilder.builder()
+                .setBodyType(BodyDef.BodyType.DynamicBody)
+                .setCategory((short)(WorldContext.ROLE|WorldContext.WHITE)) // who am I
+                .setMask((short)(WorldContext.OBSTACLE|WorldContext.BLACK)) // who do I want to collision
+                .setHx(4).setHy(4)
+                .setInitX(60).setInitY(100)
+                .build();
+        bob = vWorld.spawnVActor(Bob.class,helper);
         // input
         CharacterInputListener characterInputListener = new CharacterInputListener();
         characterInputListener.setCharacter(bob);
         vWorld.addListener(characterInputListener);
         // obstacle
-        vWorld.spawnVActorObstacle(VObstacle.class,1, 1, 20, 30);
+        helper = VActorSpawnHelper.VActorSpawnHelperBuilder.builder()
+                .setBodyType(BodyDef.BodyType.DynamicBody)
+                .setCategory((short)(WorldContext.ROLE)) // who am I
+                .setMask((short)(WorldContext.OBSTACLE|WorldContext.WHITE)) // who do I want to collision
+                .setHx(4).setHy(4)
+                .setSensor(true)
+                .setInitX(200).setInitY(100)
+                .build();
+        vWorld.spawnVActor(Bob.class,helper);
 
+        helper = VActorSpawnHelper.VActorSpawnHelperBuilder.builder()
+                .setBodyType(BodyDef.BodyType.StaticBody)
+                .setCategory((short)(WorldContext.OBSTACLE)) // who am I
+                .setMask((short)(WorldContext.ROLE)) // who do I want to collision
+                .setHx(40).setHy(40)
+//                .setSensor(true)
+                .setInitX(50).setInitY(50)
+                .build();
+        vWorld.spawnVActor(VObstacle.class,helper);
 
         debugShapeRender = new VDebugShapeRender();
         orthographicCamera = ActGame.gameInstance().getCameraManager().getMainCamera();

@@ -13,10 +13,19 @@ public class VActorSpawnHelper {
     float friction = 0f;
     float density = 0.5f;
 
+    boolean sensor = false;
     Object userData;
 
+    public boolean isSensor() {
+        return sensor;
+    }
+
+    public void setSensor(boolean sensor) {
+        this.sensor = sensor;
+    }
+
     // builder
-    static class VActorSpawnHelperBuilder {
+    public static class VActorSpawnHelperBuilder {
         BodyDef.BodyType bodyType;
         float initX;
         float initY;
@@ -26,7 +35,7 @@ public class VActorSpawnHelper {
         short mask;
         float friction;
         float density;
-
+        boolean sensor = false;
         Object userData;
 
         public static VActorSpawnHelperBuilder builder() {
@@ -75,6 +84,12 @@ public class VActorSpawnHelper {
             this.userData = userData;
             return this;
         }
+        public VActorSpawnHelperBuilder setSensor(boolean sensor) {
+            this.sensor = sensor;
+            return this;
+        }
+
+
         public VActorSpawnHelper build() {
             VActorSpawnHelper helper = new VActorSpawnHelper();
             helper.bodyType = bodyType;
@@ -87,6 +102,7 @@ public class VActorSpawnHelper {
             helper.friction = friction;
             helper.density = density;
             helper.userData = userData;
+            helper.sensor = sensor;
             return helper;
         }
     }

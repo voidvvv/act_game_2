@@ -1,6 +1,7 @@
 package com.voidvvv.game.manager;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -61,5 +62,16 @@ public class DrawManager implements Disposable {
         shapeRenderer.flush();
         blend = false;
         Gdx.gl.glDisable(GL20.GL_BLEND);
+    }
+
+    public void begin(Camera camera) {
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        spriteBatch.begin();
+    }
+
+    public void end() {
+        shapeRenderer.end();
+        spriteBatch.end();
     }
 }

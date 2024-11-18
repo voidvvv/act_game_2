@@ -1,5 +1,6 @@
 package com.voidvvv.game.context;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -42,12 +43,25 @@ public class PinpointStage extends Stage {
 
     @Override
     public void draw() {
-        ShapeRenderer shapeRenderer = ActGame.gameInstance().getDrawManager().getShapeRenderer();
-        shapeRenderer.setProjectionMatrix(getCamera().combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        super.draw();
-        shapeRenderer.end();
+        ActGame.gameInstance().getDrawManager().begin(getViewport().getCamera());
+        getRoot().draw(ActGame.gameInstance().getDrawManager().getSpriteBatch(), 1);
+        ActGame.gameInstance().getDrawManager().end();
     }
+//
+//    public void draw () {
+//        Camera camera = viewport.getCamera();
+//        camera.update();
+//
+//        if (!root.isVisible()) return;
+//
+//        Batch batch = this.batch;
+//        batch.setProjectionMatrix(camera.combined);
+//        batch.begin();
+//
+//        batch.end();
+//
+//        if (debug) drawDebug();
+//    }
 
 
 }

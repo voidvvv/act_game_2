@@ -76,9 +76,6 @@ public class VWorld {
         renderList.add(t);
         t.setWorld(this);
 
-        UserData data = (UserData )t.getFixture().getUserData();
-        short category = data.getCategory();
-
         return t;
     }
 
@@ -303,6 +300,7 @@ public class VWorld {
         fd.filter.categoryBits = helper.category;
         fd.filter.maskBits = helper.mask;
         fd.shape = polygonShape;
+        fd.isSensor = helper.isSensor();
         Fixture fixture = body.createFixture(fd);
         if (helper.userData == null) {
             UserData userData = new UserData();
