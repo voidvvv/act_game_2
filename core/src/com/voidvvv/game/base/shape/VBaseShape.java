@@ -8,4 +8,6 @@ public interface VBaseShape {
     public Shape2D frontShape(Vector3 position);
 
     public Shape2D topShape(Vector3 position);
+
+    Vector2 getBounds();
 }

@@ -38,7 +38,6 @@ public class VCharacter extends VActor implements Attackable {
     @Override
     public void act(float delta) {
         super.act(delta);
-        fixVelocity(delta);
     }
 
     @Override
@@ -52,7 +51,9 @@ public class VCharacter extends VActor implements Attackable {
         finder = new VPathFinder(this,getWorld());
     }
 
-    private void fixVelocity(float delta) {
+    @Override
+    protected void updatePosition(float delta) {
+        super.updatePosition(delta);
         this.getBody().setLinearVelocity(this.velocity.x,this.velocity.y);
 
         this.position.z += this.velocity.z * delta;

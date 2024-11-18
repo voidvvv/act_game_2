@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.box2d.testt.CollisionListener;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VPhysicAttr;
@@ -111,9 +112,6 @@ public class VWorld {
         map.init(this);
     }
 
-    private void initObstacle() {
-        spawnVActor(VObstacle.class,WorldContext.defaultBodyType,60,100,20,30);
-    }
 
     private void initStage() {
         if (stage != null) {
@@ -131,6 +129,13 @@ public class VWorld {
 
     private void initWorld() {
         box2dWorld = new World(new Vector2(0,0),false);
+//        box2dWorld.setContactFilter(new ContactFilter() {
+//            @Override
+//            public boolean shouldCollide(Fixture fixtureA, Fixture fixtureB) {
+//                return false;
+//            }
+//        });
+        box2dWorld.setContactListener(new CollisionListener());
         boundingBox.set(-100,-100,500,600);
     }
 
@@ -157,7 +162,7 @@ public class VWorld {
     }
 
     public <T extends VActor> T spawnVActorObstacle(Class<T> clazz, float initX, float initY, float hx, float hy) {
-        return spawnVActorObstacle(clazz, WorldContext.defaultBodyType, initX, initY, hx, hy);
+        return spawnVActorObstacle(clazz, BodyDef.BodyType.StaticBody, initX, initY, hx, hy);
     }
 
 
@@ -177,6 +182,7 @@ public class VWorld {
             Fixture roleFixture = createRoleFixture(bodyType, initX, initY, hx, hy);
             t.setFixture(roleFixture);
             t.init();
+            ((UserData)roleFixture.getUserData()).setActor(t);
             registerActor(t);
             return t;
         } catch (Throwable e) {
@@ -203,8 +209,9 @@ public class VWorld {
             VMap currentMap = getMap();
 //            currentMap.
             currentMap.addObstacle(initX - hx, initY - hy, hx*2, hy*2);
-            updateMapForFinder(initX,initY,hx,hx);
             t.setFixture(roleFixture);
+            ((UserData)roleFixture.getUserData()).setActor(t);
+
             t.init();
             registerActor(t);
             return t;
@@ -214,8 +221,35 @@ public class VWorld {
         return null;
     }
 
-    private void updateMapForFinder(float initX, float initY, float hx, float hx1) {
+    public <T extends VActor> T spawnVActor (Class<T> clazz, VActorSpawnHelper helper) {
+        if (!initialized) {
+            return null;
+        }
+        try {
+            Constructor<T> constructor = clazz.getConstructor();
+            T t = constructor.newInstance();
+            t.setWorld(this);
+            VPhysicAttr physicAttr = new VPhysicAttr();
+            physicAttr.box2dHx = helper.hx;
+            physicAttr.box2dHy = helper.hy;
+            t.setPhysicAttr(physicAttr);
+            Fixture roleFixture = createFixture(helper);
+            // fill map graph
+            VMap currentMap = getMap();
+//            currentMap.
+            currentMap.addObstacle(helper.initX - helper.hx, helper.initY - helper.hy, helper.hx*2, helper.hy*2);
+            t.setFixture(roleFixture);
+            if (helper.userData == null) {
+                // default user data
+                ((UserData)roleFixture.getUserData()).setActor(t);
+            }
+            t.init();
+            registerActor(t);
+            return t;
+        } catch (Throwable e) {
 
+        }
+        return null;
     }
 
 
@@ -233,7 +267,6 @@ public class VWorld {
         bd.type = bodyType;
         bd.position.set(initX,initY);
         Body body = box2dWorld.createBody(bd);
-//        body.setAngularDamping(1f);
         body.setFixedRotation(true);
 
         FixtureDef fd = new FixtureDef();
@@ -251,6 +284,35 @@ public class VWorld {
         fixture.setUserData(userData);
         polygonShape.dispose();
 
+        return fixture;
+    }
+
+    public  Fixture createFixture(VActorSpawnHelper helper) {
+        World box2dWorld = this.getBox2dWorld();
+        BodyDef bd = new BodyDef();
+        bd.type = helper.bodyType;
+        bd.position.set(helper.initX,helper.initY);
+        Body body = box2dWorld.createBody(bd);
+        body.setFixedRotation(true);
+
+        FixtureDef fd = new FixtureDef();
+        PolygonShape polygonShape = new PolygonShape();
+        polygonShape.setAsBox(helper.hx,helper.hy);
+        fd.friction = helper.friction;
+        fd.density = helper.density;
+        fd.filter.categoryBits = helper.category;
+        fd.filter.maskBits = helper.mask;
+        fd.shape = polygonShape;
+        Fixture fixture = body.createFixture(fd);
+        if (helper.userData == null) {
+            UserData userData = new UserData();
+            userData.setSubShifting(-helper.hy);
+            userData.setCategory(helper.category);
+            fixture.setUserData(userData);
+        } else {
+            fixture.setUserData(helper.userData);
+        }
+        polygonShape.dispose();
         return fixture;
     }
 

@@ -9,6 +9,11 @@ public class WorldContext {
 
     public static final short OBSTACLE = 1<<1;
 
+    public static final short WHITE = 1<<2;
+
+    public static final short BLACK = 1<<3;
+
+
     public static final BodyDef.BodyType defaultBodyType = BodyDef.BodyType.DynamicBody;
 
     private  VWorld world;

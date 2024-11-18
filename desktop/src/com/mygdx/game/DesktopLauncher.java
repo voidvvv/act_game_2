@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.box2d.testt.Box2DExample;
 import com.box2d.testt.BoxTest;
 import com.mygdx.game.MyGdxGame;
 import com.voidvvv.game.ActGame;
@@ -14,6 +15,6 @@ public class DesktopLauncher {
 		config.setTitle("act_game_2");
 		new Lwjgl3Application(ActGame.gameInstance(), config);
 
-//		new Lwjgl3Application(new BoxTest(),config);
+//		new Lwjgl3Application(new Box2DExample(),config);
 	}
 }

@@ -2,6 +2,7 @@ package com.voidvvv.game.base.shape;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Shape2D;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 public class VCube implements VBaseShape {
@@ -21,5 +22,10 @@ public class VCube implements VBaseShape {
     @Override
     public Rectangle topShape(Vector3 position) {
         return topShape.set(position.x - xLength / 2.f, position.y, xLength, yLength);
+    }
+    Vector2 bounds = new Vector2();
+    @Override
+    public Vector2 getBounds() {
+        return bounds.set(xLength,yLength);
     }
 }

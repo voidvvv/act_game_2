@@ -1,7 +1,7 @@
 package com.voidvvv.game.base.shape;
 
 import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Shape2D;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 public class VSphere implements VBaseShape {
@@ -19,5 +19,12 @@ public class VSphere implements VBaseShape {
     public Circle topShape(Vector3 position) {
         topCircle.set(position.x, position.y + radius, radius);
         return topCircle;
+    }
+
+    Vector2 bounds = new Vector2();
+
+    @Override
+    public Vector2 getBounds() {
+        return bounds.set(radius * 2, radius * 2);
     }
 }
