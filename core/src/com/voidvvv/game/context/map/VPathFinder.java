@@ -42,16 +42,34 @@ public class VPathFinder {
         pathSmoother = new PathSmoother<>(new RaycastCollisionDetectorImpl(world));
     }
 
-    public boolean findPath(float x, float y) {
-        VMapNode dest = contextMap.coordinateToNode(x, y);
+    public boolean findPath(float fx, float fy) {
+        VMapNode dest = contextMap.coordinateToNode(fx, fy);
         VMapNode cur = contextMap.coordinateToNode(character.position.x, character.position.y);
-        if (dest == null || cur == null) {
+        if (cur == null) {
+            return false;
+        }
+        if (dest == null) {
+            // find by ray
+//            float x0 = this.character.position.x;
+//            float y0 = this.character.position.y;
+//            float x1 = fx;
+//            float y1 = fy;
+//
+//            float unit = character.getWorld().unit();
+//            for (float x = Math.min(x0,x1); x <= Math.max(x0,x1); x += unit) {
+//                for (float y = Math.min(y0,y1); y <= Math.max(y0,y1); y += unit) {
+//                    VMapNode vMapNode = contextMap.coordinateToNode(x, y);
+//                    if (vMapNode != null && vMapNode.getType() == VMapNode.PASS) {
+//
+//                    }
+//                }
+//            }
             return false;
         }
         if (dest == cur) {
-            currentTarget.set(x, y);
-            finalTarget.set(x, y);
-            tmp1.set(x - character.position.x, y - character.position.y).nor();
+            currentTarget.set(fx, fy);
+            finalTarget.set(fx, fy);
+            tmp1.set(fx - character.position.x, fy - character.position.y).nor();
         } else {
             graphPath.clear();
             boolean find = contextMap.findPath(cur, dest, heuristic, graphPath);
@@ -63,7 +81,7 @@ public class VPathFinder {
                 System.out.println("after: " + graphPath.getCount());
 
                 currentIndex = 0;
-                finalTarget.set(x, y);
+                finalTarget.set(fx, fy);
                 currentTarget.set(graphPath.get(currentIndex).x, graphPath.get(currentIndex).y);
                 tmp1.set(graphPath.get(currentIndex).x - character.position.x, graphPath.get(currentIndex).y - character.position.y).nor();
             }
@@ -81,7 +99,6 @@ public class VPathFinder {
     public void update(float delta) {
         if (pathing) {
             Vector2 vector2 = character.testVelocity(delta, tmp1);
-//            tmp2.set(currentTarget).sub(character.position.x, character.position.y);
             float beforeDistance = tmp2.set(character.position.x, character.position.y).sub(currentTarget).len();
             float afterDistance = tmp2.add(vector2.scl(0.1f)).len();
             if (beforeDistance < afterDistance) {

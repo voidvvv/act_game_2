@@ -1,5 +1,7 @@
 package com.voidvvv.game.screen.test.ui;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -51,7 +53,13 @@ public class TextMessageBar extends Actor {
         addListener(dragListener);
     }
 
-
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+            return super.hit(x, y, touchable);
+        }
+        return null;
+    }
 
     @Override
     public void act(float delta) {

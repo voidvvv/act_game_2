@@ -117,7 +117,7 @@ public class VWorld {
 
 
         OrthographicCamera mainCamera = ActGame.gameInstance().getCameraManager().getMainCamera();
-        ScalingViewport scalingViewport = new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), mainCamera);
+        ScalingViewport scalingViewport = new ScalingViewport(Scaling.fill, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), mainCamera);
 //        ScreenViewport screenViewport = new ScreenViewport(mainCamera);
         stage = new PinpointStage(scalingViewport
                 , ActGame.gameInstance().getDrawManager().getSpriteBatch());

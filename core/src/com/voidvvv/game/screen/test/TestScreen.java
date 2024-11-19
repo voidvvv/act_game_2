@@ -75,7 +75,7 @@ public class TestScreen extends ScreenAdapter {
         super.resize(width, height);
         v3.set(orthographicCamera.position);
 //        orthographicCamera.setToOrtho(false,width/3f,height/3f);
-        orthographicCamera.setToOrtho(false,640,480);
+        orthographicCamera.setToOrtho(false,320,240);
 
         orthographicCamera.position.set(v3);
         orthographicCamera.update();
