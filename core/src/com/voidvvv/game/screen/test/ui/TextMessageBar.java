@@ -15,6 +15,7 @@ import com.voidvvv.game.manager.SystemNotifyMessageManager;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Iterator;
 
 public class TextMessageBar extends Actor {
 
@@ -70,8 +71,11 @@ public class TextMessageBar extends Actor {
         baseFont.getColor().a = 1f;
 
         baseFont.draw(batch, getX() + " - " + getY(), getX(), shifting - baseFont.getLineHeight() - 0.5f);
-        for (SystemNotifyMessage msg : systemNotifyMessageManager.messages) {
+        Iterator<SystemNotifyMessage> it = systemNotifyMessageManager.messages.descendingIterator();
+        while (it.hasNext()) {
+            SystemNotifyMessage msg = it.next();
             String message = msg.getMessage();
+
             if (message!=null ) {
                 baseFont.getColor().a = parentAlpha * msg.time / systemNotifyMessageManager.maxTime;
                 baseFont.draw(batch, message, getX() + 2f, shifting);

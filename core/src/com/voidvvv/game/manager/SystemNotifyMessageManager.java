@@ -15,15 +15,19 @@ public class SystemNotifyMessageManager {
 
     public int maxSize = 10;
 
+    private int num;
+
     public void init () {
 
     }
 
     public void pushMessage (String meg) {
+        num++;
         SystemNotifyMessage systemNotifyMessage = pool.newObject();
         systemNotifyMessage.setMessage(meg);
         systemNotifyMessage.time = maxTime;
-        messages.push(systemNotifyMessage);
+        systemNotifyMessage.num = num;
+        messages.offer(systemNotifyMessage);
     }
 
     public void update (float delta) {
@@ -34,7 +38,7 @@ public class SystemNotifyMessageManager {
         while (iterator.hasNext()) {
             SystemNotifyMessage systemNotifyMessage = iterator.next();
             systemNotifyMessage.update(delta);
-            if (systemNotifyMessage.time <= 0f) {
+            if (systemNotifyMessage.time <= 1f) {
                 iterator.remove();
                 pool.free(systemNotifyMessage);
             }

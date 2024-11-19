@@ -3,10 +3,18 @@ package com.voidvvv.game.context.input;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.VCharacter;
+import com.voidvvv.game.manager.SystemNotifyMessageManager;
 
 public class CharacterInputListener extends InputListener {
     protected VCharacter character;
+
+    SystemNotifyMessageManager systemNotifyMessageManager;
+
+    public CharacterInputListener() {
+        systemNotifyMessageManager = ActGame.gameInstance().getSystemNotifyMessageManager();
+    }
 
     public VCharacter getCharacter() {
         return character;
@@ -22,9 +30,31 @@ public class CharacterInputListener extends InputListener {
             return false;
         }
         boolean result = tryMove(keycode);
-        if (!result) {
-            // try attack();
-            result = attack(keycode);
+        result |= attack(keycode);
+        result |= skill(keycode);
+        return result;
+    }
+
+    private boolean skill(int keycode) {
+        boolean result = false;
+        if (keycode == InputActionMapping.SKILL_Q) {
+            result = true;
+            systemNotifyMessageManager.pushMessage("Q skill");
+        }
+        if (keycode == InputActionMapping.SKILL_R) {
+            result = true;
+
+            systemNotifyMessageManager.pushMessage("R skill");
+        }
+        if (keycode == InputActionMapping.SKILL_W) {
+            result = true;
+
+            systemNotifyMessageManager.pushMessage("W skill");
+        }
+        if (keycode == InputActionMapping.SKILL_E) {
+            result = true;
+
+            systemNotifyMessageManager.pushMessage("E skill");
         }
         return result;
     }
@@ -38,20 +68,7 @@ public class CharacterInputListener extends InputListener {
     }
 
     private boolean tryMove(int keycode) {
-        if (keycode == InputActionMapping.MOVE_UP) {
-            character.baseMove.y = 20;
-            return true;
-        } else if (keycode == InputActionMapping.MOVE_DOWN) {
-            character.baseMove.y = -20;
-            return true;
-        }
-        if (keycode == InputActionMapping.MOVE_RIGHT) {
-            character.baseMove.x = 20;
-            return true;
-        } else if (keycode == InputActionMapping.MOVE_LEFT) {
-            character.baseMove.x = -20;
-            return true;
-        }
+
         return false;
     }
 
@@ -90,6 +107,6 @@ public class CharacterInputListener extends InputListener {
         float stageY = event.getStageY();
         Pinpoint pinpoint = character.getWorld().getStage().getPinpoint();
         pinpoint.begin(stageX, stageY);
-        character.findPath(stageX,stageY);
+        character.findPath(stageX, stageY);
     }
 }
