@@ -5,9 +5,6 @@ import com.voidvvv.game.manager.event.WorldEvent;
 
 public class AttackEvent extends WorldEvent {
     public static final int type = VWorldEventManager.ATTACK_EVENT_TYPE;
-
-
-
     public final int type () {
         return type;
     }

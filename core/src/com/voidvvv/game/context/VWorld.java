@@ -121,7 +121,6 @@ public class VWorld {
 //        ScreenViewport screenViewport = new ScreenViewport(mainCamera);
         stage = new PinpointStage(scalingViewport
                 , ActGame.gameInstance().getDrawManager().getSpriteBatch());
-        ActGame.gameInstance().addInputProcessor(stage);
     }
 
     private void initWorld() {
@@ -141,12 +140,8 @@ public class VWorld {
     }
 
     public void update (float delta) {
-// physic
-
-        box2dWorld.step(delta,10,10);
         stage.act(delta);
-        actorList.sort(DEFAULT_ACTOR_COMPARE);
-
+        box2dWorld.step(delta,10,10);
     }
 
     public static final float DEFAULT_UNIT = 1f;
@@ -231,10 +226,12 @@ public class VWorld {
             physicAttr.box2dHy = helper.hy;
             t.setPhysicAttr(physicAttr);
             Fixture roleFixture = createFixture(helper);
-            // fill map graph
-            VMap currentMap = getMap();
+            if (helper.occupy) {
+                // fill map graph
+                VMap currentMap = getMap();
 //            currentMap.
-            currentMap.addObstacle(helper.initX - helper.hx, helper.initY - helper.hy, helper.hx*2, helper.hy*2);
+                currentMap.addObstacle(helper.initX - helper.hx, helper.initY - helper.hy, helper.hx*2, helper.hy*2);
+            }
             t.setFixture(roleFixture);
             if (helper.userData == null) {
                 // default user data

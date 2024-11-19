@@ -27,4 +27,9 @@ public class VSphere implements VBaseShape {
     public Vector2 getBounds() {
         return bounds.set(radius * 2, radius * 2);
     }
+
+    @Override
+    public float getHeight() {
+        return radius * 2;
+    }
 }

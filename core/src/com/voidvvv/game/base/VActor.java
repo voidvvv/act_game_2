@@ -58,17 +58,18 @@ public class VActor extends Actor {
         updatePosition(delta);
         updateSize(delta);
     }
-
+    Transform transform = null;
     private void updateSize(float delta) {
         setWidth(this.physicAttr.getBaseShape().getBounds().x);
-        setHeight(this.physicAttr.getBaseShape().getBounds().y);
+        setHeight(this.physicAttr.getBaseShape().getHeight());
         setX(position.x - getWidth() / 2);
         setY(position.y + position.z);
+        setRotation(transform.getRotation());
     }
 
     protected void updatePosition(float delta) {
-
-        Vector2 position1 = body.getPosition();
+        transform = body.getTransform();
+        Vector2 position1 = transform.getPosition();
         UserData cast = ReflectUtil.cast(fixture.getUserData(), UserData.class);
         this.position.x = position1.x;
         this.position.y = position1.y + cast.getSubShifting();

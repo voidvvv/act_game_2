@@ -9,6 +9,7 @@ import com.voidvvv.game.context.WorldContext;
 import com.voidvvv.game.manager.CameraManager;
 import com.voidvvv.game.manager.DrawManager;
 import com.voidvvv.game.manager.FontManager;
+import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.manager.event.VWorldEventManager;
 import com.voidvvv.game.screen.test.TestScreen;
 
@@ -29,6 +30,7 @@ public class ActGame extends Game {
     private FontManager fontManager;
     private CameraManager cameraManager;
     private VWorldEventManager vWorldEventManager;
+    private SystemNotifyMessageManager systemNotifyMessageManager;
 
     // screen
     private TestScreen testScreen;
@@ -40,6 +42,7 @@ public class ActGame extends Game {
         vWorldEventManager = new VWorldEventManager();
         worldContext = new WorldContext();
         inputMultiplexer = new InputMultiplexer();
+        systemNotifyMessageManager = new SystemNotifyMessageManager();
     }
 
     ;
@@ -73,10 +76,15 @@ public class ActGame extends Game {
         cameraManager.init();
         vWorldEventManager.init();
         worldContext.init();
+        systemNotifyMessageManager.init();
     }
 
     public long getFrameId() {
         return frameId;
+    }
+
+    public SystemNotifyMessageManager getSystemNotifyMessageManager() {
+        return systemNotifyMessageManager;
     }
 
     @Override

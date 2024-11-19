@@ -14,7 +14,17 @@ public class VActorSpawnHelper {
     float density = 0.5f;
 
     boolean sensor = false;
+
+    boolean occupy = false;
     Object userData;
+
+    public boolean isOccupy() {
+        return occupy;
+    }
+
+    public void setOccupy(boolean occupy) {
+        this.occupy = occupy;
+    }
 
     public boolean isSensor() {
         return sensor;
@@ -37,6 +47,7 @@ public class VActorSpawnHelper {
         float density;
         boolean sensor = false;
         Object userData;
+        boolean occupy = false;
 
         public static VActorSpawnHelperBuilder builder() {
             return new VActorSpawnHelperBuilder();
@@ -88,7 +99,10 @@ public class VActorSpawnHelper {
             this.sensor = sensor;
             return this;
         }
-
+        public VActorSpawnHelperBuilder setOccupy(boolean occupy) {
+            this.occupy = occupy;
+            return this;
+        }
 
         public VActorSpawnHelper build() {
             VActorSpawnHelper helper = new VActorSpawnHelper();
@@ -103,6 +117,7 @@ public class VActorSpawnHelper {
             helper.density = density;
             helper.userData = userData;
             helper.sensor = sensor;
+            helper.occupy = occupy;
             return helper;
         }
     }

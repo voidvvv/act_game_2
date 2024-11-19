@@ -28,4 +28,9 @@ public class VCube implements VBaseShape {
     public Vector2 getBounds() {
         return bounds.set(xLength,yLength);
     }
+
+    @Override
+    public float getHeight() {
+        return zLength;
+    }
 }
