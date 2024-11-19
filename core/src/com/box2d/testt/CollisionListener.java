@@ -16,7 +16,7 @@ public class CollisionListener implements ContactListener {
     public void beginContact(Contact contact) {
 //        contact.getFixtureA().getBody().
         System.out.println("beginContact");
-        systemNotifyMessageManager.pushMessage("beginContact");
+        systemNotifyMessageManager.pushMessage("beginContact阿斯顿");
     }
 
     @Override
