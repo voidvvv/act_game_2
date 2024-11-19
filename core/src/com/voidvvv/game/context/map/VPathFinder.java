@@ -50,20 +50,22 @@ public class VPathFinder {
         }
         if (dest == null) {
             // find by ray
-//            float x0 = this.character.position.x;
-//            float y0 = this.character.position.y;
-//            float x1 = fx;
-//            float y1 = fy;
-//
-//            float unit = character.getWorld().unit();
-//            for (float x = Math.min(x0,x1); x <= Math.max(x0,x1); x += unit) {
-//                for (float y = Math.min(y0,y1); y <= Math.max(y0,y1); y += unit) {
-//                    VMapNode vMapNode = contextMap.coordinateToNode(x, y);
-//                    if (vMapNode != null && vMapNode.getType() == VMapNode.PASS) {
-//
-//                    }
+            float x0 = this.character.position.x;
+            float y0 = this.character.position.y;
+            float x1 = fx;
+            float y1 = fy;
+
+            float steep = Math.abs((y1-y0) / (x1-x0));
+
+            float unit = character.getWorld().unit();
+            for (float x = Math.min(x0,x1), y = Math.min(y0,y1); x <= Math.max(x0,x1) && y <= Math.max(y0,y1); x += unit,y += steep * unit) {
+//            for (float y = Math.min(y0,y1); y <= Math.max(y0,y1); y += unit) {
+                VMapNode vMapNode = contextMap.coordinateToNode(x, y);
+                if (vMapNode != null && vMapNode.getType() == VMapNode.OBSTACLE) {
+                    return true;
 //                }
-//            }
+                }
+            }
             return false;
         }
         if (dest == cur) {

@@ -22,14 +22,22 @@ public class RaycastCollisionDetectorImpl implements RaycastCollisionDetector<Ve
         float y1 = (float)ray.end.y;
 
         float steep = Math.abs((y1-y0) / (x1-x0));
-
         float unit = world.unit();
-        for (float x = Math.min(x0,x1), y = Math.min(y0,y1); x <= Math.max(x0,x1) && y <= Math.max(y0,y1); x += unit,y += steep * unit) {
-//            for (float y = Math.min(y0,y1); y <= Math.max(y0,y1); y += unit) {
+
+        float xStep = x0 < x1? unit:-unit;
+        float yStep = y0 < y1? steep*unit:-steep*unit;
+
+        if (xStep ==0 && yStep ==0) {
+            return false;
+        }
+
+        for (float x = x0, y = y0; // init
+             ((xStep >= 0 && x <= x1) || (xStep <= 0 && x >= x1))
+                     && ((yStep >=0 && y <= y1) || (yStep <= 0 && y >= y1)); // condition
+             x+=xStep, y+=yStep) { // step
                 VMapNode vMapNode = world.getMap().coordinateToNode(x, y);
                 if (vMapNode == null || vMapNode.getType() == VMapNode.OBSTACLE) {
                     return true;
-//                }
             }
         }
 
