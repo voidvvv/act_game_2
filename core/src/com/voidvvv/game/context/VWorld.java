@@ -19,6 +19,7 @@ import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.base.test.VObstacle;
 import com.voidvvv.game.base.wall.Wall;
 import com.voidvvv.game.context.map.VMap;
+import com.voidvvv.game.manager.event.VWorldEventManager;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -78,6 +79,7 @@ public class VWorld {
     }
 
     public void init () {
+        vWorldEventManager = ActGame.gameInstance().getvWorldEventManager();
         initWorld();
         initStage();
 
@@ -139,7 +141,10 @@ public class VWorld {
         this.stage.addListener(listener);
     }
 
+    private VWorldEventManager vWorldEventManager;
+
     public void update (float delta) {
+        vWorldEventManager.update(delta);
         stage.act(delta);
         box2dWorld.step(delta,10,10);
     }

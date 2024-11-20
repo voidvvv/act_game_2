@@ -1,23 +1,26 @@
 package com.voidvvv.game.base;
 
-import com.badlogic.gdx.ai.steer.behaviors.Jump;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.battle.Attackable;
 import com.voidvvv.game.battle.BattleAttr;
-import com.voidvvv.game.context.WorldContext;
+import com.voidvvv.game.battle.BattleAttrDelta;
 import com.voidvvv.game.context.map.VPathFinder;
-
-import java.util.List;
 
 /**
  * can move, can collision, can damage even attack!
  */
 public class VCharacter extends VActor implements Attackable {
 
-    protected BattleAttr battleAttr = new BattleAttr();
+    protected final BattleAttr actualBattleAttr = new BattleAttr();
+
+    protected final BattleAttrDelta battleAttrDelta = new BattleAttrDelta();
+
+    protected final BattleAttr originBattleAttr = new BattleAttr();
+
+    private boolean battleDirty = false;
 
     public Vector3 baseMove = new Vector3();
 
@@ -78,14 +81,14 @@ public class VCharacter extends VActor implements Attackable {
     public Vector2 baseMove(float delta) {
         if (!moveFix) {
             moveFix = true;
-            baseMove.nor().scl(battleAttr.moveSpeed * delta);
+            baseMove.nor().scl(actualBattleAttr.moveSpeed * delta);
             tmp.set(baseMove.x, baseMove.y);
         }
         return tmp;
     }
 
     public Vector2 testVelocity(float delta, Vector2 dir) {
-        return tmp.set(dir).scl(battleAttr.moveSpeed * delta);
+        return tmp.set(dir).scl(actualBattleAttr.moveSpeed * delta);
     }
 
     public boolean findPath (float x, float y) {
@@ -122,46 +125,68 @@ public class VCharacter extends VActor implements Attackable {
 
     @Override
     public float getHp() {
-        return battleAttr.hp;
+        return actualBattleAttr.hp;
     }
 
     @Override
     public float getMp() {
-        return battleAttr.mp;
+        return actualBattleAttr.mp;
     }
 
     @Override
     public float getAttack() {
-        return battleAttr.attack;
+        return actualBattleAttr.attack;
     }
 
     @Override
     public float getDefense() {
-        return battleAttr.defense;
+        return actualBattleAttr.defense;
     }
 
     @Override
     public float getMagicStrength() {
-        return battleAttr.magicStrength;
+        return actualBattleAttr.magicStrength;
     }
 
     @Override
     public float getMoveSpeed() {
-        return battleAttr.moveSpeed;
+        return actualBattleAttr.moveSpeed;
     }
 
     @Override
     public float getAttackSpeed() {
-        return battleAttr.attackSpeed;
+        return actualBattleAttr.attackSpeed;
     }
 
     @Override
     public float getMagicSpeed() {
-        return battleAttr.magicSpeed;
+        return actualBattleAttr.magicSpeed;
     }
 
 
     public void useSkill(int skillCode) {
 
+    }
+
+    public BattleAttr getOriginBattleAttr() {
+        return originBattleAttr;
+    }
+
+    public boolean isBattleDirty() {
+        return battleDirty;
+    }
+
+    public BattleAttr getActualBattleAttr() {
+        if (battleDirty) {
+            fixBattleField();
+        }
+        return actualBattleAttr;
+    }
+
+    private void fixBattleField() {
+//        BattleAttrDelta battleAttrDelta1 = this.battleAttrDelta;
+//        BattleAttr originBattleAttr1 = this.originBattleAttr;
+
+        this.battleDirty=false;
     }
 }

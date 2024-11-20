@@ -33,8 +33,10 @@ public abstract class WorldEvent implements Pool.Poolable {
         this.targetActor = targetActor;
     }
 
-
     public abstract void apply();
+    public void apply(float delta) {
+        apply();
+    };
 
     @Override
     public void reset() {

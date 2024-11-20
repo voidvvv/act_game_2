@@ -25,17 +25,11 @@ public class VWorldEventManager {
     }
 
     private void freeEvent(WorldEvent event) {
-        if (event.getClass().isAssignableFrom(DamageEvent.class)) {
-            // attack
-            Pools.free(event);
-        }
+        Pools.free(event);
     }
 
-    public WorldEvent newEvent(int type) {
-        WorldEvent event = null;
-        if (DAMAGE_EVENT == type) {
-            event = Pools.obtain(DamageEvent.class);
-        }
+    public <T extends WorldEvent> T newEvent(Class<T> eventClazz) {
+        T event = Pools.obtain(eventClazz);
         if (event != null) {
             events.add(event);
         }
@@ -44,5 +38,13 @@ public class VWorldEventManager {
 
     public Collection<WorldEvent> currentEvents() {
         return events;
+    }
+
+    public void update (float delta) {
+        while (!events.isEmpty()) {
+            WorldEvent event = events.pop();
+            event.apply(delta);
+            freeEvent(event);
+        }
     }
 }

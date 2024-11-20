@@ -1,14 +1,9 @@
 package com.voidvvv.game.base.test;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.VCharacter;
@@ -34,7 +29,7 @@ public class Bob extends VCharacter {
         physicAttr.setBaseShape(cube);
         this.setPhysicAttr(physicAttr);
 
-        this.battleAttr.hp = 100;
+        this.getActualBattleAttr().hp = 100;
 
     }
 
@@ -50,10 +45,15 @@ public class Bob extends VCharacter {
         float height = layout.height;
         float width = layout.width;
         width/=2;
-        baseFont.draw(batch, layout, this.getX() - width, this.getY() + height);
+        baseFont.draw(batch, layout, this.position.x - width, this.getY() + height);
         batch.flush();
         Pools.free(layout);
 
         ActGame.gameInstance().getDrawManager().disableBlend();
+    }
+
+    @Override
+    public void useSkill(int skillCode) {
+
     }
 }

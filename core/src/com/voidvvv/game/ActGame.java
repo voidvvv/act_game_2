@@ -121,4 +121,8 @@ public class ActGame extends Game {
     public VWorld currentWorld() {
         return worldContext.currentWorld();
     }
+
+    public VWorldEventManager getvWorldEventManager() {
+        return vWorldEventManager;
+    }
 }

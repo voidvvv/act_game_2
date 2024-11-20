@@ -102,7 +102,7 @@ public class TestScreen extends ScreenAdapter {
                 .setBodyType(BodyDef.BodyType.DynamicBody)
                 .setCategory((short)(WorldContext.ROLE|WorldContext.WHITE)) // who am I
                 .setMask((short)(WorldContext.OBSTACLE|WorldContext.BLACK|WorldContext.ROLE)) // who do I want to collision
-                .setHx(4).setHy(4)
+                .setHx(20).setHy(20)
                 .setInitX(60).setInitY(100)
                 .build();
         bob = vWorld.spawnVActor(Bob.class,helper);
