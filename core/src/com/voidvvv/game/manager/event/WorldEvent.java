@@ -7,6 +7,15 @@ public abstract class WorldEvent implements Pool.Poolable {
     public long frameIndex;
     protected VActor targetActor;
     protected VActor fromActor;
+    protected Object extraInfo;
+
+    public Object getExtraInfo() {
+        return extraInfo;
+    }
+
+    public void setExtraInfo(Object extraInfo) {
+        this.extraInfo = extraInfo;
+    }
 
     public VActor getFromActor() {
         return fromActor;

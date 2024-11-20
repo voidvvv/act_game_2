@@ -68,7 +68,10 @@ public class CharacterInputListener extends InputListener {
     }
 
     private boolean tryMove(int keycode) {
-
+        if (keycode == InputActionMapping.MOVE_JUMP) {
+            this.character.jump();
+            return true;
+        }
         return false;
     }
 

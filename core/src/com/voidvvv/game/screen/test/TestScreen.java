@@ -14,8 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.*;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.test.VObstacle;
 import com.voidvvv.game.context.PinpointStage;
@@ -59,34 +58,36 @@ public class TestScreen extends ScreenAdapter {
         vWorld.update(delta);
 
         orthographicCamera.position.lerp(cameraPosLerp.set(bob.position.x,bob.position.y,0.f),0.1f);
-        orthographicCamera.update();
-
-
+        vWorld.getStage().getViewport().apply();
         debugShapeRender.begin(orthographicCamera.combined);
         debugShapeRender.render(vWorld);
         debugShapeRender.end();
 
         vWorld.getStage().draw();
+
+        uiStage.getViewport().apply();
         uiStage.draw();
     }
     Vector3 v3 = new Vector3();
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-        v3.set(orthographicCamera.position);
-//        orthographicCamera.setToOrtho(false,width/3f,height/3f);
-        orthographicCamera.setToOrtho(false,320,240);
-
-        orthographicCamera.position.set(v3);
-        orthographicCamera.update();
-
-        v3.set(screenCamera.position);
-        screenCamera.setToOrtho(false,640,480);
-        screenCamera.position.set(v3);
-        screenCamera.update();
         VWorld vWorld = ActGame.gameInstance().currentWorld();
-        vWorld.getStage().getViewport().update(width, height, true);
-        uiStage.getViewport().update(width, height, true);
+
+        vWorld.getStage().getViewport().update(width, height, false);
+        uiStage.getViewport().update(width, height, false);
+
+//        v3.set(orthographicCamera.position);
+////        orthographicCamera.setToOrtho(false,width/3f,height/3f);
+//        orthographicCamera.setToOrtho(false,320,240);
+//
+//
+////        orthographicCamera.zoom = 0.2f;
+//        orthographicCamera.position.set(v3);
+//        v3.set(screenCamera.position);
+//        screenCamera.setToOrtho(false,width,height);
+//        screenCamera.position.set(v3);
+//        screenCamera.update();
 
     }
 
@@ -141,18 +142,7 @@ public class TestScreen extends ScreenAdapter {
     }
 
     private void initUI() {
-        uiStage = new Stage(new ScalingViewport(Scaling.stretch,640,480,screenCamera), ActGame.gameInstance().getDrawManager().getSpriteBatch());
-        Texture texture = new Texture(Gdx.files.internal("badlogic.jpg"));
-        Image image = new Image(texture);
-//        image.setWidth();
-        image.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("click!!");
-                return true;
-            }
-        });
-//        uiStage.addActor(image);
+        uiStage = new Stage(new ScreenViewport(screenCamera), ActGame.gameInstance().getDrawManager().getSpriteBatch());
         uiStage.addActor(new TextMessageBar() );
         ActGame.gameInstance().addInputProcessor(uiStage);
     }

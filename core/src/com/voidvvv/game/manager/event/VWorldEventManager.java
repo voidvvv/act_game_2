@@ -1,24 +1,20 @@
 package com.voidvvv.game.manager.event;
 
-import com.badlogic.gdx.utils.Pool;
-import com.voidvvv.game.manager.event.attack.AttackEvent;
-import com.voidvvv.game.manager.event.attack.AttackEventPool;
+import com.badlogic.gdx.utils.Pools;
+import com.voidvvv.game.manager.event.attack.DamageEvent;
 
 import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedList;
 
 public class VWorldEventManager {
-    public static final int ATTACK_EVENT_TYPE = 1;
-
-    private Pool<AttackEvent> attackEventPool;
+    public static final int DAMAGE_EVENT = 1;
 
     private Deque<WorldEvent> events;
 
     public VWorldEventManager(){};
 
     public void init () {
-        attackEventPool = new AttackEventPool(20);
         events = new LinkedList<>();
     }
 
@@ -29,16 +25,16 @@ public class VWorldEventManager {
     }
 
     private void freeEvent(WorldEvent event) {
-        if (event.getClass().isAssignableFrom(AttackEvent.class)) {
+        if (event.getClass().isAssignableFrom(DamageEvent.class)) {
             // attack
-            attackEventPool.free((AttackEvent) event);
+            Pools.free(event);
         }
     }
 
     public WorldEvent newEvent(int type) {
         WorldEvent event = null;
-        if (ATTACK_EVENT_TYPE == type) {
-            event = attackEventPool.obtain();
+        if (DAMAGE_EVENT == type) {
+            event = Pools.obtain(DamageEvent.class);
         }
         if (event != null) {
             events.add(event);

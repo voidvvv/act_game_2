@@ -48,7 +48,6 @@ public class DrawManager implements Disposable {
             return ;
         }
         spriteBatch.flush();
-        shapeRenderer.flush();
         blend = true;
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFuncSeparate(GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA,GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -59,19 +58,17 @@ public class DrawManager implements Disposable {
             return ;
         }
         spriteBatch.flush();
-        shapeRenderer.flush();
         blend = false;
         Gdx.gl.glDisable(GL20.GL_BLEND);
     }
 
     public void begin(Camera camera) {
-        shapeRenderer.setProjectionMatrix(camera.combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         spriteBatch.begin();
+        spriteBatch.setProjectionMatrix(camera.combined);
+
     }
 
     public void end() {
-        shapeRenderer.end();
         spriteBatch.end();
     }
 }

@@ -49,25 +49,6 @@ public class VDebugShapeRender {
         // render bound
         Rectangle boundingBox = vWorld.getBoundingBox();
         shapeRenderer.rect(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
-//        box2DDebugRenderer.render(vWorld.getBox2dWorld(),matrix4);
-
-        // draw world graph data
-//        VMapNode[][] vMapNodes = vWorld.getMap().getMapGraph().mapData();
-//        float unit = vWorld.unit();
-//        shapeRenderer.set(ShapeRenderer.ShapeType.Line);
-//        for (int x= 0; x<vMapNodes.length; x++) {
-//            for (int y=0; y<vMapNodes[x].length; y++) {
-//                VMapNode vMapNode = vMapNodes[x][y];
-//                float mx = vMapNode.x;
-//                float my = vMapNode.y;
-//                if (vMapNode.getType() == VMapNode.OBSTACLE) {
-//                    shapeRenderer.setColor(Color.BLUE);
-//                    shapeRenderer.rect(mx - unit/2, my - unit/2, unit, unit);
-//                }
-//
-//            }
-//
-//        }
     }
 
     public void render(VActor act) {

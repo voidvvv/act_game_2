@@ -42,7 +42,7 @@ public class VCharacter extends VActor implements Attackable {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        finder.draw();
+        finder.draw(batch,parentAlpha);
     }
 
     @Override
@@ -54,20 +54,21 @@ public class VCharacter extends VActor implements Attackable {
     @Override
     protected void updatePosition(float delta) {
         super.updatePosition(delta);
-        this.getBody().setLinearVelocity(this.velocity.x,this.velocity.y);
-
-        this.position.z += this.velocity.z * delta;
-        if (this.position.z <= 0.f) {
-            this.position.z = 0.f;
-            vJump.reset();
-        }
-
-        vJump.update(delta);
+        // update velocity
         baseMove(delta);
         this.velocity.set(vJump.vel).add(baseMove);
         for (int x=0; x<velAffectCap; x++) {
             this.velocity.add(velAffect[x]);
         }
+
+        // update position (apply velocity)
+        this.position.z += this.velocity.z * delta;
+        vJump.update(delta);
+        if (this.position.z <= 0.f) {
+            this.position.z = 0.f;
+            vJump.reset();
+        }
+        this.getBody().setLinearVelocity(this.velocity.x,this.velocity.y);
         finder.update(delta);
         moveFix = false;
     }
@@ -100,10 +101,11 @@ public class VCharacter extends VActor implements Attackable {
     }
 
     public void jump () {
+        System.out.println(this.position.z);
         if (isFalling()) {
             return;
         }
-        vJump.jump(10f);
+        vJump.jump(7f);
     }
 
     private boolean isFalling() {
@@ -158,4 +160,8 @@ public class VCharacter extends VActor implements Attackable {
         return battleAttr.magicSpeed;
     }
 
+
+    public void useSkill(int skillCode) {
+
+    }
 }

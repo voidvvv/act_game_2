@@ -5,6 +5,7 @@ import com.badlogic.gdx.ai.pfa.GraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.ai.pfa.PathSmoother;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.voidvvv.game.ActGame;
@@ -123,12 +124,15 @@ public class VPathFinder {
         }
     }
 
-    public void draw() {
+    public void draw(Batch batch, float parentAlpha) {
         if (!pathing) {
             return;
         }
+        batch.end();
         ShapeRenderer shapeRenderer = ActGame.gameInstance().getDrawManager().getShapeRenderer();
+        shapeRenderer.begin();
         shapeRenderer.setColor(Color.YELLOW);
+//        shapeRenderer.line(1,1,100,100);
         for (int x= 1; x<graphPath.getCount(); x++) {
             VMapNode pre = graphPath.get(x - 1);
             VMapNode cur = graphPath.get(x);
@@ -139,5 +143,7 @@ public class VPathFinder {
                 shapeRenderer.line(pre.x, pre.y, finalTarget.x, finalTarget.y);
             }
         }
+        shapeRenderer.end();
+        batch.begin();
     }
 }

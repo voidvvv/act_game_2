@@ -10,9 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.*;
 import com.box2d.testt.CollisionListener;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.VActor;
@@ -117,9 +115,11 @@ public class VWorld {
 
 
         OrthographicCamera mainCamera = ActGame.gameInstance().getCameraManager().getMainCamera();
-        ScalingViewport scalingViewport = new ScalingViewport(Scaling.fill, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), mainCamera);
+//        ScalingViewport scalingViewport = new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), mainCamera);
 //        ScreenViewport screenViewport = new ScreenViewport(mainCamera);
-        stage = new PinpointStage(scalingViewport
+        StretchViewport fillViewport = new StretchViewport(320, 240, mainCamera);
+
+        stage = new PinpointStage(fillViewport
                 , ActGame.gameInstance().getDrawManager().getSpriteBatch());
     }
 

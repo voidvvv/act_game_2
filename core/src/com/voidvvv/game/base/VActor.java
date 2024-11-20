@@ -86,9 +86,6 @@ public class VActor extends Actor {
     }
 
 
-    public void render() {
-    }
-
 
     public static class VActorCompare implements Comparator<VActor> {
 

@@ -19,4 +19,9 @@ public class CameraManager {
     public OrthographicCamera getScreenCamera() {
         return screenCamera;
     }
+
+    public void update() {
+        mainCamera.update();
+        screenCamera.update();
+    }
 }

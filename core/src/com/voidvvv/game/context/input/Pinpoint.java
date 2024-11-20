@@ -37,15 +37,19 @@ public class Pinpoint extends Actor {
         if (!running) {
             return;
         }
+        batch.end();
         float alpha = parentAlpha * (time / maxTime);
         color.a = alpha;
         ActGame.gameInstance().getDrawManager().enableBlend();
         ShapeRenderer shapeRenderer = ActGame.gameInstance().getDrawManager().getShapeRenderer();
+        shapeRenderer.begin();
         shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(color);
         shapeRenderer.x(position, size);
         shapeRenderer.flush();
+        shapeRenderer.end();
         ActGame.gameInstance().getDrawManager().disableBlend();
+        batch.begin();
 
     }
 }

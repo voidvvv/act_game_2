@@ -71,14 +71,22 @@ public class TextMessageBar extends Actor {
     Color color = Color.BLUE.cpy();
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        batch.end();
+        ActGame.gameInstance().getDrawManager().disableBlend();
+        ShapeRenderer shapeRenderer = ActGame.gameInstance().getDrawManager().getShapeRenderer();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setProjectionMatrix(ActGame.gameInstance().getCameraManager().getScreenCamera().combined);
+        shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
+        shapeRenderer.end();
+        batch.begin();
         BitmapFont baseFont = fontManager.getBaseFont();
 
         float shifting = getY() + baseFont.getLineHeight() + 0.5f;
 
         ActGame.gameInstance().getDrawManager().enableBlend();
+        baseFont.setColor(color);
         baseFont.getColor().a = 1f;
 
-        baseFont.draw(batch, getX() + " - " + getY(), getX(), shifting - baseFont.getLineHeight() - 0.5f);
         Iterator<SystemNotifyMessage> it = systemNotifyMessageManager.messages.descendingIterator();
         while (it.hasNext()) {
             SystemNotifyMessage msg = it.next();
@@ -90,11 +98,6 @@ public class TextMessageBar extends Actor {
                 shifting+=baseFont.getLineHeight() + 0.5f;
             }
         }
-        ActGame.gameInstance().getDrawManager().disableBlend();
-        ShapeRenderer shapeRenderer = ActGame.gameInstance().getDrawManager().getShapeRenderer();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setProjectionMatrix(ActGame.gameInstance().getCameraManager().getScreenCamera().combined);
-        shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
-        shapeRenderer.end();
+
     }
 }
