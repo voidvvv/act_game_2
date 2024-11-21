@@ -18,12 +18,6 @@ public class VWorldEventManager {
         events = new LinkedList<>();
     }
 
-    public void applyEvent(WorldEvent event) {
-        event.apply();
-        events.remove(event);
-        freeEvent(event);
-    }
-
     private void freeEvent(WorldEvent event) {
         Pools.free(event);
     }
@@ -44,6 +38,7 @@ public class VWorldEventManager {
         while (!events.isEmpty()) {
             WorldEvent event = events.pop();
             event.apply(delta);
+            event.postApply();
             freeEvent(event);
         }
     }

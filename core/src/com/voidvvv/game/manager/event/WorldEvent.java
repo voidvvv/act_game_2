@@ -34,6 +34,7 @@ public abstract class WorldEvent implements Pool.Poolable {
     }
 
     public abstract void apply();
+    public abstract void postApply();
     public void apply(float delta) {
         apply();
     };

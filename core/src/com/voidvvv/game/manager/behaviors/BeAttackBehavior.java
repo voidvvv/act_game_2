@@ -14,7 +14,7 @@ public class BeAttackBehavior implements Behavior {
     VActor owner;
     float damage;
     boolean fixed =false;
-    Object trigger;
+    String trigger;
 
     public int getAttackType() {
         return attackType;
@@ -52,7 +52,7 @@ public class BeAttackBehavior implements Behavior {
         return trigger;
     }
 
-    public void setTrigger(Object trigger) {
+    public void setTrigger(String trigger) {
         this.trigger = trigger;
     }
 

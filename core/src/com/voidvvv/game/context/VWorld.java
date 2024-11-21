@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.*;
 import com.box2d.testt.CollisionListener;
@@ -147,8 +148,25 @@ public class VWorld {
 
     public void update (float delta) {
         vWorldEventManager.update(delta);
-        stage.act(delta);
+
         box2dWorld.step(delta,10,10);
+        stage.act(delta);
+
+        clean();
+    }
+
+    private void clean() {
+        // clean
+        if (!bin.isEmpty()) {
+            for (VActor t : bin) {
+                stage.getRoot().removeActor(t);
+                actorList.remove(t);
+                updateList.remove(t);
+                renderList.remove(t);
+                Pools.free(t);
+            }
+            bin.clear();
+        }
     }
 
     public static final float DEFAULT_UNIT = 1f;
@@ -225,9 +243,10 @@ public class VWorld {
             return null;
         }
         try {
-            Constructor<T> constructor = clazz.getConstructor();
-            T t = constructor.newInstance();
+
+            T t = Pools.obtain(clazz);
             t.setWorld(this);
+            t.setVisible(true);
             VPhysicAttr physicAttr = new VPhysicAttr();
             physicAttr.box2dHx = helper.hx;
             physicAttr.box2dHy = helper.hy;
@@ -253,6 +272,12 @@ public class VWorld {
         return null;
     }
 
+    List<VActor> bin = new ArrayList<>();
+    public void destroyActor (VActor t) {
+        t.setVisible(false);
+        t.getBody().setActive(false);
+        bin.add(t);
+    }
 
     public Fixture createRoleFixture(BodyDef.BodyType bodyType, float initX, float initY, float hx, float hy) {
         return createFixture(bodyType,initX,initY,hx,hy,WorldContext.ROLE,WorldContext.OBSTACLE);

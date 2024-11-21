@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.VCharacter;
@@ -20,17 +21,15 @@ public class Bob extends VCharacter {
     @Override
     public void init() {
         super.init();
-
         // physics
         VCube cube = new VCube();
         cube.xLength = this.physicAttr.box2dHx * 2f;
         cube.yLength = this.physicAttr.box2dHy * 2f;
-        cube.zLength = 10f;
+        cube.zLength = this.physicAttr.box2dHy * 2f;
         physicAttr.setBaseShape(cube);
         this.setPhysicAttr(physicAttr);
-
         this.getActualBattleAttr().hp = 100;
-
+        setName("Bob" + MathUtils.random(10));
     }
 
     @Override
@@ -41,7 +40,7 @@ public class Bob extends VCharacter {
         baseFont.setColor(Color.RED);
         ActGame.gameInstance().getDrawManager().enableBlend();
         GlyphLayout layout = Pools.obtain(GlyphLayout.class);
-        layout.setText(baseFont, (int)this.getHp()+"");
+        layout.setText(baseFont, this.getName());
         float height = layout.height;
         float width = layout.width;
         width/=2;

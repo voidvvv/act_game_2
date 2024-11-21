@@ -1,7 +1,6 @@
 package com.voidvvv.game.manager.event.attack;
 
 import com.badlogic.gdx.utils.Pools;
-import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.battle.BattleAttr;
@@ -23,7 +22,7 @@ public class BasePhysicAttackEvent extends AttackEvent{
             BeAttackBehavior behavior = Pools.obtain(BeAttackBehavior.class);
             behavior.setFrom(from);
             behavior.setTo(to);
-            behavior.setTrigger(getExtraInfo());
+            behavior.setTrigger(getTriggerObj().getName());
             behavior.setAttackType(BattleContext.AttackType.ATTACK_PHYSIC);
             behavior.setDamage(fromBattle.attack);
             to.getWorld().getBattleContext().fixAttack(behavior);

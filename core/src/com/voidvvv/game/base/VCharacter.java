@@ -200,7 +200,13 @@ public class VCharacter extends VActor implements Attackable {
 
     public void postBehavior(Behavior behavior) {
         SystemNotifyMessageManager systemNotifyMessageManager = ActGame.gameInstance().getSystemNotifyMessageManager();
-        systemNotifyMessageManager.pushMessage(this.getClass() + " 触发postBehavior： " + behavior.getClass());
+
+        if (behavior.behaviorType() == BeAttackBehavior.BASE_BE_ATTACK_BEHAVIOR) {
+            BeAttackBehavior beAttackBehavior = (BeAttackBehavior)behavior;
+            // battle type
+            String msg = this.getName() + "受到了来自[" + beAttackBehavior.getFrom().getName() + "] 的 [" + (int)beAttackBehavior.getDamage() + "] 点伤害, 方式为: [" + beAttackBehavior.getTrigger() + "]  类型为: " + beAttackBehavior.getAttackType();
+            systemNotifyMessageManager.pushMessage(msg);
+        }
     }
 
     @Override
@@ -211,5 +217,11 @@ public class VCharacter extends VActor implements Attackable {
             return this.getActualBattleAttr().attack;
         }
         return 0f;
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        finder = null;
     }
 }

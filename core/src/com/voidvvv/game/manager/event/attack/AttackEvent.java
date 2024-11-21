@@ -1,10 +1,20 @@
 package com.voidvvv.game.manager.event.attack;
 
+import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.manager.behaviors.BeAttackBehavior;
 import com.voidvvv.game.manager.event.WorldEvent;
 
 public abstract class AttackEvent extends WorldEvent implements AttackCalculator {
 
+    protected VActor triggerObj;
+
+    public VActor getTriggerObj() {
+        return triggerObj;
+    }
+
+    public void setTriggerObj(VActor triggerObj) {
+        this.triggerObj = triggerObj;
+    }
 
     @Override
     public void apply() {
@@ -13,4 +23,8 @@ public abstract class AttackEvent extends WorldEvent implements AttackCalculator
         targetActor.attachBehavior(calculate);
     }
 
+    @Override
+    public void postApply() {
+
+    }
 }

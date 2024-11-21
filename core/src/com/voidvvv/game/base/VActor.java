@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Transform;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Pool;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.manager.behaviors.Behavior;
@@ -14,7 +15,7 @@ import com.voidvvv.game.utils.ReflectUtil;
 
 import java.util.Comparator;
 
-public class VActor extends Actor {
+public class VActor extends Actor implements Pool.Poolable {
     private VWorld world;
 
     public long currentFrame = 0;
@@ -28,6 +29,17 @@ public class VActor extends Actor {
     private Fixture fixture;
 
     private Body body;
+
+
+    protected VActor parentVActor;
+
+    public VActor getParentVActor() {
+        return parentVActor;
+    }
+
+    public void setParentVActor(VActor parentVActor) {
+        this.parentVActor = parentVActor;
+    }
 
     public VPhysicAttr getPhysicAttr() {
         return physicAttr;
@@ -73,7 +85,7 @@ public class VActor extends Actor {
         Vector2 position1 = transform.getPosition();
         UserData cast = ReflectUtil.cast(fixture.getUserData(), UserData.class);
         this.position.x = position1.x;
-        this.position.y = position1.y + cast.getSubShifting();
+        this.position.y = position1.y;
     }
 
     public void update (float delta) {
@@ -86,6 +98,12 @@ public class VActor extends Actor {
         }
     }
 
+    @Override
+    public void reset() {
+        this.getWorld().getBox2dWorld().destroyBody(body);
+        this.setWorld(null);
+        this.setParentVActor(null);
+    }
 
 
     public static class VActorCompare implements Comparator<VActor> {
@@ -110,5 +128,9 @@ public class VActor extends Actor {
 
     public float getFloat(int type) {
         return 0;
+    }
+
+    public void onHit(VActor actor) {
+
     }
 }

@@ -7,4 +7,9 @@ public class AfterBeAttackedEvent extends WorldEvent {
     public void apply() {
 
     }
+
+    @Override
+    public void postApply() {
+
+    }
 }

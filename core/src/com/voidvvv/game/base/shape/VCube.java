@@ -21,7 +21,7 @@ public class VCube implements VBaseShape {
 
     @Override
     public Rectangle topShape(Vector3 position) {
-        return topShape.set(position.x - xLength / 2.f, position.y, xLength, yLength);
+        return topShape.set(position.x - xLength / 2.f, position.y - yLength/2, xLength, yLength);
     }
     Vector2 bounds = new Vector2();
     @Override
