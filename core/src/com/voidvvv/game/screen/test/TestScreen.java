@@ -106,6 +106,8 @@ public class TestScreen extends ScreenAdapter {
                 .setInitX(60).setInitY(100)
                 .build();
         bob = vWorld.spawnVActor(Bob.class,helper);
+
+        bob.getActualBattleAttr().attack = 500;
         // input
         CharacterInputListener characterInputListener = new CharacterInputListener();
         characterInputListener.setCharacter(bob);
@@ -113,7 +115,7 @@ public class TestScreen extends ScreenAdapter {
         // obstacle
         helper = VActorSpawnHelper.VActorSpawnHelperBuilder.builder()
                 .setBodyType(BodyDef.BodyType.DynamicBody)
-                .setCategory((short)(WorldContext.ROLE)) // who am I
+                .setCategory((short)(WorldContext.ROLE|WorldContext.BLACK)) // who am I
                 .setMask((short)(WorldContext.OBSTACLE|WorldContext.WHITE)) // who do I want to collision
                 .setHx(4).setHy(4)
                 .setSensor(true)
@@ -130,7 +132,8 @@ public class TestScreen extends ScreenAdapter {
 //                .setSensor(true)
                 .setInitX(50).setInitY(50)
                 .build();
-        vWorld.spawnVActor(VObstacle.class,helper);
+        VObstacle vObstacle = vWorld.spawnVActor(VObstacle.class, helper);
+        vObstacle.setName("Rocky!");
 
         debugShapeRender = new VDebugShapeRender();
         orthographicCamera = ActGame.gameInstance().getCameraManager().getMainCamera();

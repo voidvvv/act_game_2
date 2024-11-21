@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Pool;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.b2d.UserData;
+import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.manager.behaviors.Behavior;
 import com.voidvvv.game.context.VWorld;
 import com.voidvvv.game.utils.ReflectUtil;
@@ -30,6 +31,15 @@ public class VActor extends Actor implements Pool.Poolable {
 
     private Body body;
 
+    boolean vActive = true;
+
+    public boolean isvActive() {
+        return vActive;
+    }
+
+    public void setvActive(boolean vActive) {
+        this.vActive = vActive;
+    }
 
     protected VActor parentVActor;
 
@@ -59,6 +69,7 @@ public class VActor extends Actor implements Pool.Poolable {
 
     public void init() {
         this.currentFrame = ActGame.gameInstance().getFrameId() - 1;
+        setvActive(true);
     }
 
     public void setFixture(Fixture fixture) {
@@ -67,10 +78,18 @@ public class VActor extends Actor implements Pool.Poolable {
     }
 
     public void act(float delta) {
+        if (vActive) {
+            vAct(delta);
+        }
+    }
+
+    public void vAct(float delta) {
         updateFrameIndex();
         updatePosition(delta);
         updateSize(delta);
+
     }
+
     Transform transform = null;
     private void updateSize(float delta) {
         setWidth(this.physicAttr.getBaseShape().getBounds().x);
@@ -105,6 +124,10 @@ public class VActor extends Actor implements Pool.Poolable {
         this.setParentVActor(null);
     }
 
+    public boolean shoulCollide(VActor actor) {
+        return true;
+    }
+
 
     public static class VActorCompare implements Comparator<VActor> {
 
@@ -131,6 +154,8 @@ public class VActor extends Actor implements Pool.Poolable {
     }
 
     public void onHit(VActor actor) {
+        SystemNotifyMessageManager systemNotifyMessageManager = ActGame.gameInstance().getSystemNotifyMessageManager();
 
+        systemNotifyMessageManager.pushMessage(this.getName() + " hit with: " + actor.getName());
     }
 }

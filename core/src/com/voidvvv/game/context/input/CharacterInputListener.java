@@ -39,22 +39,20 @@ public class CharacterInputListener extends InputListener {
         boolean result = false;
         if (keycode == InputActionMapping.SKILL_Q) {
             result = true;
-            systemNotifyMessageManager.pushMessage("Q skill");
         }
         if (keycode == InputActionMapping.SKILL_R) {
             result = true;
 
-            systemNotifyMessageManager.pushMessage("R skill");
         }
         if (keycode == InputActionMapping.SKILL_W) {
             result = true;
 
-            systemNotifyMessageManager.pushMessage("W skill");
         }
         if (keycode == InputActionMapping.SKILL_E) {
             result = true;
-
-            systemNotifyMessageManager.pushMessage("E skill");
+        }
+        if (result) {
+            character.useSkill(keycode);
         }
         return result;
     }
@@ -65,6 +63,12 @@ public class CharacterInputListener extends InputListener {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean mouseMoved(InputEvent event, float x, float y) {
+        getCharacter().getWorld().currentPointerPose.set(event.getStageX(),event.getStageY());
+        return super.mouseMoved(event, x, y);
     }
 
     private boolean tryMove(int keycode) {

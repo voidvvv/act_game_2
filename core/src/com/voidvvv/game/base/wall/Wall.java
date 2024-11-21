@@ -7,5 +7,6 @@ public class Wall extends VObstacle {
     public void init() {
         super.init();
         this.setVisible(false);
+        setName("Wall");
     }
 }

@@ -3,10 +3,12 @@ package com.voidvvv.game.manager.behaviors;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.battle.BattleAttr;
+import com.voidvvv.game.context.VWorld;
 
 public class BeAttackBehavior implements Behavior {
     public static final int BASE_BE_ATTACK_BEHAVIOR = 1;
 
+    VWorld world;
     int attackType; // magic? physic? real?
     VActor from;
     VActor to;
@@ -36,6 +38,14 @@ public class BeAttackBehavior implements Behavior {
         return from;
     }
 
+    public VWorld world() {
+        return world;
+    }
+
+    public void setWorld(VWorld world) {
+        this.world = world;
+    }
+
     public void setFrom(VActor from) {
         this.from = from;
     }
@@ -58,11 +68,14 @@ public class BeAttackBehavior implements Behavior {
 
     @Override
     public VActor owner() {
-        return null;
+        return owner;
     }
 
     @Override
     public void does() {
+        if (!fixed) {
+            world().getBattleContext().fixAttack(this);
+        }
         VCharacter vch = (VCharacter) owner;
         BattleAttr actualBattle = vch.getActualBattleAttr();
         actualBattle.hp -= damage;

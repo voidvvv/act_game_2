@@ -13,6 +13,8 @@ import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.manager.behaviors.BeAttackBehavior;
 import com.voidvvv.game.manager.behaviors.Behavior;
 
+import java.util.*;
+
 /**
  * can move, can collision, can damage even attack!
  */
@@ -40,11 +42,39 @@ public class VCharacter extends VActor implements Attackable {
         for (int x= 0; x< velAffect.length;x++) {
             velAffect[x] = new Vector3();
         }
+        behaviorMap = new HashMap<>();
     }
 
+
     @Override
-    public void act(float delta) {
-        super.act(delta);
+    public void vAct(float delta) {
+        super.vAct(delta);
+        // fresh status
+
+        // fresh hp and checkout damage
+        Set<Map.Entry<Integer, Deque<Behavior>>> entries = behaviorMap.entrySet();
+        for (Map.Entry<Integer, Deque<Behavior>> entry : entries) {
+            Deque<Behavior> value = entry.getValue();
+            while (value!=null && !value.isEmpty()) {
+                Behavior pop = value.pop();
+                pop.does();
+            }
+        }
+    }
+
+    protected Map<Integer,Deque<Behavior>> behaviorMap = new HashMap<>();
+    @Override
+    public void attachBehavior(Behavior behavior) {
+        if (behavior == null) {
+            return;
+        }
+        super.attachBehavior(behavior);
+        Deque<Behavior> behaviors = behaviorMap.get(behavior.behaviorType());
+        if (behaviors != null) {
+            behaviors.add(behavior);
+            behavior.setOwner(this);
+
+        }
     }
 
     @Override
@@ -56,6 +86,8 @@ public class VCharacter extends VActor implements Attackable {
     public void init() {
         super.init();
         finder = new VPathFinder(this,getWorld());
+
+        behaviorMap.put(BeAttackBehavior.BASE_BE_ATTACK_BEHAVIOR,new LinkedList<>());
     }
 
     @Override
@@ -222,6 +254,7 @@ public class VCharacter extends VActor implements Attackable {
     @Override
     public void reset() {
         super.reset();
+        behaviorMap.clear();
         finder = null;
     }
 }

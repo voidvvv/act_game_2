@@ -48,6 +48,8 @@ public class VWorld {
 
     protected VMap map;
 
+    public Vector2 currentPointerPose = new Vector2();
+
     public VMap getMap() {
         return map;
     }
@@ -276,6 +278,7 @@ public class VWorld {
     public void destroyActor (VActor t) {
         t.setVisible(false);
         t.getBody().setActive(false);
+        t.setvActive(false);
         bin.add(t);
     }
 
