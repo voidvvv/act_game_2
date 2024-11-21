@@ -76,6 +76,7 @@ public class VWorld {
         actorList.add(t);
         updateList.add(t);
         renderList.add(t);
+        t.getFixture().getBody().setActive(true);
         t.setWorld(this);
 
         return t;
@@ -149,12 +150,22 @@ public class VWorld {
     private VWorldEventManager vWorldEventManager;
 
     public void update (float delta) {
+        // add
+        addInit();
+
         vWorldEventManager.update(delta);
 
         box2dWorld.step(delta,10,10);
         stage.act(delta);
 
         clean();
+    }
+
+    private void addInit() {
+        for (VActor actor : initList) {
+            registerActor(actor);
+        }
+        initList.clear();
     }
 
     private void clean() {
@@ -240,12 +251,12 @@ public class VWorld {
         return null;
     }
 
+    protected  List<VActor> initList = new ArrayList<>();
     public <T extends VActor> T spawnVActor (Class<T> clazz, VActorSpawnHelper helper) {
         if (!initialized) {
             return null;
         }
         try {
-
             T t = Pools.obtain(clazz);
             t.setWorld(this);
             t.setVisible(true);
@@ -266,7 +277,8 @@ public class VWorld {
                 ((UserData)roleFixture.getUserData()).setActor(t);
             }
             t.init();
-            registerActor(t);
+            initList.add(t);
+
             return t;
         } catch (Throwable e) {
 
@@ -334,6 +346,7 @@ public class VWorld {
         fd.shape = polygonShape;
         fd.isSensor = helper.isSensor();
         Fixture fixture = body.createFixture(fd);
+        body.setActive(false);
         if (helper.userData == null) {
             UserData userData = new UserData();
             userData.setSubShifting(-helper.hy);
