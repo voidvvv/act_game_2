@@ -52,7 +52,7 @@ public class VPathFinder {
         if (cur == null) {
             return false;
         }
-        if (dest == null) {
+        if (dest == null || dest.getType() == VMapNode.OBSTACLE) {
             // find by ray
             return false;
         }
