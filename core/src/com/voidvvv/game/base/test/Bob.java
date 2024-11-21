@@ -65,7 +65,7 @@ public class Bob extends VCharacter {
                     .setCategory((short)(WorldContext.ROLE|WorldContext.WHITE)) // who am I
                     .setMask((short)(WorldContext.OBSTACLE|WorldContext.BLACK|WorldContext.ROLE)) // who do I want to collision
                     .setHx(5).setHy(5)
-                    .setInitX(getX()).setInitY(getY())
+                    .setInitX(position.x).setInitY(getY())
                     .build();
 
             TestBullet testBullet = getWorld().spawnVActor(TestBullet.class, helper);
