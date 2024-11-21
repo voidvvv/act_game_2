@@ -19,7 +19,6 @@ public class BasePhysicAttackEvent extends AttackEvent{
         if (fromChar != null && toChar != null) {
             BattleAttr fromBattle = fromChar.getActualBattleAttrWithoutCheck();
             BattleAttr toBattle = toChar.getActualBattleAttrWithoutCheck();
-            System.out.println("behavior");
             BeAttackBehavior behavior = Pools.obtain(BeAttackBehavior.class);
             behavior.setFrom(from);
             behavior.setTo(to);
