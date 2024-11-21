@@ -66,9 +66,7 @@ public class VPathFinder {
             if (!find) {
                 return false;
             } else {
-                System.out.println("before: " + graphPath.getCount());
                 pathSmoother.smoothPath(graphPath);
-                System.out.println("after: " + graphPath.getCount());
 
                 currentIndex = 0;
                 finalTarget.set(fx, fy);

@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Transform;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.b2d.UserData;
+import com.voidvvv.game.manager.behaviors.Behavior;
 import com.voidvvv.game.context.VWorld;
 import com.voidvvv.game.utils.ReflectUtil;
 
@@ -101,5 +102,13 @@ public class VActor extends Actor {
 
     public void setWorld(VWorld world) {
         this.world = world;
+    }
+
+    public void attachBehavior(Behavior behavior){
+
+    }
+
+    public float getFloat(int type) {
+        return 0;
     }
 }

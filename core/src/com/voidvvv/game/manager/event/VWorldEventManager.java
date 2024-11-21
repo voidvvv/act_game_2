@@ -1,13 +1,13 @@
 package com.voidvvv.game.manager.event;
 
 import com.badlogic.gdx.utils.Pools;
-import com.voidvvv.game.manager.event.attack.DamageEvent;
 
 import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedList;
 
 public class VWorldEventManager {
+
     public static final int DAMAGE_EVENT = 1;
 
     private Deque<WorldEvent> events;

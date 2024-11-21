@@ -103,6 +103,8 @@ public class VWorld {
         spawnVActorObstacle(Wall.class, boundingBox.x + bb.width/2,bb.y - verticalHeight,bb.width,verticalHeight); // up
         spawnVActorObstacle(Wall.class, boundingBox.x + bb.width/2,bb.y + bb.height + verticalHeight,bb.width,verticalHeight); // down
 
+        battleContext = new BaseBattleContext();
+
     }
 
     private void initGraph() {
@@ -318,5 +320,15 @@ public class VWorld {
 
     public PinpointStage getStage() {
         return stage;
+    }
+
+    BattleContext battleContext;
+
+    public BattleContext getBattleContext() {
+        return battleContext;
+    }
+
+    public void setBattleContext(BattleContext battleContext) {
+        this.battleContext = battleContext;
     }
 }

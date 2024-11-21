@@ -27,12 +27,10 @@ public class CollisionListener implements ContactListener {
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
-        System.out.println("preSolve");
     }
 
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
-        System.out.println("postSolve: " + impulse.getNormalImpulses()[0] + " " + impulse.getNormalImpulses()[1]);
 
     }
 }

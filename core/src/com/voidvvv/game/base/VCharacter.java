@@ -7,7 +7,11 @@ import com.voidvvv.game.ActGame;
 import com.voidvvv.game.battle.Attackable;
 import com.voidvvv.game.battle.BattleAttr;
 import com.voidvvv.game.battle.BattleAttrDelta;
+import com.voidvvv.game.context.BattleContext;
 import com.voidvvv.game.context.map.VPathFinder;
+import com.voidvvv.game.manager.SystemNotifyMessageManager;
+import com.voidvvv.game.manager.behaviors.BeAttackBehavior;
+import com.voidvvv.game.manager.behaviors.Behavior;
 
 /**
  * can move, can collision, can damage even attack!
@@ -183,10 +187,29 @@ public class VCharacter extends VActor implements Attackable {
         return actualBattleAttr;
     }
 
+    public BattleAttr getActualBattleAttrWithoutCheck() {
+        return actualBattleAttr;
+    }
+
     private void fixBattleField() {
 //        BattleAttrDelta battleAttrDelta1 = this.battleAttrDelta;
 //        BattleAttr originBattleAttr1 = this.originBattleAttr;
 
         this.battleDirty=false;
+    }
+
+    public void postBehavior(Behavior behavior) {
+        SystemNotifyMessageManager systemNotifyMessageManager = ActGame.gameInstance().getSystemNotifyMessageManager();
+        systemNotifyMessageManager.pushMessage(this.getClass() + " 触发postBehavior： " + behavior.getClass());
+    }
+
+    @Override
+    public float getFloat(int type) {
+        if (type == BattleContext.ActorFields.DEFENCE_FIELD) {
+            return this.getActualBattleAttr().defense;
+        } else if (type == BattleContext.ActorFields.ATTACK_FIELD) {
+            return this.getActualBattleAttr().attack;
+        }
+        return 0f;
     }
 }
