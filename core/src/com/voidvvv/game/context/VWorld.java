@@ -19,6 +19,8 @@ import com.voidvvv.game.base.VPhysicAttr;
 import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.base.test.VObstacle;
 import com.voidvvv.game.base.wall.Wall;
+import com.voidvvv.game.context.input.Pinpoint;
+import com.voidvvv.game.context.input.PinpointData;
 import com.voidvvv.game.context.map.VMap;
 import com.voidvvv.game.manager.event.VWorldEventManager;
 
@@ -34,7 +36,7 @@ public class VWorld {
 
     boolean initialized = false;
 
-    private PinpointStage stage;
+    private Stage stage;
 
     private final List<VActor> actorList = new ArrayList<>();
 
@@ -50,6 +52,8 @@ public class VWorld {
 
     public Vector2 currentPointerPose = new Vector2();
 
+    protected PinpointData pinpointData;
+
     public VMap getMap() {
         return map;
     }
@@ -60,6 +64,7 @@ public class VWorld {
 
     public VWorld() {
         map = new VMap();
+        pinpointData = new PinpointData();
     }
 
     public List<VActor> allActors () {
@@ -80,6 +85,14 @@ public class VWorld {
         t.setWorld(this);
 
         return t;
+    }
+
+    public PinpointData getPinpointData() {
+        return pinpointData;
+    }
+
+    public void setPinpointData(PinpointData pinpointData) {
+        this.pinpointData = pinpointData;
     }
 
     public void init () {
@@ -125,10 +138,20 @@ public class VWorld {
         OrthographicCamera mainCamera = ActGame.gameInstance().getCameraManager().getMainCamera();
 //        ScalingViewport scalingViewport = new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), mainCamera);
 //        ScreenViewport screenViewport = new ScreenViewport(mainCamera);
-        StretchViewport fillViewport = new StretchViewport(320, 240, mainCamera);
+        StretchViewport fillViewport = new StretchViewport(640, 480, mainCamera);
 
-        stage = new PinpointStage(fillViewport
+        stage = new Stage(fillViewport
                 , ActGame.gameInstance().getDrawManager().getSpriteBatch());
+
+        // fill stage
+        fillStage();
+    }
+
+    private void fillStage() {
+        // background
+
+        // point
+        stage.addActor(new Pinpoint());
     }
 
     private void initWorld() {
@@ -140,7 +163,7 @@ public class VWorld {
 //            }
 //        });
         box2dWorld.setContactListener(new CollisionListener());
-        boundingBox.set(-100,-100,500,600);
+        boundingBox.set(-100,-100,640,480);
     }
 
     public void addListener(EventListener listener) {
@@ -152,13 +175,14 @@ public class VWorld {
     public void update (float delta) {
         // add
         addInit();
+        mainThread(delta);
+        clean();
+    }
 
+    protected void mainThread(float delta) {
         vWorldEventManager.update(delta);
-
         box2dWorld.step(delta,10,10);
         stage.act(delta);
-
-        clean();
     }
 
     private void addInit() {
@@ -182,7 +206,7 @@ public class VWorld {
         }
     }
 
-    public static final float DEFAULT_UNIT = 1f;
+    public static final float DEFAULT_UNIT = 16;
     public float unit() {
         return DEFAULT_UNIT;
     }
@@ -359,9 +383,10 @@ public class VWorld {
         return fixture;
     }
 
-    public PinpointStage getStage() {
+    public Stage getStage() {
         return stage;
     }
+
 
     BattleContext battleContext;
 

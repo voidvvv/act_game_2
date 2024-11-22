@@ -8,44 +8,48 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.voidvvv.game.ActGame;
 
 public class Pinpoint extends Actor {
-    public Vector2 position = new Vector2();
-    public boolean running = false;
-    public float time;
-    public float maxTime = 2f;
-    public float size = 5f;
+
 
     public final Color color = Color.RED.cpy();
+    PinpointData pinpointData;
 
-    public void begin (float x, float y) {
-        running = true;
-        time = maxTime;
-        position.set(x, y);
+
+    public PinpointData getPinpointData() {
+        return pinpointData;
+    }
+
+    public void setPinpointData(PinpointData pinpointData) {
+        this.pinpointData = pinpointData;
+    }
+
+    public Pinpoint() {
+        pinpointData = ActGame.gameInstance().currentWorld().getPinpointData();
     }
 
     @Override
     public void act(float delta) {
-        if (running) {
-            time -= delta;
-            if (time <= 0f) {
-                running = false;
+        if (pinpointData.running) {
+            pinpointData.time -= delta;
+            if (pinpointData.time <= 0f) {
+                pinpointData.running = false;
             }
         }
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (!running) {
+        if (!pinpointData.running) {
             return;
         }
         batch.end();
-        float alpha = parentAlpha * (time / maxTime);
+        float alpha = parentAlpha * (pinpointData.time / pinpointData.maxTime);
         color.a = alpha;
         ActGame.gameInstance().getDrawManager().enableBlend();
         ShapeRenderer shapeRenderer = ActGame.gameInstance().getDrawManager().getShapeRenderer();
         shapeRenderer.begin();
         shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(color);
-        shapeRenderer.x(position, size);
+        shapeRenderer.x(pinpointData.position, pinpointData.size);
         shapeRenderer.flush();
         shapeRenderer.end();
         ActGame.gameInstance().getDrawManager().disableBlend();

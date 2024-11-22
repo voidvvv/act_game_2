@@ -154,8 +154,5 @@ public class VActor extends Actor implements Pool.Poolable {
     }
 
     public void onHit(VActor actor) {
-        SystemNotifyMessageManager systemNotifyMessageManager = ActGame.gameInstance().getSystemNotifyMessageManager();
-
-        systemNotifyMessageManager.pushMessage(this.getName() + " hit with: " + actor.getName());
     }
 }

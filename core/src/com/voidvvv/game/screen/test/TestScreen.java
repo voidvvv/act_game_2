@@ -17,7 +17,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.*;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.test.VObstacle;
-import com.voidvvv.game.context.PinpointStage;
 import com.voidvvv.game.context.VActorSpawnHelper;
 import com.voidvvv.game.context.VWorld;
 import com.voidvvv.game.context.input.CharacterInputListener;

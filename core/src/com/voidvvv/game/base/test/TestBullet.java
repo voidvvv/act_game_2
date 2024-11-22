@@ -42,7 +42,6 @@ public class TestBullet extends VCharacter {
             attackEvent.setTargetActor(target);
             attackEvent.setTriggerObj(this);
             attackEvent.setExtraInfo(this);
-            ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("AttackEvent!");
             this.staus = DYING;
         } else if (staus == DYING) {
             getWorld().destroyActor(this);

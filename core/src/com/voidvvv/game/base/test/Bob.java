@@ -20,7 +20,6 @@ public class Bob extends VCharacter {
     @Override
     public void vAct(float delta) {
         super.vAct(delta);
-
     }
 
     @Override
@@ -72,7 +71,7 @@ public class Bob extends VCharacter {
             testBullet.targetGroup  = WorldContext.BLACK;
             testBullet.getActualBattleAttr().moveSpeed = 10000*1.5f;
             testBullet.setParentVActor(this);
-            testBullet.baseMove.set(getWorld().currentPointerPose.x - getX(),getWorld().currentPointerPose.y - getY(),0);
+            testBullet.baseMove.set(getWorld().currentPointerPose.x - position.x,getWorld().currentPointerPose.y - getY(),0);
         }
     }
 }

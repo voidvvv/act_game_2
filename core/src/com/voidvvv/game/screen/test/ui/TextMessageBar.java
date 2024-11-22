@@ -100,6 +100,7 @@ public class TextMessageBar extends Actor {
         }
 
         baseFont.getColor().a = 1f;
-        baseFont.draw(batch,Gdx.graphics.getFramesPerSecond()+"" , getX()-20, getY() );
+        baseFont.draw(batch,Gdx.graphics.getFramesPerSecond()+"" , getX()-20, getY());
+        baseFont.draw(batch,Gdx.graphics.getFramesPerSecond()+"" , getX()-20, getY() -20f);
     }
 }

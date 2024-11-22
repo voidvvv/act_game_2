@@ -112,7 +112,7 @@ public class CharacterInputListener extends InputListener {
     private void leftEvent(InputEvent event, float x, float y, int pointer) {
         float stageX = event.getStageX();
         float stageY = event.getStageY();
-        Pinpoint pinpoint = character.getWorld().getStage().getPinpoint();
+        PinpointData pinpoint = character.getWorld().getPinpointData();
         pinpoint.begin(stageX, stageY);
         character.findPath(stageX, stageY);
     }
