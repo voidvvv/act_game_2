@@ -2,6 +2,9 @@ package com.voidvvv.game.context;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.collision.BoundingBox;
@@ -97,6 +100,8 @@ public class VWorld {
 
     public void init () {
         vWorldEventManager = ActGame.gameInstance().getvWorldEventManager();
+        // load map
+        loadMap();
         initWorld();
         initStage();
 
@@ -108,7 +113,20 @@ public class VWorld {
         afterInit();
     }
 
+    private void loadMap() {
+        renderMap = ActGame.gameInstance().getTmxMapLoader().load("map/test/act_game_02.tmx");
+        TiledMapTileLayer mainLayer = (TiledMapTileLayer)renderMap.getLayers().get("main");
+
+        boundingBox.set(mainLayer.getOffsetX(),mainLayer.getOffsetY(),mainLayer.getWidth() * mainLayer.getTileWidth(),mainLayer.getHeight() * mainLayer.getTileHeight());
+
+    }
+
+    private TiledMap renderMap;
+
+    private OrthogonalTiledMapRenderer tiledMapRenderer;
     private void afterInit() {
+        // initial map
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(renderMap,ActGame.gameInstance().getDrawManager().getSpriteBatch());
         // build four wall to prevent actor out of range
         final Rectangle bb = boundingBox;
         // horizon wall
@@ -122,6 +140,9 @@ public class VWorld {
 
         battleContext = new BaseBattleContext();
 
+
+        // fill stage
+        fillStage();
     }
 
     private void initGraph() {
@@ -143,8 +164,7 @@ public class VWorld {
         stage = new Stage(fillViewport
                 , ActGame.gameInstance().getDrawManager().getSpriteBatch());
 
-        // fill stage
-        fillStage();
+
     }
 
     private void fillStage() {
@@ -163,7 +183,7 @@ public class VWorld {
 //            }
 //        });
         box2dWorld.setContactListener(new CollisionListener());
-        boundingBox.set(-100,-100,640,480);
+
     }
 
     public void addListener(EventListener listener) {
@@ -385,6 +405,13 @@ public class VWorld {
 
     public Stage getStage() {
         return stage;
+    }
+
+    public void draw() {
+        getStage().getViewport().apply();
+        tiledMapRenderer.setView(ActGame.gameInstance().getCameraManager().getMainCamera());
+        tiledMapRenderer.render();
+        getStage().draw();
     }
 
 

@@ -140,6 +140,7 @@ public class VPathFinder {
         }
         batch.end();
         ShapeRenderer shapeRenderer = ActGame.gameInstance().getDrawManager().getShapeRenderer();
+        shapeRenderer.setProjectionMatrix(ActGame.gameInstance().getCameraManager().getMainCamera().combined);
         shapeRenderer.begin();
         shapeRenderer.setColor(Color.YELLOW);
 //        shapeRenderer.line(1,1,100,100);

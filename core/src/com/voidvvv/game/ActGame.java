@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.voidvvv.game.context.VWorld;
 import com.voidvvv.game.context.WorldContext;
 import com.voidvvv.game.manager.CameraManager;
@@ -35,6 +36,9 @@ public class ActGame extends Game {
     // screen
     private TestScreen testScreen;
 
+    // loader
+    TmxMapLoader tmxMapLoader;
+
     private ActGame() {
         drawManager = new DrawManager();
         fontManager = new FontManager();
@@ -43,6 +47,7 @@ public class ActGame extends Game {
         worldContext = new WorldContext();
         inputMultiplexer = new InputMultiplexer();
         systemNotifyMessageManager = new SystemNotifyMessageManager();
+        tmxMapLoader = new TmxMapLoader();
     }
 
     ;
@@ -63,6 +68,16 @@ public class ActGame extends Game {
 
         testScreen = new TestScreen();
         setScreen(testScreen);
+        // other
+
+    }
+
+    public TmxMapLoader getTmxMapLoader() {
+        return tmxMapLoader;
+    }
+
+    public void setTmxMapLoader(TmxMapLoader tmxMapLoader) {
+        this.tmxMapLoader = tmxMapLoader;
     }
 
     private void initOpt() {
