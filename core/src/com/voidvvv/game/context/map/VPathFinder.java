@@ -12,6 +12,9 @@ import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.context.VWorld;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * todo replace the graphPath in update and draw to use another type structure to find path, so we can free from graphPath
  */
@@ -30,6 +33,7 @@ public class VPathFinder {
     SmoothableGraphPathImpl graphPath;
     PathSmoother<VMapNode, Vector2> pathSmoother;
 
+    List<Float> currentPath = new ArrayList<Float>();
     int currentIndex = 0;
     VMap contextMap;
 
@@ -67,11 +71,22 @@ public class VPathFinder {
                 return false;
             } else {
                 pathSmoother.smoothPath(graphPath);
-
+                currentPath.clear();
                 currentIndex = 0;
                 finalTarget.set(fx, fy);
-                currentTarget.set(graphPath.get(currentIndex).x, graphPath.get(currentIndex).y);
-                tmp1.set(graphPath.get(currentIndex).x - character.position.x, graphPath.get(currentIndex).y - character.position.y).nor();
+                // put path to currentPath
+                currentPath.add(character.position.x);
+                currentPath.add(character.position.y);
+                currentTarget.set(character.position.x, character.position.y);
+
+                for (int j = 1; j < graphPath.getCount() -1; j++) {
+                    currentPath.add(graphPath.get(j).x);
+                    currentPath.add(graphPath.get(j).y);
+                }
+                currentPath.add(fx);
+                currentPath.add(fy);
+                tmp1.set(currentPath.get(0) - character.position.x, currentPath.get(1) - character.position.y).nor();
+
             }
         }
         pathId++;
@@ -86,42 +101,33 @@ public class VPathFinder {
 
     public void update(float delta) {
         if (pathing) {
-            System.out.println("pathing!");
             Vector2 vector2 = character.testVelocity(delta, tmp1);
             float beforeDistance = tmp2.set(character.position.x, character.position.y).sub(currentTarget).len();
-            float afterDistance = tmp2.add(vector2.scl(0.1f)).len();
-            if (beforeDistance < afterDistance) {
-                System.out.println("true");
-
+            float afterDistance = tmp2.add(vector2.scl(0.2f)).len();
+            if (beforeDistance <= afterDistance) {
+                ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("beforeDistance: " + beforeDistance + " afterDistance: " + afterDistance);
                 currentIndex++;
-                if (currentIndex < graphPath.getCount()) {
-                    if (currentIndex == graphPath.getCount() - 1) {
-                        currentTarget.set(finalTarget.x, finalTarget.y);
-                        tmp1.set(finalTarget.x - character.position.x, finalTarget.y - character.position.y).nor();
-                        character.baseMove.x = tmp1.x;
-                        character.baseMove.y = tmp1.y;
-                    } else {
-                        VMapNode vMapNode = graphPath.get(currentIndex);
-                        System.out.println("change node!" + vMapNode.x + " " + vMapNode.y);
-
-                        // next node
-                        currentTarget.set(vMapNode.x, vMapNode.y);
-                        tmp1.set(vMapNode.x - character.position.x, vMapNode.y - character.position.y).nor();
-                        character.baseMove.x = tmp1.x;
-                        character.baseMove.y = tmp1.y;
-                    }
-
+                if (2*currentIndex < currentPath.size()-1) {
+                    // move to next point
+                    currentTarget.set(currentPath.get(2*currentIndex), currentPath.get(2*currentIndex+1));
+                    ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("切换为下一寻路点: " + currentTarget.x + " - " + currentTarget.y);
+                    tmp1.set(currentTarget.x - character.position.x, currentTarget.y - character.position.y).nor();
+                    character.baseMove.x = tmp1.x;
+                    character.baseMove.y = tmp1.y;
                 } else {
                     // end finding
+                    ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("停止寻路");
+
                     character.baseMove.x = character.baseMove.y = 0f;
                     currentIndex = 0;
                     pathing = false;
                 }
-                System.out.println("baseMove after update: " + character.baseMove);
+
             } else {
                 character.baseMove.x = tmp1.x;
                 character.baseMove.y = tmp1.y;
             }
+
 
         } else {
 
@@ -137,15 +143,14 @@ public class VPathFinder {
         shapeRenderer.begin();
         shapeRenderer.setColor(Color.YELLOW);
 //        shapeRenderer.line(1,1,100,100);
-        for (int x= 1; x<graphPath.getCount(); x++) {
-            VMapNode pre = graphPath.get(x - 1);
-            VMapNode cur = graphPath.get(x);
+        for (int i = 1; 2*i < currentPath.size()-1; i++) {
+            int pre =  i -1;
+            Float cx = currentPath.get(2 * i);
+            Float cy = currentPath.get(2 * i + 1);
+            Float px = currentPath.get(pre * 2);
+            Float py = currentPath.get(pre * 2 + 1);
+            shapeRenderer.line(px,py,cx,cy);
 
-            if (x != graphPath.getCount() - 1) {
-                shapeRenderer.line(pre.x, pre.y, cur.x, cur.y);
-            } else {
-                shapeRenderer.line(pre.x, pre.y, finalTarget.x, finalTarget.y);
-            }
         }
         shapeRenderer.end();
         batch.begin();
