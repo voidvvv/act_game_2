@@ -22,7 +22,7 @@ public class RaycastCollisionDetectorImpl implements RaycastCollisionDetector<Ve
         float y1 = (float)ray.end.y;
 
         float steep = Math.abs((y1-y0) / (x1-x0));
-        float unit = world.unit();
+        float unit = world.unit()/2;
 
         float xStep = x0 < x1? unit:-unit;
         float yStep = y0 < y1? steep*unit:-steep*unit;

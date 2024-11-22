@@ -59,12 +59,12 @@ public class Bob extends VCharacter {
     public void useSkill(int skillCode) {
         if (skillCode == InputActionMapping.SKILL_Q) {
 
-            VActorSpawnHelper helper = VActorSpawnHelper.VActorSpawnHelperBuilder.builder()
-                    .setBodyType(BodyDef.BodyType.DynamicBody)
-                    .setCategory((short)(WorldContext.ROLE|WorldContext.WHITE)) // who am I
-                    .setMask((short)(WorldContext.OBSTACLE|WorldContext.BLACK|WorldContext.ROLE)) // who do I want to collision
-                    .setHx(5).setHy(5)
-                    .setInitX(position.x).setInitY(getY())
+            VActorSpawnHelper helper = VActorSpawnHelper.builder()
+                    .bodyType(BodyDef.BodyType.DynamicBody)
+                    .category((short)(WorldContext.ROLE|WorldContext.WHITE)) // who am I
+                    .mask((short)(WorldContext.OBSTACLE|WorldContext.BLACK|WorldContext.ROLE)) // who do I want to collision
+                    .hx(5).hy(5)
+                    .initX(position.x).initY(getY())
                     .build();
 
             TestBullet testBullet = getWorld().spawnVActor(TestBullet.class, helper);

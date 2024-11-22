@@ -4,6 +4,9 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.voidvvv.game.context.VWorld;
 import com.voidvvv.game.context.WorldContext;
 import com.voidvvv.game.manager.CameraManager;
@@ -31,9 +34,11 @@ public class ActGame extends Game {
     private CameraManager cameraManager;
     private VWorldEventManager vWorldEventManager;
     private SystemNotifyMessageManager systemNotifyMessageManager;
+    private AssetManager assetManager;
 
     // screen
     private TestScreen testScreen;
+
 
     private ActGame() {
         drawManager = new DrawManager();
@@ -43,9 +48,9 @@ public class ActGame extends Game {
         worldContext = new WorldContext();
         inputMultiplexer = new InputMultiplexer();
         systemNotifyMessageManager = new SystemNotifyMessageManager();
+        assetManager = new AssetManager();
     }
 
-    ;
 
     public static ActGame gameInstance() {
         if (gameInstance == null) {
@@ -63,6 +68,8 @@ public class ActGame extends Game {
 
         testScreen = new TestScreen();
         setScreen(testScreen);
+        // other
+
     }
 
     private void initOpt() {
@@ -77,6 +84,8 @@ public class ActGame extends Game {
         vWorldEventManager.init();
         worldContext.init();
         systemNotifyMessageManager.init();
+
+        assetManager.setLoader(TiledMap.class,new TmxMapLoader());
     }
 
     public long getFrameId() {
@@ -124,5 +133,13 @@ public class ActGame extends Game {
 
     public VWorldEventManager getvWorldEventManager() {
         return vWorldEventManager;
+    }
+
+    public AssetManager getAssetManager() {
+        return assetManager;
+    }
+
+    public void setAssetManager(AssetManager assetManager) {
+        this.assetManager = assetManager;
     }
 }

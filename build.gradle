@@ -54,6 +54,7 @@ project(":desktop") {
         api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
         api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+        api group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
 
 
     }
@@ -93,12 +94,16 @@ project(":core") {
 
 
     dependencies {
+        annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
+// https://mvnrepository.com/artifact/org.projectlombok/lombok
+        api group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
 
 
     }

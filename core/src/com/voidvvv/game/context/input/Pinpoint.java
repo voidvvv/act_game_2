@@ -46,6 +46,7 @@ public class Pinpoint extends Actor {
         color.a = alpha;
         ActGame.gameInstance().getDrawManager().enableBlend();
         ShapeRenderer shapeRenderer = ActGame.gameInstance().getDrawManager().getShapeRenderer();
+        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.begin();
         shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(color);
