@@ -1,26 +1,26 @@
 package com.voidvvv.game.context;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.collision.BoundingBox;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Pools;
-import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.viewport.*;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.box2d.testt.CollisionListener;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VPhysicAttr;
 import com.voidvvv.game.base.b2d.UserData;
-import com.voidvvv.game.base.test.VObstacle;
 import com.voidvvv.game.base.wall.Wall;
 import com.voidvvv.game.context.input.Pinpoint;
 import com.voidvvv.game.context.input.PinpointData;
@@ -28,7 +28,6 @@ import com.voidvvv.game.context.map.VMap;
 import com.voidvvv.game.manager.event.VWorldEventManager;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,9 +36,12 @@ public class VWorld {
 
     public static final VActor.VActorCompare DEFAULT_ACTOR_COMPARE = new VActor.VActorCompare();
 
+    protected List<VActor> initList = new ArrayList<>();
+    protected List<VActor> bin = new ArrayList<>();
+
     boolean initialized = false;
 
-    private Stage stage;
+    protected Stage stage;
 
     private final List<VActor> actorList = new ArrayList<>();
 
@@ -57,6 +59,15 @@ public class VWorld {
 
     protected PinpointData pinpointData;
 
+    protected BattleContext battleContext;
+
+    protected VWorldEventManager vWorldEventManager;
+    // private
+    private TiledMap renderMap;
+
+    private OrthogonalTiledMapRenderer tiledMapRenderer;
+
+
     public VMap getMap() {
         return map;
     }
@@ -70,7 +81,7 @@ public class VWorld {
         pinpointData = new PinpointData();
     }
 
-    public List<VActor> allActors () {
+    public List<VActor> allActors() {
 
         return actorList;
     }
@@ -98,7 +109,10 @@ public class VWorld {
         this.pinpointData = pinpointData;
     }
 
-    public void init () {
+    WorldHelper helper;
+
+    public void init(WorldHelper helper) {
+        preInit(helper);
         vWorldEventManager = ActGame.gameInstance().getvWorldEventManager();
         // load map
         loadMap();
@@ -110,35 +124,42 @@ public class VWorld {
 
         initialized = true;
         // after init
-        afterInit();
+        postInit();
+    }
+
+    private void preInit(WorldHelper helper) {
+        this.helper = helper;
     }
 
     private void loadMap() {
-        renderMap = ActGame.gameInstance().getTmxMapLoader().load("map/test/act_game_02.tmx");
-        TiledMapTileLayer mainLayer = (TiledMapTileLayer)renderMap.getLayers().get("main");
-
-        boundingBox.set(mainLayer.getOffsetX(),mainLayer.getOffsetY(),mainLayer.getWidth() * mainLayer.getTileWidth(),mainLayer.getHeight() * mainLayer.getTileHeight());
-
+        if (helper.map != null) {
+            renderMap = helper.map;
+        } else {
+            // default
+            renderMap = ActGame.gameInstance().getAssetManager().get("map/test/act_game_02.tmx");
+        }
+        TiledMapTileLayer mainLayer = (TiledMapTileLayer) renderMap.getLayers().get("main");
+        boundingBox.set(mainLayer.getOffsetX(), mainLayer.getOffsetY(), mainLayer.getWidth() * mainLayer.getTileWidth(), mainLayer.getHeight() * mainLayer.getTileHeight());
     }
 
-    private TiledMap renderMap;
-
-    private OrthogonalTiledMapRenderer tiledMapRenderer;
-    private void afterInit() {
-        // initial map
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(renderMap,ActGame.gameInstance().getDrawManager().getSpriteBatch());
+    protected void postInit() {
+        // initial map render
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(renderMap, ActGame.gameInstance().getDrawManager().getSpriteBatch());
         // build four wall to prevent actor out of range
         final Rectangle bb = boundingBox;
         // horizon wall
         float horizon_breadth = 50f;
         float verticalHeight = 50f;
-        spawnVActorObstacle(Wall.class, boundingBox.x - horizon_breadth,bb.y + bb.height/2,horizon_breadth,bb.height/2); // left
-        spawnVActorObstacle(Wall.class, boundingBox.x + horizon_breadth + boundingBox.width,bb.y + bb.height/2,horizon_breadth,bb.height/2); // right
+        spawnVActorObstacle(Wall.class, boundingBox.x - horizon_breadth, bb.y + bb.height / 2, horizon_breadth, bb.height / 2); // left
+        spawnVActorObstacle(Wall.class, boundingBox.x + horizon_breadth + boundingBox.width, bb.y + bb.height / 2, horizon_breadth, bb.height / 2); // right
         // vertical wall
-        spawnVActorObstacle(Wall.class, boundingBox.x + bb.width/2,bb.y - verticalHeight,bb.width,verticalHeight); // up
-        spawnVActorObstacle(Wall.class, boundingBox.x + bb.width/2,bb.y + bb.height + verticalHeight,bb.width,verticalHeight); // down
+        spawnVActorObstacle(Wall.class, boundingBox.x + bb.width / 2, bb.y - verticalHeight, bb.width, verticalHeight); // up
+        spawnVActorObstacle(Wall.class, boundingBox.x + bb.width / 2, bb.y + bb.height + verticalHeight, bb.width, verticalHeight); // down
 
-        battleContext = new BaseBattleContext();
+        if (helper.battleContext != null)
+            this.battleContext = helper.battleContext;
+        else
+            this.battleContext = new BaseBattleContext();
 
 
         // fill stage
@@ -151,48 +172,40 @@ public class VWorld {
 
 
     private void initStage() {
-        if (stage != null) {
-            ActGame.gameInstance().removeInputProcessor(stage);
+        Stage stage = helper.stage;
+        if(stage == null) {
+            OrthographicCamera mainCamera = ActGame.gameInstance().getCameraManager().getMainCamera();
+            StretchViewport fillViewport = new StretchViewport(640, 480, mainCamera);
+            stage = new Stage(fillViewport
+                    , ActGame.gameInstance().getDrawManager().getSpriteBatch());
+
         }
-
-
-        OrthographicCamera mainCamera = ActGame.gameInstance().getCameraManager().getMainCamera();
-//        ScalingViewport scalingViewport = new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), mainCamera);
-//        ScreenViewport screenViewport = new ScreenViewport(mainCamera);
-        StretchViewport fillViewport = new StretchViewport(640, 480, mainCamera);
-
-        stage = new Stage(fillViewport
-                , ActGame.gameInstance().getDrawManager().getSpriteBatch());
-
-
+        if (this.stage != stage) {
+            ActGame.gameInstance().removeInputProcessor(this.stage);
+            this.stage = stage;
+        }
     }
 
     private void fillStage() {
         // background
-
         // point
         stage.addActor(new Pinpoint());
     }
 
     private void initWorld() {
-        box2dWorld = new World(new Vector2(0,0),false);
-//        box2dWorld.setContactFilter(new ContactFilter() {
-//            @Override
-//            public boolean shouldCollide(Fixture fixtureA, Fixture fixtureB) {
-//                return false;
-//            }
-//        });
-        box2dWorld.setContactListener(new CollisionListener());
-
+        box2dWorld = new World(new Vector2(0, 0), false);
+        if (helper.collisionListener != null) {
+            box2dWorld.setContactListener(helper.collisionListener);
+        } else
+            box2dWorld.setContactListener(new CollisionListener());
     }
 
     public void addListener(EventListener listener) {
         this.stage.addListener(listener);
     }
 
-    private VWorldEventManager vWorldEventManager;
 
-    public void update (float delta) {
+    public void update(float delta) {
         // add
         addInit();
         mainThread(delta);
@@ -201,7 +214,7 @@ public class VWorld {
 
     protected void mainThread(float delta) {
         vWorldEventManager.update(delta);
-        box2dWorld.step(delta,10,10);
+        box2dWorld.step(delta, 10, 10);
         stage.act(delta);
     }
 
@@ -227,6 +240,7 @@ public class VWorld {
     }
 
     public static final float DEFAULT_UNIT = 16;
+
     public float unit() {
         return DEFAULT_UNIT;
     }
@@ -240,7 +254,7 @@ public class VWorld {
     }
 
 
-        @SuppressWarnings("CheckResult")
+    @SuppressWarnings("CheckResult")
     public <T extends VActor> T spawnVActor(Class<T> clazz, BodyDef.BodyType bodyType, float initX, float initY, float hx, float hy) {
         if (!initialized) {
             return null;
@@ -256,7 +270,7 @@ public class VWorld {
             Fixture roleFixture = createRoleFixture(bodyType, initX, initY, hx, hy);
             t.setFixture(roleFixture);
             t.init();
-            ((UserData)roleFixture.getUserData()).setActor(t);
+            ((UserData) roleFixture.getUserData()).setActor(t);
             registerActor(t);
             return t;
         } catch (Throwable e) {
@@ -282,9 +296,9 @@ public class VWorld {
             // fill map graph
             VMap currentMap = getMap();
 //            currentMap.
-            currentMap.addObstacle(initX - hx, initY - hy, hx*2, hy*2);
+            currentMap.addObstacle(initX - hx, initY - hy, hx * 2, hy * 2);
             t.setFixture(roleFixture);
-            ((UserData)roleFixture.getUserData()).setActor(t);
+            ((UserData) roleFixture.getUserData()).setActor(t);
 
             t.init();
             registerActor(t);
@@ -295,8 +309,8 @@ public class VWorld {
         return null;
     }
 
-    protected  List<VActor> initList = new ArrayList<>();
-    public <T extends VActor> T spawnVActor (Class<T> clazz, VActorSpawnHelper helper) {
+
+    public <T extends VActor> T spawnVActor(Class<T> clazz, VActorSpawnHelper helper) {
         if (!initialized) {
             return null;
         }
@@ -313,12 +327,12 @@ public class VWorld {
                 // fill map graph
                 VMap currentMap = getMap();
 //            currentMap.
-                currentMap.addObstacle(helper.initX - helper.hx, helper.initY - helper.hy, helper.hx*2, helper.hy*2);
+                currentMap.addObstacle(helper.initX - helper.hx, helper.initY - helper.hy, helper.hx * 2, helper.hy * 2);
             }
             t.setFixture(roleFixture);
             if (helper.userData == null) {
                 // default user data
-                ((UserData)roleFixture.getUserData()).setActor(t);
+                ((UserData) roleFixture.getUserData()).setActor(t);
             }
             t.init();
             initList.add(t);
@@ -330,8 +344,7 @@ public class VWorld {
         return null;
     }
 
-    List<VActor> bin = new ArrayList<>();
-    public void destroyActor (VActor t) {
+    public void destroyActor(VActor t) {
         t.setVisible(false);
         t.getBody().setActive(false);
         t.setvActive(false);
@@ -339,24 +352,24 @@ public class VWorld {
     }
 
     public Fixture createRoleFixture(BodyDef.BodyType bodyType, float initX, float initY, float hx, float hy) {
-        return createFixture(bodyType,initX,initY,hx,hy,WorldContext.ROLE,WorldContext.OBSTACLE);
+        return createFixture(bodyType, initX, initY, hx, hy, WorldContext.ROLE, WorldContext.OBSTACLE);
     }
 
-    public  Fixture createObstacle(BodyDef.BodyType bodyType, float initX, float initY, float hx, float hy) {
-        return createFixture(bodyType,initX,initY,hx,hy,WorldContext.OBSTACLE,WorldContext.ROLE);
+    public Fixture createObstacle(BodyDef.BodyType bodyType, float initX, float initY, float hx, float hy) {
+        return createFixture(bodyType, initX, initY, hx, hy, WorldContext.OBSTACLE, WorldContext.ROLE);
     }
 
-    public  Fixture createFixture(BodyDef.BodyType bodyType, float initX, float initY, float hx, float hy, short category, short mask) {
+    public Fixture createFixture(BodyDef.BodyType bodyType, float initX, float initY, float hx, float hy, short category, short mask) {
         World box2dWorld = this.getBox2dWorld();
         BodyDef bd = new BodyDef();
         bd.type = bodyType;
-        bd.position.set(initX,initY);
+        bd.position.set(initX, initY);
         Body body = box2dWorld.createBody(bd);
         body.setFixedRotation(true);
 
         FixtureDef fd = new FixtureDef();
         PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(hx,hy);
+        polygonShape.setAsBox(hx, hy);
         fd.friction = 0;
         fd.density = 0.5f;
         fd.filter.categoryBits = category;
@@ -372,17 +385,17 @@ public class VWorld {
         return fixture;
     }
 
-    public  Fixture createFixture(VActorSpawnHelper helper) {
+    public Fixture createFixture(VActorSpawnHelper helper) {
         World box2dWorld = this.getBox2dWorld();
         BodyDef bd = new BodyDef();
         bd.type = helper.bodyType;
-        bd.position.set(helper.initX,helper.initY);
+        bd.position.set(helper.initX, helper.initY);
         Body body = box2dWorld.createBody(bd);
         body.setFixedRotation(true);
 
         FixtureDef fd = new FixtureDef();
         PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(helper.hx,helper.hy);
+        polygonShape.setAsBox(helper.hx, helper.hy);
         fd.friction = helper.friction;
         fd.density = helper.density;
         fd.filter.categoryBits = helper.category;
@@ -415,13 +428,15 @@ public class VWorld {
     }
 
 
-    BattleContext battleContext;
-
     public BattleContext getBattleContext() {
         return battleContext;
     }
 
     public void setBattleContext(BattleContext battleContext) {
         this.battleContext = battleContext;
+    }
+
+    public void destroy() {
+        // destroy this world
     }
 }

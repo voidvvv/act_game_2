@@ -26,6 +26,5 @@ public class WorldContext {
         if (world == null) {
             world = new VWorld();
         }
-        world.init();
     }
 }

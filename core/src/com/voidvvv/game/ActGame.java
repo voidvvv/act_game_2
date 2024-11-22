@@ -4,6 +4,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.voidvvv.game.context.VWorld;
 import com.voidvvv.game.context.WorldContext;
@@ -32,12 +34,11 @@ public class ActGame extends Game {
     private CameraManager cameraManager;
     private VWorldEventManager vWorldEventManager;
     private SystemNotifyMessageManager systemNotifyMessageManager;
+    private AssetManager assetManager;
 
     // screen
     private TestScreen testScreen;
 
-    // loader
-    TmxMapLoader tmxMapLoader;
 
     private ActGame() {
         drawManager = new DrawManager();
@@ -47,10 +48,9 @@ public class ActGame extends Game {
         worldContext = new WorldContext();
         inputMultiplexer = new InputMultiplexer();
         systemNotifyMessageManager = new SystemNotifyMessageManager();
-        tmxMapLoader = new TmxMapLoader();
+        assetManager = new AssetManager();
     }
 
-    ;
 
     public static ActGame gameInstance() {
         if (gameInstance == null) {
@@ -72,14 +72,6 @@ public class ActGame extends Game {
 
     }
 
-    public TmxMapLoader getTmxMapLoader() {
-        return tmxMapLoader;
-    }
-
-    public void setTmxMapLoader(TmxMapLoader tmxMapLoader) {
-        this.tmxMapLoader = tmxMapLoader;
-    }
-
     private void initOpt() {
 
         Gdx.input.setInputProcessor(inputMultiplexer);
@@ -92,6 +84,8 @@ public class ActGame extends Game {
         vWorldEventManager.init();
         worldContext.init();
         systemNotifyMessageManager.init();
+
+        assetManager.setLoader(TiledMap.class,new TmxMapLoader());
     }
 
     public long getFrameId() {
@@ -139,5 +133,13 @@ public class ActGame extends Game {
 
     public VWorldEventManager getvWorldEventManager() {
         return vWorldEventManager;
+    }
+
+    public AssetManager getAssetManager() {
+        return assetManager;
+    }
+
+    public void setAssetManager(AssetManager assetManager) {
+        this.assetManager = assetManager;
     }
 }

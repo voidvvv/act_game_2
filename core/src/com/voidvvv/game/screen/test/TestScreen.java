@@ -2,10 +2,13 @@ package com.voidvvv.game.screen.test;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -19,6 +22,7 @@ import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.test.VObstacle;
 import com.voidvvv.game.context.VActorSpawnHelper;
 import com.voidvvv.game.context.VWorld;
+import com.voidvvv.game.context.WorldHelper;
 import com.voidvvv.game.context.input.CharacterInputListener;
 import com.voidvvv.game.base.debug.VDebugShapeRender;
 import com.voidvvv.game.base.test.Bob;
@@ -57,13 +61,13 @@ public class TestScreen extends ScreenAdapter {
         vWorld.update(delta);
 
         orthographicCamera.position.lerp(cameraPosLerp.set(bob.position.x,bob.position.y,0.f),0.1f);
-//        vWorld.getStage().getViewport().apply();
-//        debugShapeRender.begin(orthographicCamera.combined);
-//        debugShapeRender.render(vWorld);
-//        debugShapeRender.end();
-        vWorld.draw();
-//        vWorld.getStage().draw();
 
+        vWorld.draw();
+        vWorld.getStage().getViewport().apply();
+        debugShapeRender.begin(orthographicCamera.combined);
+        debugShapeRender.render(vWorld);
+        debugShapeRender.end();
+//        vWorld.getStage().draw();
         uiStage.getViewport().apply();
         uiStage.draw();
     }
@@ -92,17 +96,29 @@ public class TestScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        screenCamera = ActGame.gameInstance().getCameraManager().getScreenCamera();
-        VWorld vWorld = ActGame.gameInstance().currentWorld();
-        font = ActGame.gameInstance().getFontManager().getBaseFont();
-        spriteBatch = ActGame.gameInstance().getDrawManager().getSpriteBatch();
-        systemNotifyMessageManager = ActGame.gameInstance().getSystemNotifyMessageManager();
-        VActorSpawnHelper helper = VActorSpawnHelper.VActorSpawnHelperBuilder.builder()
-                .setBodyType(BodyDef.BodyType.DynamicBody)
-                .setCategory((short)(WorldContext.ROLE|WorldContext.WHITE)) // who am I
-                .setMask((short)(WorldContext.OBSTACLE|WorldContext.BLACK|WorldContext.ROLE)) // who do I want to collision
-                .setHx(20).setHy(20)
-                .setInitX(60).setInitY(100)
+        initParam();
+        // load asset
+        loadAsset();
+        initWorld();
+        initUI();
+        initUserInput();
+    }
+
+    private void initUserInput() {
+        ActGame.gameInstance().addInputProcessor(vWorld.getStage());
+    }
+
+    VWorld vWorld;
+    private void initWorld() {
+        WorldHelper worldHelper = WorldHelper.builder()
+                .build();
+        vWorld.init(worldHelper);
+        VActorSpawnHelper helper = VActorSpawnHelper.builder()
+                .bodyType(BodyDef.BodyType.DynamicBody)
+                .category((short)(WorldContext.ROLE|WorldContext.WHITE)) // who am I
+                .mask((short)(WorldContext.OBSTACLE|WorldContext.BLACK|WorldContext.ROLE)) // who do I want to collision
+                .hx(vWorld.unit()/2).hy(16/2f)
+                .initX(60).initY(100)
                 .build();
         bob = vWorld.spawnVActor(Bob.class,helper);
 
@@ -112,35 +128,47 @@ public class TestScreen extends ScreenAdapter {
         characterInputListener.setCharacter(bob);
         vWorld.addListener(characterInputListener);
         // obstacle
-        helper = VActorSpawnHelper.VActorSpawnHelperBuilder.builder()
-                .setBodyType(BodyDef.BodyType.DynamicBody)
-                .setCategory((short)(WorldContext.ROLE|WorldContext.BLACK)) // who am I
-                .setMask((short)(WorldContext.OBSTACLE|WorldContext.WHITE)) // who do I want to collision
-                .setHx(4).setHy(4)
-                .setSensor(true)
-                .setInitX(200).setInitY(100)
+        helper = VActorSpawnHelper.builder()
+                .bodyType(BodyDef.BodyType.DynamicBody)
+                .category((short)(WorldContext.ROLE|WorldContext.BLACK)) // who am I
+                .mask((short)(WorldContext.OBSTACLE|WorldContext.WHITE)) // who do I want to collision
+                .hx(4).hy(4)
+                .sensor(true)
+                .initX(200).initY(100)
                 .build();
         vWorld.spawnVActor(Bob.class,helper);
 
-        helper = VActorSpawnHelper.VActorSpawnHelperBuilder.builder()
-                .setBodyType(BodyDef.BodyType.StaticBody)
-                .setCategory((short)(WorldContext.OBSTACLE)) // who am I
-                .setMask((short)(WorldContext.ROLE)) // who do I want to collision
-                .setHx(40).setHy(40)
-                .setOccupy(true)
+        helper = VActorSpawnHelper.builder()
+                .bodyType(BodyDef.BodyType.StaticBody)
+                .category((short)(WorldContext.OBSTACLE)) // who am I
+                .mask((short)(WorldContext.ROLE)) // who do I want to collision
+                .hx(40).hy(40)
+                .occupy(true)
 //                .setSensor(true)
-                .setInitX(50).setInitY(50)
+                .initX(50).initY(50)
                 .build();
         VObstacle vObstacle = vWorld.spawnVActor(VObstacle.class, helper);
         vObstacle.setName("Rocky!");
 
+    }
+
+    private void initParam() {
+        screenCamera = ActGame.gameInstance().getCameraManager().getScreenCamera();
+        font = ActGame.gameInstance().getFontManager().getBaseFont();
+        spriteBatch = ActGame.gameInstance().getDrawManager().getSpriteBatch();
+        systemNotifyMessageManager = ActGame.gameInstance().getSystemNotifyMessageManager();
         debugShapeRender = new VDebugShapeRender();
         orthographicCamera = ActGame.gameInstance().getCameraManager().getMainCamera();
+        vWorld = ActGame.gameInstance().currentWorld();
+    }
 
-        initUI();
+    private void loadAsset() {
+        AssetManager assetManager = ActGame.gameInstance().getAssetManager();
+        // map
+        assetManager.load("map/test/act_game_02.tmx", TiledMap.class);
 
-        ActGame.gameInstance().addInputProcessor(vWorld.getStage());
 
+        assetManager.finishLoading();
     }
 
     private void initUI() {
