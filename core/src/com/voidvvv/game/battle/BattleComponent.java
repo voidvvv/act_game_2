@@ -12,7 +12,6 @@ public class BattleComponent {
 
     public final BattleAttr actualBattleAttr = new BattleAttr();
 
-
     public final BattleAttr originBattleAttr = new BattleAttr();
 
     public boolean battleDirty = false;
@@ -23,7 +22,16 @@ public class BattleComponent {
 
         currentDamage+=damage;
         damageBehavior.did = true;
-        battleDirty = true;
     }
+
+    public void settlement() {
+        if (battleDirty) {
+            battleDirty = false;
+        }
+
+        actualBattleAttr.hp -= currentDamage;
+        currentDamage = 0f;
+    }
+
 }
 

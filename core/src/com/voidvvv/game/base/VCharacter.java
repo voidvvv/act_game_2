@@ -50,6 +50,16 @@ public class VCharacter extends VActor implements Attackable {
         // fresh status
 
         // fresh hp and checkout damage
+        behaviorsApply(delta);
+        // refresh attr
+        refreshAttr(delta);
+    }
+
+    private void refreshAttr(float delta) {
+        battleComponent.settlement();
+    }
+
+    protected void behaviorsApply(float delta) {
         Set<Map.Entry<Integer, Deque<Behavior>>> entries = behaviorMap.entrySet();
         for (Map.Entry<Integer, Deque<Behavior>> entry : entries) {
             Deque<Behavior> value = entry.getValue();
@@ -59,8 +69,6 @@ public class VCharacter extends VActor implements Attackable {
                 Pools.free(pop);
             }
         }
-
-        // refresh attr
     }
 
     protected Map<Integer,Deque<Behavior>> behaviorMap;
@@ -243,15 +251,14 @@ public class VCharacter extends VActor implements Attackable {
                     beDamaged(damage);
                 }
                 if (damage.getFrom() == this) {
-                    afterDamage(damage);
+                    afterMakeDamage(damage);
                 }
             }
-            // battle type
         }
 
     }
 
-    protected void afterDamage(DamageBehavior damage) {
+    protected void afterMakeDamage(DamageBehavior damage) {
 
     }
 
@@ -259,7 +266,6 @@ public class VCharacter extends VActor implements Attackable {
         SystemNotifyMessageManager systemNotifyMessageManager = ActGame.gameInstance().getSystemNotifyMessageManager();
         String msg = this.getName() + "受到了来自[" + damage.getFrom().getName() + "] 的 [" + (int)damage.getDamage() + "] 点伤害, 方式为: [" + damage.getTrigger() + "]  类型为: " + damage.getAttackType();
         systemNotifyMessageManager.pushMessage(msg);
-
     }
 
     @Override
