@@ -39,6 +39,7 @@ public class ActGame extends Game {
     // screen
     private TestScreen testScreen;
 
+    // delta time
 
     private ActGame() {
         drawManager = new DrawManager();
