@@ -22,6 +22,7 @@ import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VPhysicAttr;
 import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.base.wall.Wall;
+import com.voidvvv.game.context.input.CharacterInputListener;
 import com.voidvvv.game.context.input.Pinpoint;
 import com.voidvvv.game.context.input.PinpointData;
 import com.voidvvv.game.context.map.VMap;
@@ -62,6 +63,8 @@ public class VWorld {
     protected BattleContext battleContext;
 
     protected VWorldEventManager vWorldEventManager;
+
+    protected VActor protagonist;
     // private
     private TiledMap renderMap;
 
@@ -112,7 +115,8 @@ public class VWorld {
     WorldHelper helper;
 
     public void init(WorldHelper helper) {
-        preInit(helper);
+        this.helper = helper;
+        preInit();
         vWorldEventManager = ActGame.gameInstance().getvWorldEventManager();
         // load map
         loadMap();
@@ -125,10 +129,10 @@ public class VWorld {
         initialized = true;
         // after init
         postInit();
+        this.helper = null;
     }
 
-    private void preInit(WorldHelper helper) {
-        this.helper = helper;
+    private void preInit() {
     }
 
     private void loadMap() {
@@ -164,6 +168,9 @@ public class VWorld {
 
         // fill stage
         fillStage();
+        if (helper.inputListener != null) {
+            addListener(helper.inputListener);
+        }
     }
 
     private void initGraph() {
@@ -438,5 +445,13 @@ public class VWorld {
 
     public void destroy() {
         // destroy this world
+    }
+
+    public VActor getProtagonist() {
+        return protagonist;
+    }
+
+    public void setProtagonist(VActor protagonist) {
+        this.protagonist = protagonist;
     }
 }

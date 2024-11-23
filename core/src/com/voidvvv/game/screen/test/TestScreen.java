@@ -44,7 +44,6 @@ public class TestScreen extends ScreenAdapter {
 
     SpriteBatch spriteBatch;
 
-    Bob bob;
 
     Vector3 cameraPosLerp = new Vector3();
 
@@ -60,7 +59,7 @@ public class TestScreen extends ScreenAdapter {
         VWorld vWorld = ActGame.gameInstance().currentWorld();
         vWorld.update(delta);
 
-        orthographicCamera.position.lerp(cameraPosLerp.set(bob.position.x,bob.position.y,0.f),0.1f);
+        orthographicCamera.position.lerp(cameraPosLerp.set(vWorld.getProtagonist().position.x,vWorld.getProtagonist().position.y,0.f),0.1f);
 
         vWorld.draw();
         vWorld.getStage().getViewport().apply();
@@ -120,9 +119,13 @@ public class TestScreen extends ScreenAdapter {
                 .hx(vWorld.unit()/2).hy(16/2f)
                 .initX(60).initY(100)
                 .build();
-        bob = vWorld.spawnVActor(Bob.class,helper);
+        Bob bob = vWorld.spawnVActor(Bob.class,helper);
 
         bob.getActualBattleAttr().attack = 500;
+        vWorld.setProtagonist(bob);
+        CharacterInputListener inputListener = new CharacterInputListener();
+        inputListener.setCharacter(bob);
+        vWorld.addListener(inputListener);
         // input
         CharacterInputListener characterInputListener = new CharacterInputListener();
         characterInputListener.setCharacter(bob);

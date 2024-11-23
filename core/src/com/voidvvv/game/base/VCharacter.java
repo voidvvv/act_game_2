@@ -3,15 +3,18 @@ package com.voidvvv.game.base;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.battle.Attackable;
 import com.voidvvv.game.battle.BattleAttr;
-import com.voidvvv.game.battle.BattleAttrDelta;
+import com.voidvvv.game.battle.BattleComponent;
 import com.voidvvv.game.context.BattleContext;
 import com.voidvvv.game.context.map.VPathFinder;
 import com.voidvvv.game.manager.SystemNotifyMessageManager;
-import com.voidvvv.game.manager.behaviors.BeAttackBehavior;
+import com.voidvvv.game.manager.behaviors.DamageBehavior;
 import com.voidvvv.game.manager.behaviors.Behavior;
+import com.voidvvv.game.utils.ReflectUtil;
+import lombok.var;
 
 import java.util.*;
 
@@ -20,13 +23,8 @@ import java.util.*;
  */
 public class VCharacter extends VActor implements Attackable {
 
-    protected final BattleAttr actualBattleAttr = new BattleAttr();
+    protected final BattleComponent battleComponent = new BattleComponent();
 
-    protected final BattleAttrDelta battleAttrDelta = new BattleAttrDelta();
-
-    protected final BattleAttr originBattleAttr = new BattleAttr();
-
-    private boolean battleDirty = false;
 
     public Vector3 baseMove = new Vector3();
 
@@ -58,11 +56,14 @@ public class VCharacter extends VActor implements Attackable {
             while (value!=null && !value.isEmpty()) {
                 Behavior pop = value.pop();
                 pop.does();
+                Pools.free(pop);
             }
         }
+
+        // refresh attr
     }
 
-    protected Map<Integer,Deque<Behavior>> behaviorMap = new HashMap<>();
+    protected Map<Integer,Deque<Behavior>> behaviorMap;
     @Override
     public void attachBehavior(Behavior behavior) {
         if (behavior == null) {
@@ -87,7 +88,7 @@ public class VCharacter extends VActor implements Attackable {
         super.init();
         finder = new VPathFinder(this,getWorld());
 
-        behaviorMap.put(BeAttackBehavior.BASE_BE_ATTACK_BEHAVIOR,new LinkedList<>());
+        behaviorMap.put(DamageBehavior.BASE_BE_ATTACK_BEHAVIOR,new LinkedList<>());
     }
 
     @Override
@@ -117,14 +118,14 @@ public class VCharacter extends VActor implements Attackable {
     public Vector2 baseMove(float delta) {
         if (!moveFix) {
             moveFix = true;
-            baseMove.nor().scl(actualBattleAttr.moveSpeed * delta);
+            baseMove.nor().scl(battleComponent.actualBattleAttr.moveSpeed * delta);
             tmp.set(baseMove.x, baseMove.y);
         }
         return tmp;
     }
 
     public Vector2 testVelocity(float delta, Vector2 dir) {
-        return tmp.set(dir).scl(actualBattleAttr.moveSpeed * delta);
+        return tmp.set(dir).scl(battleComponent.actualBattleAttr.moveSpeed * delta);
     }
 
     public boolean findPath (float x, float y) {
@@ -161,42 +162,42 @@ public class VCharacter extends VActor implements Attackable {
 
     @Override
     public float getHp() {
-        return actualBattleAttr.hp;
+        return battleComponent.actualBattleAttr.hp;
     }
 
     @Override
     public float getMp() {
-        return actualBattleAttr.mp;
+        return battleComponent.actualBattleAttr.mp;
     }
 
     @Override
     public float getAttack() {
-        return actualBattleAttr.attack;
+        return battleComponent.actualBattleAttr.attack;
     }
 
     @Override
     public float getDefense() {
-        return actualBattleAttr.defense;
+        return battleComponent.actualBattleAttr.defense;
     }
 
     @Override
     public float getMagicStrength() {
-        return actualBattleAttr.magicStrength;
+        return battleComponent.actualBattleAttr.magicStrength;
     }
 
     @Override
     public float getMoveSpeed() {
-        return actualBattleAttr.moveSpeed;
+        return battleComponent.actualBattleAttr.moveSpeed;
     }
 
     @Override
     public float getAttackSpeed() {
-        return actualBattleAttr.attackSpeed;
+        return battleComponent.actualBattleAttr.attackSpeed;
     }
 
     @Override
     public float getMagicSpeed() {
-        return actualBattleAttr.magicSpeed;
+        return battleComponent.actualBattleAttr.magicSpeed;
     }
 
 
@@ -205,40 +206,60 @@ public class VCharacter extends VActor implements Attackable {
     }
 
     public BattleAttr getOriginBattleAttr() {
-        return originBattleAttr;
+        return battleComponent.originBattleAttr;
     }
 
     public boolean isBattleDirty() {
-        return battleDirty;
+        return battleComponent.battleDirty;
     }
 
     public BattleAttr getActualBattleAttr() {
-        if (battleDirty) {
+        if (battleComponent.battleDirty) {
             fixBattleField();
         }
-        return actualBattleAttr;
-    }
-
-    public BattleAttr getActualBattleAttrWithoutCheck() {
-        return actualBattleAttr;
+        return battleComponent.actualBattleAttr;
     }
 
     private void fixBattleField() {
 //        BattleAttrDelta battleAttrDelta1 = this.battleAttrDelta;
 //        BattleAttr originBattleAttr1 = this.originBattleAttr;
 
-        this.battleDirty=false;
+        battleComponent.battleDirty=false;
+    }
+
+    public BattleComponent getBattleComponent() {
+        return battleComponent;
     }
 
     public void postBehavior(Behavior behavior) {
-        SystemNotifyMessageManager systemNotifyMessageManager = ActGame.gameInstance().getSystemNotifyMessageManager();
+        dealDamageBehavior(behavior);
+    }
 
-        if (behavior.behaviorType() == BeAttackBehavior.BASE_BE_ATTACK_BEHAVIOR) {
-            BeAttackBehavior beAttackBehavior = (BeAttackBehavior)behavior;
+    protected void dealDamageBehavior(Behavior behavior) {
+        if (behavior.behaviorType() == DamageBehavior.BASE_BE_ATTACK_BEHAVIOR) {
+            DamageBehavior damage = ReflectUtil.cast(behavior, DamageBehavior.class);
+            if (damage != null) {
+                if (damage.getTo() == this) {
+                    beDamaged(damage);
+                }
+                if (damage.getFrom() == this) {
+                    afterDamage(damage);
+                }
+            }
             // battle type
-            String msg = this.getName() + "受到了来自[" + beAttackBehavior.getFrom().getName() + "] 的 [" + (int)beAttackBehavior.getDamage() + "] 点伤害, 方式为: [" + beAttackBehavior.getTrigger() + "]  类型为: " + beAttackBehavior.getAttackType();
-            systemNotifyMessageManager.pushMessage(msg);
         }
+
+    }
+
+    protected void afterDamage(DamageBehavior damage) {
+
+    }
+
+    protected void beDamaged(DamageBehavior damage) {
+        SystemNotifyMessageManager systemNotifyMessageManager = ActGame.gameInstance().getSystemNotifyMessageManager();
+        String msg = this.getName() + "受到了来自[" + damage.getFrom().getName() + "] 的 [" + (int)damage.getDamage() + "] 点伤害, 方式为: [" + damage.getTrigger() + "]  类型为: " + damage.getAttackType();
+        systemNotifyMessageManager.pushMessage(msg);
+
     }
 
     @Override
@@ -254,6 +275,10 @@ public class VCharacter extends VActor implements Attackable {
     @Override
     public void reset() {
         super.reset();
+        for (var entry :behaviorMap.entrySet()) {
+            Deque<Behavior> value = entry.getValue();
+            Pools.free(value);
+        }
         behaviorMap.clear();
         finder = null;
     }

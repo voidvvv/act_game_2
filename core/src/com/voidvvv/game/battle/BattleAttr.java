@@ -5,9 +5,11 @@ public class BattleAttr {
     public float attackSpeed = 300f;
     public float magicSpeed = 300f;
 
-    public float hp;
-    public float mp;
+
     public float attack;
     public float defense;
     public float magicStrength;
+
+    public float hp;
+    public float mp;
 }

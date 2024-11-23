@@ -2,10 +2,12 @@ package com.voidvvv.game.manager.behaviors;
 
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VCharacter;
-import com.voidvvv.game.battle.BattleAttr;
+import com.voidvvv.game.battle.BattleAttrDelta;
+import com.voidvvv.game.battle.BattleComponent;
 import com.voidvvv.game.context.VWorld;
+import com.voidvvv.game.utils.ReflectUtil;
 
-public class BeAttackBehavior implements Behavior {
+public class DamageBehavior implements Behavior {
     public static final int BASE_BE_ATTACK_BEHAVIOR = 1;
 
     VWorld world;
@@ -16,6 +18,7 @@ public class BeAttackBehavior implements Behavior {
     VActor owner;
     float damage;
     boolean fixed =false;
+    public boolean did = false;
     String trigger;
 
     public int getAttackType() {
@@ -73,13 +76,15 @@ public class BeAttackBehavior implements Behavior {
 
     @Override
     public void does() {
-        if (!fixed) {
-            world().getBattleContext().fixAttack(this);
-        }
+
         VCharacter vch = (VCharacter) owner;
-        BattleAttr actualBattle = vch.getActualBattleAttr();
-        actualBattle.hp -= damage;
+        BattleComponent battleComponent = vch.getBattleComponent();
+        battleComponent.addDamage(this);
         vch.postBehavior(this);
+        VCharacter from = ReflectUtil.cast(this.from, VCharacter.class);
+        if (from != null) {
+            from.postBehavior(this);
+        }
     }
 
     @Override
@@ -118,7 +123,14 @@ public class BeAttackBehavior implements Behavior {
         to = null;
         owner = null;
         damage = 0f;
-        fixed =false;
         trigger = null;
+        did = false;
+    }
+
+    public void fix() {
+        if (!fixed) {
+            world().getBattleContext().fixAttack(this);
+            fixed = true;
+        }
     }
 }

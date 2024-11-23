@@ -1,7 +1,6 @@
 package com.voidvvv.game.context;
 
-import com.voidvvv.game.base.VActor;
-import com.voidvvv.game.manager.behaviors.BeAttackBehavior;
+import com.voidvvv.game.manager.behaviors.DamageBehavior;
 
 public interface BattleContext {
     public static class ActorFields {
@@ -17,7 +16,7 @@ public interface BattleContext {
 
     public void init ();
 
-    public void fixAttack(BeAttackBehavior behavior) ;
+    public void fixAttack(DamageBehavior behavior) ;
 
     void update ();
 }

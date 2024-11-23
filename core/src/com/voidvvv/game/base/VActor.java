@@ -128,6 +128,13 @@ public class VActor extends Actor implements Pool.Poolable {
         return true;
     }
 
+    public void postAttack(Behavior... behavior) {
+    }
+
+
+    public void postBeAttacked(Behavior... behavior) {
+    }
+
 
     public static class VActorCompare implements Comparator<VActor> {
 
