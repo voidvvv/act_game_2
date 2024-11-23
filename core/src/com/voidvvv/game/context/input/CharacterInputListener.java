@@ -104,7 +104,7 @@ public class CharacterInputListener extends InputListener {
 
     @Override
     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-        if (button == Input.Buttons.LEFT)
+        if (button == InputActionMapping.MOVE_TOUCH)
             leftEvent(event, x, y, pointer);
         return true;
     }

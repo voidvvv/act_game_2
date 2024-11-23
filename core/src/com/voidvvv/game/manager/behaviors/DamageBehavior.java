@@ -85,6 +85,7 @@ public class DamageBehavior implements Behavior {
         if (from != null) {
             from.postBehavior(this);
         }
+        world.postBehavior(this);
     }
 
     @Override

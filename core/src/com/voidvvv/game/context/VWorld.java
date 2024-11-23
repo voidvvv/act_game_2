@@ -26,6 +26,7 @@ import com.voidvvv.game.context.input.CharacterInputListener;
 import com.voidvvv.game.context.input.Pinpoint;
 import com.voidvvv.game.context.input.PinpointData;
 import com.voidvvv.game.context.map.VMap;
+import com.voidvvv.game.manager.behaviors.DamageBehavior;
 import com.voidvvv.game.manager.event.VWorldEventManager;
 
 import java.lang.reflect.Constructor;
@@ -453,5 +454,9 @@ public class VWorld {
 
     public void setProtagonist(VActor protagonist) {
         this.protagonist = protagonist;
+    }
+
+    public void postBehavior(DamageBehavior damageBehavior) {
+
     }
 }

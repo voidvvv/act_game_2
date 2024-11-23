@@ -39,20 +39,6 @@ public class Bob extends VCharacter {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-//        batch.flush();
-        BitmapFont baseFont = ActGame.gameInstance().getFontManager().getBaseFont();
-        baseFont.setColor(Color.RED);
-        ActGame.gameInstance().getDrawManager().enableBlend();
-        GlyphLayout layout = Pools.obtain(GlyphLayout.class);
-        layout.setText(baseFont, this.getName());
-        float height = layout.height;
-        float width = layout.width;
-        width/=2;
-        baseFont.draw(batch, layout, this.position.x - width, this.getY() + height);
-        batch.flush();
-        Pools.free(layout);
-
-        ActGame.gameInstance().getDrawManager().disableBlend();
     }
 
     @Override
