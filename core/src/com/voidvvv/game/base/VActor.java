@@ -21,6 +21,8 @@ public class VActor extends Actor implements Pool.Poolable {
 
     public long currentFrame = 0;
 
+    public float liveTime = 0f;
+
     public final Vector3 velocity = new Vector3();
 
     public final Vector3 position = new Vector3();
@@ -79,6 +81,7 @@ public class VActor extends Actor implements Pool.Poolable {
 
     public void act(float delta) {
         if (vActive) {
+            liveTime+=delta;
             vAct(delta);
         }
     }
@@ -89,6 +92,7 @@ public class VActor extends Actor implements Pool.Poolable {
         updateSize(delta);
 
     }
+
 
     protected Transform transform = null;
     private void updateSize(float delta) {
@@ -122,6 +126,7 @@ public class VActor extends Actor implements Pool.Poolable {
         this.getWorld().getBox2dWorld().destroyBody(body);
         this.setWorld(null);
         this.setParentVActor(null);
+        liveTime = 0;
     }
 
     public boolean shoulCollide(VActor actor) {

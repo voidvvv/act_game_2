@@ -347,7 +347,7 @@ public class VWorld {
 
             return t;
         } catch (Throwable e) {
-
+            e.printStackTrace();
         }
         return null;
     }

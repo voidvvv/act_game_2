@@ -1,24 +1,19 @@
 package com.voidvvv.game.screen.test;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.*;
 import com.voidvvv.game.ActGame;
+import com.voidvvv.game.asset.AssetConstant;
 import com.voidvvv.game.base.test.VObstacle;
 import com.voidvvv.game.context.VActorSpawnHelper;
 import com.voidvvv.game.context.VWorld;
@@ -27,7 +22,6 @@ import com.voidvvv.game.context.input.CharacterInputListener;
 import com.voidvvv.game.base.debug.VDebugShapeRender;
 import com.voidvvv.game.base.test.Bob;
 import com.voidvvv.game.context.WorldContext;
-import com.voidvvv.game.context.map.VMapNode;
 import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.screen.test.ui.TextMessageBar;
 
@@ -62,10 +56,10 @@ public class TestScreen extends ScreenAdapter {
         orthographicCamera.position.lerp(cameraPosLerp.set(vWorld.getProtagonist().position.x,vWorld.getProtagonist().position.y,0.f),0.1f);
 
         vWorld.draw();
-        vWorld.getStage().getViewport().apply();
-        debugShapeRender.begin(orthographicCamera.combined);
-        debugShapeRender.render(vWorld);
-        debugShapeRender.end();
+//        vWorld.getStage().getViewport().apply();
+//        debugShapeRender.begin(orthographicCamera.combined);
+//        debugShapeRender.render(vWorld);
+//        debugShapeRender.end();
 //        vWorld.getStage().draw();
         uiStage.getViewport().apply();
         uiStage.draw();
@@ -169,7 +163,7 @@ public class TestScreen extends ScreenAdapter {
         AssetManager assetManager = ActGame.gameInstance().getAssetManager();
         // map
         assetManager.load("map/test/act_game_02.tmx", TiledMap.class);
-
+        assetManager.load(AssetConstant.BOB_IMAGE,Texture.class);
 
         assetManager.finishLoading();
     }

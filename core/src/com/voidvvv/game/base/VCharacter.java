@@ -53,6 +53,16 @@ public class VCharacter extends VActor implements Attackable {
         behaviorsApply(delta);
         // refresh attr
         refreshAttr(delta);
+        vCAct(delta);
+        synchSpeedToBox2d();
+    }
+
+    protected void vCAct(float delta) {
+    }
+
+
+    protected void synchSpeedToBox2d() {
+        this.getBody().setLinearVelocity(this.velocity.x,this.velocity.y);
     }
 
     private void refreshAttr(float delta) {
@@ -116,7 +126,6 @@ public class VCharacter extends VActor implements Attackable {
             this.position.z = 0.f;
             vJump.reset();
         }
-        this.getBody().setLinearVelocity(this.velocity.x,this.velocity.y);
         finder.update(delta);
         moveFix = false;
     }
