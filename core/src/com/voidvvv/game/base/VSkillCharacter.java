@@ -31,6 +31,8 @@ public class VSkillCharacter extends VCharacter{
         super.otherApply(delta);
         if (currentSkill == null && !skillQueue.isEmpty()) {
             currentSkill = skillQueue.pop();
+            skillNew = true;
+            afterApplyNewSkill();
         }
     }
 
@@ -46,10 +48,17 @@ public class VSkillCharacter extends VCharacter{
 
     public void tryToUseSkill (Skill skill) {
         if (couldApplyNewSkill(skill)) {
-            skillQueue.push(skill);
+            currentSkill = skillQueue.pop();
             skillNew = true;
             afterApplyNewSkill();
+            skillQueue.clear();
+        } else if (couldWait(skill)) {
+            skillQueue.push(skill);
         }
+    }
+
+    protected boolean couldWait(Skill skill) {
+        return false;
     }
 
     protected boolean couldApplyNewSkill(Skill skill) {
