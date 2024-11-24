@@ -1,11 +1,10 @@
 package com.voidvvv.game.asset;
 
-import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.voidvvv.game.ActGame;
-import com.voidvvv.game.base.state.bob.SelfStatus;
+import com.voidvvv.game.base.state.bob.BobStatus;
 import com.voidvvv.game.base.test.Bob;
 
 public class BobAssetConstant {
@@ -79,18 +78,23 @@ public class BobAssetConstant {
 
 
     public TextureRegion currentAnim(Bob actor) {
-        SelfStatus status = actor.getSelfStatusStateMachine().getCurrentState();
+        BobStatus status = actor.getSelfStatusStateMachine().getCurrentState();
         boolean flip = actor.flip;
         float time = actor.statusTime;
-        if (status == SelfStatus.IDLE) {
+        if (status == BobStatus.IDLE) {
             return flip? idle_animation_mirror.getKeyFrame(time): idle_animation.getKeyFrame(time);
         }
-        if (status == SelfStatus.WALKING) {
+        if (status == BobStatus.WALKING) {
             return flip? walk_animation_mirror.getKeyFrame(time): walk_animation.getKeyFrame(time);
         }
-        if (status == SelfStatus.ATTACKING_0) {
+        if (status == BobStatus.ATTACKING_0) {
             return flip? attack_animation_mirror.getKeyFrame(time): attack_animation.getKeyFrame(time);
 
+        }
+
+        if (status == BobStatus.SPELL_0) {
+
+            return flip? spell_animation_mirror.getKeyFrame(time): spell_animation.getKeyFrame(time);
         }
         return null;
     }

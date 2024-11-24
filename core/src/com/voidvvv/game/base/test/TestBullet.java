@@ -9,6 +9,7 @@ import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.shape.VCube;
 import com.voidvvv.game.manager.event.attack.AttackEvent;
 import com.voidvvv.game.manager.event.attack.BasePhysicAttackEvent;
+import com.voidvvv.game.render.actor.test.bullet.TestBulletRender;
 import com.voidvvv.game.utils.ReflectUtil;
 
 public class TestBullet extends VCharacter {
@@ -28,6 +29,8 @@ public class TestBullet extends VCharacter {
     VCharacter target = null;
 
     Class<? extends AttackEvent>  typeClazz = BasePhysicAttackEvent.class;
+
+    TestBulletRender testBulletRender;
 
     @Override
     public void vAct(float delta) {
@@ -59,7 +62,7 @@ public class TestBullet extends VCharacter {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
+        testBulletRender.render(this, batch, parentAlpha);
     }
 
     @Override
@@ -72,6 +75,9 @@ public class TestBullet extends VCharacter {
         physicAttr.setBaseShape(cube);
         currentTime = maxLive;
         setName("闪光炸弹");
+
+        testBulletRender = new TestBulletRender();
+        testBulletRender.init();
     }
 
     @Override
@@ -100,6 +106,8 @@ public class TestBullet extends VCharacter {
             staus = HIT;
         }
     }
+
+
 
     @Override
     public boolean shoulCollide(VActor actor) {

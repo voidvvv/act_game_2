@@ -1,15 +1,10 @@
 package com.voidvvv.game.base.test;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.voidvvv.game.base.VActor;
-import com.voidvvv.game.base.VPhysicAttr;
 import com.voidvvv.game.base.shape.VCube;
-import com.voidvvv.game.context.VWorld;
-import com.voidvvv.game.context.WorldContext;
 import com.voidvvv.game.render.actor.VActorRender;
-import com.voidvvv.game.render.actor.test.bob.StoneRender;
+import com.voidvvv.game.render.actor.test.stone.StoneRender;
 
 public class VObstacle extends VActor {
     private boolean initFlag = false;

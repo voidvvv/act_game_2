@@ -1,28 +1,35 @@
 package com.voidvvv.game.base.test;
 
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
+import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.fsm.StateMachine;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.ActGame;
+import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VCharacter;
+import com.voidvvv.game.base.VSkillCharacter;
 import com.voidvvv.game.base.shape.VCube;
-import com.voidvvv.game.base.state.bob.SelfStatus;
+import com.voidvvv.game.base.skill.Skill;
+import com.voidvvv.game.base.skill.SkillDes;
+import com.voidvvv.game.base.skill.base.TestSkill;
+import com.voidvvv.game.base.state.bob.BobStatus;
 import com.voidvvv.game.context.VActorSpawnHelper;
 import com.voidvvv.game.context.WorldContext;
 import com.voidvvv.game.context.input.InputActionMapping;
+import com.voidvvv.game.manager.event.spell.SpellWorldEvent;
 import com.voidvvv.game.render.actor.VActorRender;
 import com.voidvvv.game.render.actor.test.bob.DefaultBobRender;
+import com.voidvvv.game.utils.ReflectUtil;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Bob extends VCharacter {
+public class Bob extends VSkillCharacter {
     @Getter
     @Setter
-    StateMachine<Bob, SelfStatus> selfStatusStateMachine;
+    StateMachine<Bob, BobStatus> selfStatusStateMachine;
 
     public float statusTime;
 
@@ -55,12 +62,15 @@ public class Bob extends VCharacter {
         setName("Bob" + MathUtils.random(10));
 
         selfStatusStateMachine = new DefaultStateMachine<>(this);
-        selfStatusStateMachine.setInitialState(SelfStatus.IDLE);
+        selfStatusStateMachine.setInitialState(BobStatus.IDLE);
 
         if (this.vActorRender == null) {
             vActorRender = new DefaultBobRender();
         }
 
+        skills[0] = new SkillDes();
+        skills[0].setDes("发射闪光炸弹");
+        skills[0].setSkillClass(TestSkill.class);
     }
 
     @Override
@@ -74,34 +84,25 @@ public class Bob extends VCharacter {
     @Override
     public void useSkill(int skillCode) {
         if (skillCode == InputActionMapping.SKILL_Q) {
-            if (selfStatusStateMachine.getCurrentState() == SelfStatus.ATTACKING_0) {
-                return;
-            }
-            selfStatusStateMachine.changeState(SelfStatus.ATTACKING_0);
-            this.interruptPathFinding();
-            q_standup_time = 1f;
+            Skill obtain = Pools.obtain(skills[0].getSkillClass());
+            obtain.setOwner(this);
+            this.tryToUseSkill(obtain);
         }
     }
 
-    public void launchQ () {
-        VActorSpawnHelper helper = VActorSpawnHelper.builder()
-                .bodyType(BodyDef.BodyType.DynamicBody)
-                .category((short) (WorldContext.ROLE | WorldContext.WHITE)) // who am I
-                .mask((short) (WorldContext.OBSTACLE | WorldContext.BLACK | WorldContext.ROLE)) // who do I want to collision
-                .hx(5).hy(5)
-                .initX(position.x).initY(getY())
-                .build();
-
-        TestBullet testBullet = getWorld().spawnVActor(TestBullet.class, helper);
-        testBullet.targetGroup = WorldContext.BLACK;
-        testBullet.getActualBattleAttr().moveSpeed = 10000 * 1.5f;
-        testBullet.setParentVActor(this);
-        testBullet.baseMove.set(getWorld().currentPointerPose.x - position.x, getWorld().currentPointerPose.y - getY(), 0);
-
+    @Override
+    protected void afterApplyNewSkill() {
+        super.afterApplyNewSkill();
+        this.selfStatusStateMachine.changeState(BobStatus.SPELL_0);
     }
 
     @Override
     public void reset() {
         super.reset();
+    }
+
+    @Override
+    public void tryToBackToNormal() {
+        this.getSelfStatusStateMachine().changeState(BobStatus.IDLE);
     }
 }
