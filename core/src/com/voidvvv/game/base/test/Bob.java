@@ -1,16 +1,16 @@
 package com.voidvvv.game.base.test;
 
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
+import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.fsm.StateMachine;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.voidvvv.game.ActGame;
+import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VCharacter;
+import com.voidvvv.game.base.VSkillCharacter;
 import com.voidvvv.game.base.shape.VCube;
-import com.voidvvv.game.base.state.bob.SelfStatus;
+import com.voidvvv.game.base.state.bob.BobStatus;
 import com.voidvvv.game.context.VActorSpawnHelper;
 import com.voidvvv.game.context.WorldContext;
 import com.voidvvv.game.context.input.InputActionMapping;
@@ -19,10 +19,10 @@ import com.voidvvv.game.render.actor.test.bob.DefaultBobRender;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Bob extends VCharacter {
+public class Bob extends VSkillCharacter {
     @Getter
     @Setter
-    StateMachine<Bob, SelfStatus> selfStatusStateMachine;
+    StateMachine<Bob, BobStatus> selfStatusStateMachine;
 
     public float statusTime;
 
@@ -55,7 +55,7 @@ public class Bob extends VCharacter {
         setName("Bob" + MathUtils.random(10));
 
         selfStatusStateMachine = new DefaultStateMachine<>(this);
-        selfStatusStateMachine.setInitialState(SelfStatus.IDLE);
+        selfStatusStateMachine.setInitialState(BobStatus.IDLE);
 
         if (this.vActorRender == null) {
             vActorRender = new DefaultBobRender();
@@ -74,10 +74,10 @@ public class Bob extends VCharacter {
     @Override
     public void useSkill(int skillCode) {
         if (skillCode == InputActionMapping.SKILL_Q) {
-            if (selfStatusStateMachine.getCurrentState() == SelfStatus.ATTACKING_0) {
+            if (selfStatusStateMachine.getCurrentState() == BobStatus.ATTACKING_0) {
                 return;
             }
-            selfStatusStateMachine.changeState(SelfStatus.ATTACKING_0);
+            selfStatusStateMachine.changeState(BobStatus.ATTACKING_0);
             this.interruptPathFinding();
             q_standup_time = 1f;
         }

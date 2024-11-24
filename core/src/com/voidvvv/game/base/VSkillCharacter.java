@@ -1,8 +1,14 @@
 package com.voidvvv.game.base;
 
 import com.voidvvv.game.base.skill.Skill;
+import com.voidvvv.game.base.skill.SkillDes;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Stack;
 
 public class VSkillCharacter extends VCharacter{
     public static final int SKILL_TYPE_Q = 1;
@@ -11,13 +17,24 @@ public class VSkillCharacter extends VCharacter{
     public static final int SKILL_TYPE_R = 4;
 
     @Getter
-    protected Skill[] skills = new Skill[10];
+    protected SkillDes[] skills = new SkillDes[10];
+
+    @Getter
+    protected Stack<Skill> skillQueue = new Stack<>();
+
+    public boolean skillNew = false;
+    @Getter
+    protected Skill currentSkill;
+
     @Override
     protected void otherApply(float delta) {
         super.otherApply(delta);
+        if (currentSkill == null && !skillQueue.isEmpty()) {
+            currentSkill = skillQueue.pop();
+        }
     }
 
-    public void bindSkill (Skill skill, int type) {
+    public void bindSkill (SkillDes skill, int type) {
         if (skill == null) {
             return;
         }
@@ -25,8 +42,25 @@ public class VSkillCharacter extends VCharacter{
             return;
         }
         skills[type] = skill;
-        skill.setOwner(this);
     }
 
+    public void tryToUseSkill (Skill skill) {
+        if (couldApplyNewSkill(skill)) {
+            skillQueue.push(skill);
+            skillNew = true;
+            afterApplyNewSkill();
+        }
+    }
 
+    protected boolean couldApplyNewSkill(Skill skill) {
+        return currentSkill == null || currentSkill.couldBeReplace(skill);
+    }
+
+    protected void afterApplyNewSkill() {
+        // change status
+    }
+
+    public Skill currentSkill () {
+        return currentSkill;
+    }
 }

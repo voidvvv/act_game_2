@@ -1,8 +1,9 @@
 package com.voidvvv.game.base.skill;
 
+import com.badlogic.gdx.utils.Pool;
 import com.voidvvv.game.base.VSkillCharacter;
 
-public interface Skill {
+public interface Skill extends Pool.Poolable {
 
     int type();
 
@@ -10,7 +11,11 @@ public interface Skill {
 
     void setOwner(VSkillCharacter owner);
 
+    boolean couldBeReplace(Skill skill);
+
     void start();
 
     void process(float delta);
+
+    void end();
 }
