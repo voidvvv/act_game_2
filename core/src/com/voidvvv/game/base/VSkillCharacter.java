@@ -1,13 +1,10 @@
 package com.voidvvv.game.base;
 
+import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.base.skill.Skill;
 import com.voidvvv.game.base.skill.SkillDes;
 import lombok.Getter;
-import lombok.Setter;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.Stack;
 
 public class VSkillCharacter extends VCharacter{
@@ -30,10 +27,21 @@ public class VSkillCharacter extends VCharacter{
     protected void otherApply(float delta) {
         super.otherApply(delta);
         if (currentSkill == null && !skillQueue.isEmpty()) {
-            currentSkill = skillQueue.pop();
-            skillNew = true;
-            afterApplyNewSkill();
+            useNewSkill(skillQueue.pop());
         }
+    }
+
+    protected void useNewSkill(Skill skill) {
+        this.currentSkill = skill;
+        skillNew = true;
+        afterApplyNewSkill();
+    }
+
+    public void over(Skill skill) {
+        if (this.currentSkill == skill) {
+            this.currentSkill = null;
+        }
+//        Pools.free(skill);
     }
 
     public void bindSkill (SkillDes skill, int type) {
@@ -46,15 +54,17 @@ public class VSkillCharacter extends VCharacter{
         skills[type] = skill;
     }
 
-    public void tryToUseSkill (Skill skill) {
+    public boolean tryToUseSkill (Skill skill) {
         if (couldApplyNewSkill(skill)) {
-            currentSkill = skillQueue.pop();
-            skillNew = true;
-            afterApplyNewSkill();
+            useNewSkill(skill);
             skillQueue.clear();
+            return true;
         } else if (couldWait(skill)) {
             skillQueue.push(skill);
+        } else {
+            Pools.free(skill);
         }
+        return false;
     }
 
     protected boolean couldWait(Skill skill) {
@@ -66,10 +76,14 @@ public class VSkillCharacter extends VCharacter{
     }
 
     protected void afterApplyNewSkill() {
-        // change status
+        // change status and send message
     }
 
     public Skill currentSkill () {
         return currentSkill;
+    }
+
+    public void tryToBackToNormal() {
+
     }
 }

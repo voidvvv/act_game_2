@@ -153,14 +153,17 @@ public enum BobStatus implements State<Bob> {
             super.exit(entity);
             if (entity.currentSkill() != null && !entity.skillNew) {
                 entity.currentSkill().end();
+                entity.over(entity.currentSkill());
             }
         }
 
         @Override
         public void update(Bob entity) {
             super.update(entity);
-            if (entity.currentSkill() != null  && !entity.skillNew) {
-                entity.currentSkill().process(Gdx.graphics.getDeltaTime());
+            Skill skill = entity.currentSkill();
+            if (skill != null  && !entity.skillNew) {
+                skill.process(Gdx.graphics.getDeltaTime());
+
             } else {
                 entity.getSelfStatusStateMachine().changeState(BobStatus.IDLE);
             }

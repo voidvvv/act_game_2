@@ -18,4 +18,6 @@ public interface Skill extends Pool.Poolable {
     void process(float delta);
 
     void end();
+
+    boolean isEnding();
 }

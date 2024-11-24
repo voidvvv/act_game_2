@@ -91,6 +91,11 @@ public class BobAssetConstant {
             return flip? attack_animation_mirror.getKeyFrame(time): attack_animation.getKeyFrame(time);
 
         }
+
+        if (status == BobStatus.SPELL_0) {
+
+            return flip? spell_animation_mirror.getKeyFrame(time): spell_animation.getKeyFrame(time);
+        }
         return null;
     }
 }
