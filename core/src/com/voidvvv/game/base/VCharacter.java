@@ -53,10 +53,14 @@ public class VCharacter extends VActor implements Attackable {
 
         // fresh hp and checkout damage
         behaviorsApply(delta);
+        otherApply(delta);
         // refresh attr
         refreshAttr(delta);
         vCAct(delta);
         synchSpeedToBox2d();
+    }
+
+    protected void otherApply(float delta) {
     }
 
     protected void vCAct(float delta) {

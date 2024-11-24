@@ -24,12 +24,12 @@ public class StoneRender implements VActorRender<VObstacle> {
 
     @Override
     public void render(VObstacle actor, Batch batch, float parentAlpha) {
-        batch.draw(stone, actor.getX(), actor.getY(),actor.getWidth(), actor.getHeight());
+        batch.draw(stone, actor.getX(), actor.getY()- actor.physicAttr.box2dHy,actor.getWidth(), actor.getHeight());
         batch.end();
         ShapeRenderer shapeRenderer = ActGame.gameInstance().getDrawManager().getShapeRenderer();
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.begin();
-        shapeRenderer.rect(actor.getX(), actor.getY(), actor.getWidth(), actor.getHeight());
+        shapeRenderer.rect(actor.getX(), actor.getY() - actor.physicAttr.box2dHy, actor.getWidth(), actor.getHeight());
         shapeRenderer.end();
         batch.begin();
     }
