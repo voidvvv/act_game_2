@@ -19,6 +19,7 @@ public class DefaultBobRender implements VActorRender<Bob> {
 
     @Override
     public void render(Bob actor, Batch batch, float parentAlpha) {
+        System.out.println(actor.getName());
         TextureRegion texture = bobAssetConstant.currentAnim(actor);
         if (texture == null) {
             return;

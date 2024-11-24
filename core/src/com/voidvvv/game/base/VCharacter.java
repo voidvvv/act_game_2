@@ -292,7 +292,7 @@ public class VCharacter extends VActor implements Attackable {
     @Override
     public void reset() {
         super.reset();
-        for (var entry :behaviorMap.entrySet()) {
+        for (Map.Entry<Integer, Deque<Behavior>> entry :behaviorMap.entrySet()) {
             Deque<Behavior> value = entry.getValue();
             Pools.free(value);
         }

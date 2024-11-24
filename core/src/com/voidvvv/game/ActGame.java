@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.voidvvv.game.context.VWorld;
 import com.voidvvv.game.context.WorldContext;
+import com.voidvvv.game.manager.AudioManager;
 import com.voidvvv.game.manager.CameraManager;
 import com.voidvvv.game.manager.DrawManager;
 import com.voidvvv.game.manager.FontManager;
@@ -35,6 +36,8 @@ public class ActGame extends Game {
     private VWorldEventManager vWorldEventManager;
     private SystemNotifyMessageManager systemNotifyMessageManager;
     private AssetManager assetManager;
+    private AudioManager audioManager;
+
 
     // screen
     private TestScreen testScreen;
@@ -50,8 +53,16 @@ public class ActGame extends Game {
         inputMultiplexer = new InputMultiplexer();
         systemNotifyMessageManager = new SystemNotifyMessageManager();
         assetManager = new AssetManager();
+        audioManager = new AudioManager();
     }
 
+    public AudioManager getAudioManager() {
+        return audioManager;
+    }
+
+    public void setAudioManager(AudioManager audioManager) {
+        this.audioManager = audioManager;
+    }
 
     public static ActGame gameInstance() {
         if (gameInstance == null) {
@@ -72,6 +83,8 @@ public class ActGame extends Game {
         // other
 
     }
+
+
 
     private void initOpt() {
 

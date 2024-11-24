@@ -114,7 +114,7 @@ public class TestScreen extends ScreenAdapter {
                 .initX(60).initY(100)
                 .build();
         Bob bob = vWorld.spawnVActor(Bob.class,helper);
-
+        bob.setName("Bob");
         bob.getActualBattleAttr().attack = 500;
         vWorld.setProtagonist(bob);
         CharacterInputListener inputListener = new CharacterInputListener();
@@ -133,7 +133,8 @@ public class TestScreen extends ScreenAdapter {
                 .sensor(true)
                 .initX(200).initY(100)
                 .build();
-        vWorld.spawnVActor(Bob.class,helper);
+        Bob bob1 = vWorld.spawnVActor(Bob.class, helper);
+        bob1.setName("Bob1");
 
         helper = VActorSpawnHelper.builder()
                 .bodyType(BodyDef.BodyType.StaticBody)

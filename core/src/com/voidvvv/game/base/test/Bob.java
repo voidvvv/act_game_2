@@ -2,9 +2,12 @@ package com.voidvvv.game.base.test;
 
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.StateMachine;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.shape.VCube;
 import com.voidvvv.game.base.state.bob.SelfStatus;

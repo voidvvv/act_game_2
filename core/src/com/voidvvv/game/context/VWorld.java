@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Pools;
@@ -28,9 +29,11 @@ import com.voidvvv.game.context.input.PinpointData;
 import com.voidvvv.game.context.map.VMap;
 import com.voidvvv.game.manager.behaviors.DamageBehavior;
 import com.voidvvv.game.manager.event.VWorldEventManager;
+import com.voidvvv.game.utils.ReflectUtil;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class VWorld {
@@ -219,11 +222,26 @@ public class VWorld {
         mainThread(delta);
         clean();
     }
+    class VActorCompare implements Comparator<Actor> {
 
+        @Override
+        public int compare(Actor o1, Actor o2) {
+            VActor v1 = ReflectUtil.cast(o1, VActor.class);
+            VActor v2 = ReflectUtil.cast(o2, VActor.class);
+            if (v1 == null || v2 == null) {
+                return (int)(o2.getY() - o1.getY());
+            }
+            float diff = v1.position.y - v2.position.y;
+            System.out.println("compare result: " + diff);
+            return - ((int) diff);
+        }
+    }
+    VActorCompare compare = new VActorCompare();
     protected void mainThread(float delta) {
         vWorldEventManager.update(delta);
         box2dWorld.step(delta, 10, 10);
         stage.act(delta);
+        stage.getRoot().getChildren().sort(compare);
     }
 
     private void addInit() {
@@ -432,7 +450,10 @@ public class VWorld {
         getStage().getViewport().apply();
         tiledMapRenderer.setView(ActGame.gameInstance().getCameraManager().getMainCamera());
         tiledMapRenderer.render();
+        System.out.println("::::::::::::::: begin :::::::::::::::::::");
         getStage().draw();
+        System.out.println("::::::::::::::: end  ::::::::::::::::::::");
+
     }
 
 

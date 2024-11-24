@@ -3,6 +3,7 @@ package com.voidvvv.game.base.state.bob;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.audio.Sound;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.test.Bob;
 
@@ -31,6 +32,7 @@ public enum SelfStatus implements State<Bob> {
         }
     },
     WALKING(){
+
         @Override
         public void enter(Bob entity) {
             if (entity.baseMove.x > 0) {
