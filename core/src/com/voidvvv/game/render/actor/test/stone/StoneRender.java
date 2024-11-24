@@ -1,4 +1,4 @@
-package com.voidvvv.game.render.actor.test.bob;
+package com.voidvvv.game.render.actor.test.stone;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
