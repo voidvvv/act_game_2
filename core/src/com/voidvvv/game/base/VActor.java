@@ -27,7 +27,7 @@ public class VActor extends Actor implements Pool.Poolable {
 
     public final Vector3 position = new Vector3();
 
-    protected VPhysicAttr physicAttr;
+    public VPhysicAttr physicAttr;
 
     private Fixture fixture;
 

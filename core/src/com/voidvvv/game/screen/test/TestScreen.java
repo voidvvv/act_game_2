@@ -56,8 +56,9 @@ public class TestScreen extends ScreenAdapter {
         orthographicCamera.position.lerp(cameraPosLerp.set(vWorld.getProtagonist().position.x,vWorld.getProtagonist().position.y,0.f),0.1f);
 
         vWorld.draw();
+//        vWorld.getStage().draw();
 
-        vWorld.getStage().draw();
+
         uiStage.getViewport().apply();
         uiStage.draw();
     }
@@ -70,6 +71,8 @@ public class TestScreen extends ScreenAdapter {
         vWorld.getStage().getViewport().update(width, height, false);
         uiStage.getViewport().update(width, height, false);
 
+        orthographicCamera.zoom = 0.7f;
+        orthographicCamera.update();
 //        v3.set(orthographicCamera.position);
 ////        orthographicCamera.setToOrtho(false,width/3f,height/3f);
 //        orthographicCamera.setToOrtho(false,320,240);

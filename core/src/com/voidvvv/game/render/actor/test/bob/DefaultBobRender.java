@@ -18,6 +18,11 @@ public class DefaultBobRender implements VActorRender<Bob> {
     }
 
     @Override
+    public void init() {
+
+    }
+
+    @Override
     public void render(Bob actor, Batch batch, float parentAlpha) {
         TextureRegion texture = bobAssetConstant.currentAnim(actor);
         if (texture == null) {

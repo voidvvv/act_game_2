@@ -1,5 +1,6 @@
 package com.voidvvv.game.base.test;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.voidvvv.game.base.VActor;
@@ -7,6 +8,8 @@ import com.voidvvv.game.base.VPhysicAttr;
 import com.voidvvv.game.base.shape.VCube;
 import com.voidvvv.game.context.VWorld;
 import com.voidvvv.game.context.WorldContext;
+import com.voidvvv.game.render.actor.VActorRender;
+import com.voidvvv.game.render.actor.test.bob.StoneRender;
 
 public class VObstacle extends VActor {
     private boolean initFlag = false;
@@ -17,6 +20,8 @@ public class VObstacle extends VActor {
     public float hx;
 
     public float hy;
+
+    VActorRender<VObstacle> render;
 
     @Override
     public void init() {
@@ -32,14 +37,24 @@ public class VObstacle extends VActor {
         this.hy = this.physicAttr.box2dHy;
         cube.xLength = hx * 2;
         cube.yLength = hy * 2;
-        cube.zLength = 30f;
+        cube.zLength = 180f;
 
         physicAttr.setBaseShape(cube);
+
+        if (render == null) {
+            render = new StoneRender();
+            render.init();
+        }
 
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        render.render(this, batch, parentAlpha);
     }
 }

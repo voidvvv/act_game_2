@@ -91,6 +91,27 @@ public enum SelfStatus implements State<Bob> {
         public boolean onMessage(Bob entity, Telegram telegram) {
             return false;
         }
+    },
+    SPELL_0{
+        @Override
+        public void enter(Bob entity) {
+            super.enter(entity);
+        }
+
+        @Override
+        public void exit(Bob entity) {
+            super.exit(entity);
+        }
+
+        @Override
+        public void update(Bob entity) {
+            super.update(entity);
+        }
+
+        @Override
+        public boolean onMessage(Bob entity, Telegram telegram) {
+            return false;
+        }
     }
     ;
 
