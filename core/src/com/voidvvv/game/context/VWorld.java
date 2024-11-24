@@ -232,7 +232,6 @@ public class VWorld {
                 return (int)(o2.getY() - o1.getY());
             }
             float diff = v1.position.y - v2.position.y;
-            System.out.println("compare result: " + diff);
             return - ((int) diff);
         }
     }
@@ -450,9 +449,7 @@ public class VWorld {
         getStage().getViewport().apply();
         tiledMapRenderer.setView(ActGame.gameInstance().getCameraManager().getMainCamera());
         tiledMapRenderer.render();
-        System.out.println("::::::::::::::: begin :::::::::::::::::::");
         getStage().draw();
-        System.out.println("::::::::::::::: end  ::::::::::::::::::::");
 
     }
 
