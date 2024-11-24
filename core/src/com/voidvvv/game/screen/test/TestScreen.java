@@ -56,10 +56,7 @@ public class TestScreen extends ScreenAdapter {
         orthographicCamera.position.lerp(cameraPosLerp.set(vWorld.getProtagonist().position.x,vWorld.getProtagonist().position.y,0.f),0.1f);
 
         vWorld.draw();
-//        vWorld.getStage().getViewport().apply();
-        debugShapeRender.begin(orthographicCamera.combined);
-        debugShapeRender.render(vWorld);
-        debugShapeRender.end();
+
         vWorld.getStage().draw();
         uiStage.getViewport().apply();
         uiStage.draw();

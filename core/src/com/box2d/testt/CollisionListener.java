@@ -16,11 +16,13 @@ public class CollisionListener implements ContactListener {
     @Override
     public void beginContact(Contact contact) {
 //        contact.getFixtureA().getBody().
-        UserData dataA = (UserData) contact.getFixtureA().getUserData();
-        UserData dataB = (UserData) contact.getFixtureB().getUserData();
+        UserData dataA = ReflectUtil.cast(contact.getFixtureA().getUserData(), UserData.class);
+        UserData dataB = ReflectUtil.cast(contact.getFixtureB().getUserData(), UserData.class);
 
-        dataA.getActor().onHit(dataB.getActor());
-        dataB.getActor().onHit(dataA.getActor());
+        if (dataA !=null && dataB != null) {
+            dataA.getActor().onHit(dataB.getActor());
+            dataB.getActor().onHit(dataA.getActor());
+        }
 
     }
 
@@ -30,17 +32,19 @@ public class CollisionListener implements ContactListener {
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
-        UserData dataA = (UserData) contact.getFixtureA().getUserData();
-        UserData dataB = (UserData) contact.getFixtureB().getUserData();
+        UserData dataA = ReflectUtil.cast(contact.getFixtureA().getUserData(), UserData.class);
+        UserData dataB = ReflectUtil.cast(contact.getFixtureB().getUserData(), UserData.class);
 
-        VCharacter castA = ReflectUtil.cast(dataA.getActor(), VCharacter.class);
-        VCharacter castB = ReflectUtil.cast(dataB.getActor(), VCharacter.class);
-        if (castA != null && castB != null) {
-            contact.setEnabled(false);
-            return;
-        }
-        if (!dataA.getActor().shoulCollide(dataB.getActor())  || !dataB.getActor().shoulCollide(dataA.getActor())) {
-            contact.setEnabled(false);
+        if (dataA != null && dataB != null) {
+            VCharacter castA = ReflectUtil.cast(dataA.getActor(), VCharacter.class);
+            VCharacter castB = ReflectUtil.cast(dataB.getActor(), VCharacter.class);
+            if (castA != null && castB != null) {
+                contact.setEnabled(false);
+                return;
+            }
+            if (!dataA.getActor().shoulCollide(dataB.getActor())  || !dataB.getActor().shoulCollide(dataA.getActor())) {
+                contact.setEnabled(false);
+            }
         }
     }
 

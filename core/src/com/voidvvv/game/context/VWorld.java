@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.box2d.testt.CollisionListener;
 import com.voidvvv.game.ActGame;
+import com.voidvvv.game.asset.AssetConstant;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VPhysicAttr;
 import com.voidvvv.game.base.b2d.UserData;
@@ -144,9 +145,10 @@ public class VWorld {
             renderMap = helper.map;
         } else {
             // default
-            renderMap = ActGame.gameInstance().getAssetManager().get("map/test/act_game_02.tmx");
+            renderMap = ActGame.gameInstance().getAssetManager().get(AssetConstant.MAP_TEST_01);
         }
         TiledMapTileLayer mainLayer = (TiledMapTileLayer) renderMap.getLayers().get("main");
+        TiledMapTileLayer.Cell cell = mainLayer.getCell(0, 0);
         boundingBox.set(mainLayer.getOffsetX(), mainLayer.getOffsetY(), mainLayer.getWidth() * mainLayer.getTileWidth(), mainLayer.getHeight() * mainLayer.getTileHeight());
     }
 
@@ -228,11 +230,10 @@ public class VWorld {
         public int compare(Actor o1, Actor o2) {
             VActor v1 = ReflectUtil.cast(o1, VActor.class);
             VActor v2 = ReflectUtil.cast(o2, VActor.class);
-            if (v1 == null || v2 == null) {
-                return (int)(o2.getY() - o1.getY());
-            }
-            float diff = v1.position.y - v2.position.y;
-            return - ((int) diff);
+            float a1 = v1 == null? o1.getY() : v1.position.y;
+            float a2 = v2 == null? o2.getY() : v2.position.y;
+
+            return (int)(a2 -a1);
         }
     }
     VActorCompare compare = new VActorCompare();

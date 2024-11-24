@@ -12,6 +12,8 @@ public class VWorldEventManager {
 
     public static final int DAMAGE_EVENT = 1;
 
+    public static final int SPELL_EVENT = 2;
+
     private Deque<WorldEvent> events;
 
     private List<WorldEvent> initList = new ArrayList<>();

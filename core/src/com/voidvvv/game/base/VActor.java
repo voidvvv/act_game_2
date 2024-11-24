@@ -165,6 +165,11 @@ public class VActor extends Actor implements Pool.Poolable {
         return 0;
     }
 
+    public void setFloat(int type, float value) {
+
+    }
+
+
     public void onHit(VActor actor) {
     }
 }
