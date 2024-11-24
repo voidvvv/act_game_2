@@ -95,7 +95,7 @@ public class VActor extends Actor implements Pool.Poolable {
 
 
     protected Transform transform = null;
-    private void updateSize(float delta) {
+    protected void updateSize(float delta) {
         setWidth(this.physicAttr.getBaseShape().getBounds().x);
         setHeight(this.physicAttr.getBaseShape().getHeight());
         setX(position.x - getWidth() / 2);

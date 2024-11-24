@@ -28,6 +28,8 @@ public class VCharacter extends VActor implements Attackable {
 
     public Vector3 baseMove = new Vector3();
 
+    public boolean flip = false;
+
     Vector3[] velAffect = new Vector3[10];
 
     private VPathFinder finder;
@@ -296,5 +298,9 @@ public class VCharacter extends VActor implements Attackable {
         }
         behaviorMap.clear();
         finder = null;
+    }
+
+    public void interruptPathFinding() {
+        this.finder.interrupt();
     }
 }

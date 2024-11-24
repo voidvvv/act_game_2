@@ -57,10 +57,10 @@ public class TestScreen extends ScreenAdapter {
 
         vWorld.draw();
 //        vWorld.getStage().getViewport().apply();
-//        debugShapeRender.begin(orthographicCamera.combined);
-//        debugShapeRender.render(vWorld);
-//        debugShapeRender.end();
-//        vWorld.getStage().draw();
+        debugShapeRender.begin(orthographicCamera.combined);
+        debugShapeRender.render(vWorld);
+        debugShapeRender.end();
+        vWorld.getStage().draw();
         uiStage.getViewport().apply();
         uiStage.draw();
     }
@@ -110,7 +110,7 @@ public class TestScreen extends ScreenAdapter {
                 .bodyType(BodyDef.BodyType.DynamicBody)
                 .category((short)(WorldContext.ROLE|WorldContext.WHITE)) // who am I
                 .mask((short)(WorldContext.OBSTACLE|WorldContext.BLACK|WorldContext.ROLE)) // who do I want to collision
-                .hx(vWorld.unit()/2).hy(16/2f)
+                .hx(vWorld.unit()/2 - 2f).hy(2)
                 .initX(60).initY(100)
                 .build();
         Bob bob = vWorld.spawnVActor(Bob.class,helper);
