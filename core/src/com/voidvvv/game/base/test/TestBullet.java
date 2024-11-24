@@ -30,7 +30,7 @@ public class TestBullet extends VCharacter {
 
     Class<? extends AttackEvent>  typeClazz = BasePhysicAttackEvent.class;
 
-    TestBulletRender testBulletRender;
+    static TestBulletRender testBulletRender;
 
     @Override
     public void vAct(float delta) {
@@ -76,8 +76,11 @@ public class TestBullet extends VCharacter {
         currentTime = maxLive;
         setName("闪光炸弹");
 
-        testBulletRender = new TestBulletRender();
-        testBulletRender.init();
+        if (testBulletRender == null) {
+            testBulletRender = new TestBulletRender();
+            testBulletRender.init();
+        }
+
     }
 
     @Override

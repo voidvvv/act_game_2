@@ -1,5 +1,6 @@
 package com.voidvvv.game.base.skill.base;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.voidvvv.game.base.VSkillCharacter;
 import com.voidvvv.game.base.skill.Skill;
@@ -13,6 +14,10 @@ public class TestSkill implements Skill {
     VSkillCharacter character;
     float progress;
     boolean send = false;
+
+    public Vector2 position = new Vector2();
+    public Vector2 direction = new Vector2();
+
     @Override
     public boolean couldBeReplace(Skill skill) {
         return false;
