@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class BattleComponent {
     float currentDamage;
-
+    float currentMagic;
 
     public final BattleAttr actualBattleAttr = new BattleAttr();
 
@@ -28,6 +28,7 @@ public class BattleComponent {
         if (battleDirty) {
             battleDirty = false;
         }
+        // calculate actual attribute from originBattleAttr and buff list
 
         actualBattleAttr.hp -= currentDamage;
         currentDamage = 0f;

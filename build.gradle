@@ -55,6 +55,8 @@ project(":desktop") {
         api "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
         api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         api group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
+        implementation group: 'io.github.spair', name: 'imgui-java-natives-windows', version: '1.87.3'
+        implementation "io.github.spair:imgui-java-app:1.87.3"
 
 
     }

@@ -103,7 +103,7 @@ public class VPathFinder {
         if (pathing) {
             Vector2 vector2 = character.testVelocity(delta, tmp1);
             float beforeDistance = tmp2.set(character.position.x, character.position.y).sub(currentTarget).len();
-            float afterDistance = tmp2.add(vector2.scl(0.2f)).len();
+            float afterDistance = tmp2.add(vector2.scl(0.01f)).len();
             if (beforeDistance <= afterDistance) {
                 ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("beforeDistance: " + beforeDistance + " afterDistance: " + afterDistance);
                 currentIndex++;
