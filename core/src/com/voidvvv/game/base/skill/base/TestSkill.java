@@ -29,6 +29,16 @@ public class TestSkill implements Skill {
     }
 
     @Override
+    public int init(VSkillCharacter character) {
+        this.character = character;
+        this.position.x = character.position.x;
+        this.position.y = character.getY();
+        this.direction.x = character.getWorld().currentPointerPose.x - character.position.x;
+        this.direction.y = character.getWorld().currentPointerPose.y - character.position.y;
+        return 1;
+    }
+
+    @Override
     public VSkillCharacter owner() {
         return character;
     }
@@ -72,14 +82,14 @@ public class TestSkill implements Skill {
                 .category((short) (WorldContext.ROLE | WorldContext.WHITE)) // who am I
                 .mask((short) (WorldContext.OBSTACLE | WorldContext.BLACK | WorldContext.ROLE)) // who do I want to collision
                 .hx(5).hy(5)
-                .initX(character.position.x).initY(character.getY())
+                .initX(this.position.x).initY(this.position.y)
                 .build();
 
         TestBullet testBullet = character.getWorld().spawnVActor(TestBullet.class, helper);
         testBullet.targetGroup = WorldContext.BLACK;
         testBullet.getActualBattleAttr().moveSpeed = 10000 * 1.5f;
         testBullet.setParentVActor(character);
-        testBullet.baseMove.set(character.getWorld().currentPointerPose.x - character.position.x, character.getWorld().currentPointerPose.y - character.getY(), 0);
+        testBullet.baseMove.set(direction.x,direction.y,0f);
 
     }
 
@@ -97,6 +107,8 @@ public class TestSkill implements Skill {
         progress = 0f;
         this.character = null;
         send = false;
+        position.set(0,0);
+        direction.set(1,0);
         end();
     }
 }

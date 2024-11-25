@@ -7,6 +7,8 @@ public interface Skill extends Pool.Poolable {
 
     int type();
 
+    int init(VSkillCharacter character);
+
     VSkillCharacter owner();
 
     void setOwner(VSkillCharacter owner);

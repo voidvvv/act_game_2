@@ -56,10 +56,13 @@ public class VSkillCharacter extends VCharacter{
 
     public boolean tryToUseSkill (Skill skill) {
         if (couldApplyNewSkill(skill)) {
+            skill.init(this);
             useNewSkill(skill);
             skillQueue.clear();
+
             return true;
         } else if (couldWait(skill)) {
+            skill.init(this);
             skillQueue.push(skill);
         } else {
             Pools.free(skill);
