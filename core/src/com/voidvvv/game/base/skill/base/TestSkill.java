@@ -9,11 +9,13 @@ import com.voidvvv.game.context.VActorSpawnHelper;
 import com.voidvvv.game.context.WorldContext;
 
 public class TestSkill implements Skill {
-    public float maxTime = 0.3f;
+    public float triggerTime = 0.7f;
 
     VSkillCharacter character;
     float progress;
     boolean send = false;
+
+    public float speed = 1f;
 
     public Vector2 position = new Vector2();
     public Vector2 direction = new Vector2();
@@ -29,12 +31,19 @@ public class TestSkill implements Skill {
     }
 
     @Override
+    public float percentage() {
+        return this.progress;
+    }
+
+    @Override
     public int init(VSkillCharacter character) {
         this.character = character;
         this.position.x = character.position.x;
         this.position.y = character.getY();
         this.direction.x = character.getWorld().currentPointerPose.x - character.position.x;
         this.direction.y = character.getWorld().currentPointerPose.y - character.position.y;
+
+        speed = character.getBattleComponent().actualBattleAttr.magicSpeed / WorldContext.DEFAULT_MAGIC_COEFFICIENT;
         return 1;
     }
 
@@ -58,8 +67,8 @@ public class TestSkill implements Skill {
         updateProgress(delta);
         character.baseMove.x = 0;
         character.baseMove.y = 0;
-        character.interruptPathFinding();
-        if (this.progress >= maxTime && !send) {
+//        character.interruptPathFinding();
+        if (this.progress >= triggerTime && !send) {
             launch ();
         }
         if (isEnding()) {
@@ -94,7 +103,8 @@ public class TestSkill implements Skill {
     }
 
     private void updateProgress(float delta) {
-        this.progress += delta;
+        speed = character.getBattleComponent().actualBattleAttr.magicSpeed / WorldContext.DEFAULT_MAGIC_COEFFICIENT;
+        this.progress += (delta * speed);
     }
 
     @Override
@@ -109,6 +119,7 @@ public class TestSkill implements Skill {
         send = false;
         position.set(0,0);
         direction.set(1,0);
+        speed = 1f;
         end();
     }
 }

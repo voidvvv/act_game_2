@@ -1,5 +1,7 @@
 package com.voidvvv.game.asset;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
+
 public class AssetConstant {
     // map
     public static final String MAP_TEST_01 = "map/test/act_game_02.tmx";
@@ -11,4 +13,12 @@ public class AssetConstant {
     public static final String GRASS_STEP_LEFT_SOUND = "sound/step/grass/sfx_step_grass_l.flac";
     public static final String GRASS_STEP_RIGHT_SOUND = "sound/step/grass/sfx_step_grass_r.flac";
 
+
+    public static <T> Animation<T> makeCommonAnimation (T... arr) {
+        return new Animation<>(1f/arr.length, arr);
+    }
+
+    public static <T> Animation<T> makeCommonAnimation (float time, T... arr) {
+        return new Animation<>(time/arr.length, arr);
+    }
 }
