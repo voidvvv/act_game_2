@@ -60,6 +60,7 @@ public class TestSkill implements Skill {
     @Override
     public void start() {
         // start
+        character.enterStatusForSkill(this);
     }
 
     @Override

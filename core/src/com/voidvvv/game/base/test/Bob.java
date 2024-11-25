@@ -90,11 +90,6 @@ public class Bob extends VSkillCharacter {
         }
     }
 
-    @Override
-    protected void afterApplyNewSkill() {
-        super.afterApplyNewSkill();
-        this.selfStatusStateMachine.changeState(BobStatus.SPELL_0);
-    }
 
     @Override
     public void reset() {
@@ -104,5 +99,10 @@ public class Bob extends VSkillCharacter {
     @Override
     public void tryToBackToNormal() {
         this.getSelfStatusStateMachine().changeState(BobStatus.IDLE);
+    }
+
+    @Override
+    public void enterStatusForSkill(TestSkill testSkill) {
+        this.getSelfStatusStateMachine().changeState(BobStatus.SPELL_0);
     }
 }

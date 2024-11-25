@@ -143,7 +143,6 @@ public enum BobStatus implements State<Bob> {
             if (skill == null || !entity.skillNew) {
                 entity.getSelfStatusStateMachine().changeState(BobStatus.IDLE);
             } else {
-                skill.start();
                 entity.skillNew = false;
             }
         }

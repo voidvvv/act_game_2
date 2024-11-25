@@ -3,6 +3,7 @@ package com.voidvvv.game.base;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.base.skill.Skill;
 import com.voidvvv.game.base.skill.SkillDes;
+import com.voidvvv.game.base.skill.base.TestSkill;
 import lombok.Getter;
 
 import java.util.Stack;
@@ -34,7 +35,7 @@ public class VSkillCharacter extends VCharacter{
     protected void useNewSkill(Skill skill) {
         this.currentSkill = skill;
         skillNew = true;
-        afterApplyNewSkill();
+        afterApplyNewSkill(skill);
     }
 
     public void over(Skill skill) {
@@ -78,8 +79,10 @@ public class VSkillCharacter extends VCharacter{
         return currentSkill == null || currentSkill.couldBeReplace(skill);
     }
 
-    protected void afterApplyNewSkill() {
+    protected void afterApplyNewSkill(Skill skill) {
         // change status and send message
+        skill.start();
+
     }
 
     public Skill currentSkill () {
@@ -87,6 +90,10 @@ public class VSkillCharacter extends VCharacter{
     }
 
     public void tryToBackToNormal() {
+
+    }
+
+    public void enterStatusForSkill(TestSkill testSkill) {
 
     }
 }
