@@ -58,7 +58,7 @@ public class Bob extends VSkillCharacter {
         cube.zLength = getWorld().unit() *2;
         physicAttr.setBaseShape(cube);
         this.setPhysicAttr(physicAttr);
-        this.getActualBattleAttr().hp = 100;
+        this.getActualBattleAttr().hp = 1500;
         setName("Bob" + MathUtils.random(10));
 
         selfStatusStateMachine = new DefaultStateMachine<>(this);
@@ -104,5 +104,17 @@ public class Bob extends VSkillCharacter {
     @Override
     public void enterStatusForSkill(TestSkill testSkill) {
         this.getSelfStatusStateMachine().changeState(BobStatus.SPELL_0);
+    }
+
+    @Override
+    protected void becomeDying() {
+        if (this.selfStatusStateMachine.getCurrentState() != BobStatus.DYING) {
+            this.selfStatusStateMachine.changeState(BobStatus.DYING);
+        }
+    }
+
+    @Override
+    public boolean isDying() {
+        return this.selfStatusStateMachine.getCurrentState() == BobStatus.DYING;
     }
 }

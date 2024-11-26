@@ -16,7 +16,7 @@ import com.voidvvv.game.utils.ReflectUtil;
 
 import java.util.Comparator;
 
-public class VActor extends Actor implements Pool.Poolable {
+public abstract class VActor extends Actor implements Pool.Poolable {
     private VWorld world;
 
     public long currentFrame = 0;
@@ -171,5 +171,15 @@ public class VActor extends Actor implements Pool.Poolable {
 
 
     public void onHit(VActor actor) {
+    }
+
+    public boolean isDying() {
+        return false;
+    };
+
+    public void setDying(boolean dying){};
+
+    public boolean couldContact(VActor actor) {
+        return true;
     }
 }

@@ -31,6 +31,7 @@ public class BattleComponent {
         // calculate actual attribute from originBattleAttr and buff list
 
         actualBattleAttr.hp -= currentDamage;
+//        System.out.println(actualBattleAttr.hp);
         currentDamage = 0f;
     }
 

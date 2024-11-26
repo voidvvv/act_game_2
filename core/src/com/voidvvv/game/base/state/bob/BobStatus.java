@@ -177,7 +177,37 @@ public enum BobStatus implements State<Bob> {
         public Skill findSkill(Bob entity) {
             return entity.currentSkill();
         }
-    }
+    },
+    DYING{
+        @Override
+        public void enter(Bob entity) {
+            super.enter(entity);
+            ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage(entity.getName() + " enter - DYING");
+        }
+
+        @Override
+        public void exit(Bob entity) {
+            super.exit(entity);
+            ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage(entity.getName() + " exit - DYING");
+
+        }
+
+        @Override
+        public Skill findSkill(Bob entity) {
+            return super.findSkill(entity);
+        }
+
+        @Override
+        public void update(Bob entity) {
+            super.update(entity);
+            entity.baseMove.set(0,0,0);
+        }
+
+        @Override
+        public boolean onMessage(Bob entity, Telegram telegram) {
+            return false;
+        }
+    },
     ;
 
 

@@ -69,9 +69,9 @@ public class BobAssetConstant {
             attack_animation_mirror.setPlayMode(Animation.PlayMode.LOOP);
 
             dying_animation = AssetConstant.makeCommonAnimation(base_pic[4]);
-            dying_animation.setPlayMode(Animation.PlayMode.LOOP);
+//            dying_animation.setPlayMode(Animation.PlayMode.LOOP);
             dying_animation_mirror = AssetConstant.makeCommonAnimation(base_pic_mirror[4]);
-            dying_animation_mirror.setPlayMode(Animation.PlayMode.LOOP);
+//            dying_animation_mirror.setPlayMode(Animation.PlayMode.LOOP);
 
         }
     }
@@ -96,6 +96,10 @@ public class BobAssetConstant {
             Animation<TextureRegion> tr = flip ? spell_animation_mirror : spell_animation;
 
             return tr.getKeyFrame(tr.getAnimationDuration() * actor.currentSkill().percentage());
+        }
+
+        if (status == BobStatus.DYING) {
+            return flip? dying_animation_mirror.getKeyFrame(time) : dying_animation.getKeyFrame(time);
         }
         return null;
     }
