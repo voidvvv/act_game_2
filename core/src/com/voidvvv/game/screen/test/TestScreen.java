@@ -134,8 +134,8 @@ public class TestScreen extends ScreenAdapter {
                 .initX(200).initY(100)
                 .build();
         Bob bob1 = vWorld.spawnVActor(Bob.class, helper);
-        bob1.setName("Bob1");
-
+        bob1.setName("Bob enemy");
+        bob1.getBattleComponent().actualBattleAttr.hp = 1300;
         helper = VActorSpawnHelper.builder()
                 .bodyType(BodyDef.BodyType.StaticBody)
                 .category((short)(WorldContext.OBSTACLE)) // who am I

@@ -14,7 +14,6 @@ import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.manager.behaviors.DamageBehavior;
 import com.voidvvv.game.manager.behaviors.Behavior;
 import com.voidvvv.game.utils.ReflectUtil;
-import lombok.var;
 
 import java.util.*;
 
@@ -37,6 +36,8 @@ public class VCharacter extends VActor implements Attackable {
     int velAffectCap = 0;
 
     private VJump vJump = new VJump();
+
+    protected boolean dying = false;
 
     public VCharacter() {
         for (int x= 0; x< velAffect.length;x++) {
@@ -73,6 +74,16 @@ public class VCharacter extends VActor implements Attackable {
 
     private void refreshAttr(float delta) {
         battleComponent.settlement();
+        if (toDying()) {
+            becomeDying();
+        }
+    }
+
+    protected void becomeDying() {
+    }
+
+    protected boolean toDying() {
+        return battleComponent.actualBattleAttr.hp <= 0;
     }
 
     protected void behaviorsApply(float delta) {
@@ -279,7 +290,7 @@ public class VCharacter extends VActor implements Attackable {
 
     protected void beDamaged(DamageBehavior damage) {
         SystemNotifyMessageManager systemNotifyMessageManager = ActGame.gameInstance().getSystemNotifyMessageManager();
-        String msg = this.getName() + "受到了来自[" + damage.getFrom().getName() + "] 的 [" + (int)damage.getDamage() + "] 点伤害, 方式为: [" + damage.getTrigger() + "]  类型为: " + damage.getAttackType();
+        String msg = this.getName() + "受到了来自[" + damage.getFrom().getName() + "] 的 [" + (int)damage.getDamage() + "] 点伤害, 方式为: [" + damage.getTrigger() + "]  类型为: " + damage.getAttackType() + "  当前生命值: " + getBattleComponent().actualBattleAttr.hp;
         systemNotifyMessageManager.pushMessage(msg);
     }
 
@@ -306,5 +317,24 @@ public class VCharacter extends VActor implements Attackable {
 
     public void interruptPathFinding() {
         this.finder.interrupt();
+    }
+
+    @Override
+    public boolean isDying() {
+        return dying;
+    }
+    @Override
+    public void setDying(boolean dying) {
+        this.dying = dying;
+    }
+
+    /**
+     * if this VActor could contact with another
+     * @param another
+     * @return
+     */
+    @Override
+    public boolean couldContact(VActor another) {
+        return !this.isDying() && !another.isDying();
     }
 }
