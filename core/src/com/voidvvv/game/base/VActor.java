@@ -12,6 +12,7 @@ import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.manager.behaviors.Behavior;
 import com.voidvvv.game.context.VWorld;
+import com.voidvvv.game.screen.test.ui.Box2dUnitConverter;
 import com.voidvvv.game.utils.ReflectUtil;
 
 import java.util.Comparator;
@@ -106,9 +107,11 @@ public abstract class VActor extends Actor implements Pool.Poolable {
     protected void updatePosition(float delta) {
         transform = body.getTransform();
         Vector2 position1 = transform.getPosition();
-        UserData cast = ReflectUtil.cast(fixture.getUserData(), UserData.class);
+        Box2dUnitConverter.box2dToWorld(position1);
         this.position.x = position1.x;
         this.position.y = position1.y;
+        this.position.z += this.velocity.z * delta;
+
     }
 
     public void update (float delta) {

@@ -97,7 +97,7 @@ public class TestSkill implements Skill {
 
         TestBullet testBullet = character.getWorld().spawnVActor(TestBullet.class, helper);
         testBullet.targetGroup = WorldContext.BLACK;
-        testBullet.getActualBattleAttr().moveSpeed = 10000 * 1.5f;
+        testBullet.getActualBattleAttr().moveSpeed = 200;
         testBullet.setParentVActor(character);
         testBullet.baseMove.set(direction.x,direction.y,0f);
 

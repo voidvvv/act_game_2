@@ -94,6 +94,8 @@ public class Bob extends VSkillCharacter {
     @Override
     public void reset() {
         super.reset();
+        System.out.println("reset!!");
+
     }
 
     @Override
@@ -117,4 +119,6 @@ public class Bob extends VSkillCharacter {
     public boolean isDying() {
         return this.selfStatusStateMachine.getCurrentState() == BobStatus.DYING;
     }
+
+
 }

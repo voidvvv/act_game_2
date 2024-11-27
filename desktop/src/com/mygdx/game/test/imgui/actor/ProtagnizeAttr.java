@@ -30,6 +30,9 @@ public class ProtagnizeAttr implements UIRender {
                 if (flag) {
                     attr.magicSpeed = speed.get();
                 }
+                ImGui.text(character.velocity.x + " - " + character.velocity.y);
+                float totalGameTime = ActGame.gameInstance().totalGameTime;
+                ImGui.text((int)totalGameTime + "");
             }
             ImGui.end();
         }

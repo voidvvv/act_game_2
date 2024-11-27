@@ -188,7 +188,6 @@ public enum BobStatus implements State<Bob> {
         @Override
         public void exit(Bob entity) {
             super.exit(entity);
-            ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage(entity.getName() + " exit - DYING");
 
         }
 
@@ -201,6 +200,9 @@ public enum BobStatus implements State<Bob> {
         public void update(Bob entity) {
             super.update(entity);
             entity.baseMove.set(0,0,0);
+            if (entity.statusTime >= 2f) {
+                entity.getWorld().destroyActor(entity);
+            }
         }
 
         @Override
