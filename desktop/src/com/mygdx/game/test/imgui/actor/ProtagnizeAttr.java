@@ -21,7 +21,7 @@ public class ProtagnizeAttr implements UIRender {
             BattleAttr attr = character.getActualBattleAttr();
             if (ImGui.begin("主角属性")){
                 speed.set(attr.moveSpeed);
-                boolean flag = ImGui.inputFloat("速度", speed,500f);
+                boolean flag = ImGui.inputFloat("速度", speed,50f);
                 if (flag) {
                     attr.moveSpeed = speed.get();
                 }
@@ -30,9 +30,9 @@ public class ProtagnizeAttr implements UIRender {
                 if (flag) {
                     attr.magicSpeed = speed.get();
                 }
-                ImGui.text(character.velocity.x + " - " + character.velocity.y);
+                ImGui.text("当前速度:  " + character.velocity.x + " - " + character.velocity.y);
                 float totalGameTime = ActGame.gameInstance().totalGameTime;
-                ImGui.text((int)totalGameTime + "");
+                ImGui.text("时间: " + (int)totalGameTime);
             }
             ImGui.end();
         }

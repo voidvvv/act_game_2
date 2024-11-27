@@ -39,6 +39,7 @@ public class FontManager implements Disposable {
 //        }
         baseFont = new BitmapFont(Gdx.files.internal("font/yizi.fnt"), new TextureRegion(new Texture(Gdx.files.internal("font/yizi.png"))));
 
+        baseFont.getData().markupEnabled = true;
     }
 
     @Override
