@@ -18,7 +18,7 @@ import com.voidvvv.game.manager.event.VWorldEventManager;
 import com.voidvvv.game.screen.test.TestScreen;
 
 public class ActGame extends Game {
-
+    public float totalGameTime = 0f;
     private long frameId = 0;
     private static ActGame gameInstance;
 
@@ -113,6 +113,7 @@ public class ActGame extends Game {
     @Override
     public void render() {
         frameId++;
+        totalGameTime += Gdx.graphics.getDeltaTime();
         super.render();
     }
 

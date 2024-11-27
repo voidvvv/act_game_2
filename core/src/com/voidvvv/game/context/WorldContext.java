@@ -13,7 +13,7 @@ public class WorldContext {
 
     public static final short BLACK = 1<<3;
 
-    public static final float DEFAULT_MAGIC_COEFFICIENT = 300;
+    public static final float DEFAULT_MAGIC_COEFFICIENT = 100;
 
 
     public static final BodyDef.BodyType defaultBodyType = BodyDef.BodyType.DynamicBody;

@@ -13,6 +13,7 @@ import com.voidvvv.game.context.map.VPathFinder;
 import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.manager.behaviors.DamageBehavior;
 import com.voidvvv.game.manager.behaviors.Behavior;
+import com.voidvvv.game.screen.test.ui.Box2dUnitConverter;
 import com.voidvvv.game.utils.ReflectUtil;
 
 import java.util.*;
@@ -69,7 +70,7 @@ public class VCharacter extends VActor implements Attackable {
 
 
     protected void synchSpeedToBox2d() {
-        this.getBody().setLinearVelocity(this.velocity.x,this.velocity.y);
+        this.getBody().setLinearVelocity(Box2dUnitConverter.worldToBox2d(this.velocity.x),Box2dUnitConverter.worldToBox2d(this.velocity.y));
     }
 
     private void refreshAttr(float delta) {
@@ -137,7 +138,6 @@ public class VCharacter extends VActor implements Attackable {
         }
 
         // update position (apply velocity)
-        this.position.z += this.velocity.z * delta;
         vJump.update(delta);
         if (this.position.z <= 0.f) {
             this.position.z = 0.f;
@@ -147,12 +147,12 @@ public class VCharacter extends VActor implements Attackable {
         moveFix = false;
     }
 
-    Vector2 tmp = new Vector2();
+    public Vector2 tmp = new Vector2();
     boolean moveFix = false;
     public Vector2 baseMove(float delta) {
         if (!moveFix) {
             moveFix = true;
-            baseMove.nor().scl(battleComponent.actualBattleAttr.moveSpeed * delta);
+            baseMove.nor().scl(battleComponent.actualBattleAttr.moveSpeed);
             tmp.set(baseMove.x, baseMove.y);
         }
         return tmp;
