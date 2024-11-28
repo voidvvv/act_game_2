@@ -94,7 +94,6 @@ public class VCharacter extends VActor implements Attackable {
             while (value!=null && !value.isEmpty()) {
                 Behavior pop = value.pop();
                 pop.does();
-                Pools.free(pop);
             }
         }
     }

@@ -21,7 +21,7 @@ public class BattleComponent {
         int attackType = damageBehavior.getAttackType();
 
         currentDamage+=damage;
-        damageBehavior.did = true;
+
     }
 
     public void settlement() {

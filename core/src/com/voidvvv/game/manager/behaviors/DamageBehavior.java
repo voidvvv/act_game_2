@@ -90,6 +90,7 @@ public class DamageBehavior implements Behavior {
             from.postBehavior(this);
         }
         world.postBehavior(this);
+        this.did = true;
     }
 
     @Override
@@ -102,6 +103,11 @@ public class DamageBehavior implements Behavior {
         // bind
         this.owner = actor;
 
+    }
+
+    @Override
+    public boolean didFlag() {
+        return this.did;
     }
 
     public void setAttackEvent(AttackEvent attackEvent) {

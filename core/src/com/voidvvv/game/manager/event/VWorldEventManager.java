@@ -60,10 +60,14 @@ public class VWorldEventManager {
         while (iterator.hasNext()) {
             WorldEvent next = iterator.next();
             next.apply();
-            if (next.getStatus() == WorldEvent.FINISH) {
+            if (isEnd(next)) {
                 iterator.remove();
                 freeEvent(next);
             }
         }
+    }
+
+    public boolean isEnd(WorldEvent event) {
+        return event.status == WorldEvent.FINISH;
     }
 }

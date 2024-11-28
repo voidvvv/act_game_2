@@ -13,6 +13,8 @@ public interface Behavior extends Pool.Poolable {
     public int behaviorType();
     public void attach(VActor actor);
 
+    public boolean didFlag();
+
     /**
      * the event trigger this behavior
      * @return

@@ -28,6 +28,7 @@ public  class SpellWorldEvent extends WorldEvent {
             obtain.setOwner(skillCharacter);
             skillCharacter.tryToUseSkill(obtain);
         }
+        this.status = WorldEvent.FINISH;
     }
 
     @Override
@@ -39,5 +40,10 @@ public  class SpellWorldEvent extends WorldEvent {
     public void reset() {
         super.reset();
         this.setSkillDes(null);
+    }
+
+    @Override
+    public boolean isEnd() {
+        return this.status == WorldEvent.FINISH;
     }
 }

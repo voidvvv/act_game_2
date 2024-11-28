@@ -17,19 +17,24 @@ public abstract class AttackEvent extends WorldEvent implements AttackCalculator
         this.triggerObj = triggerObj;
     }
 
-    Behavior behavior;
     @Override
     public void apply() {
         if (this.status == WorldEvent.INIT_STATUS) {
-            behavior = calculate(fromActor, targetActor);
-            // attach attack behavior to target
-            targetActor.attachBehavior(behavior);
-            this.status = WorldEvent.ATTACHED;
-        } else if (this.status == WorldEvent.ATTACHED) {
+            spawnAndAttach();
+        } else if (shouldDoPost()) {
             postApply();
             this.status = WorldEvent.FINISH;
+        } else if (shouldStop()){
+            this.status = WorldEvent.FINISH;
+        } else {
+            // wait
         }
     }
+
+    protected abstract boolean shouldStop();
+    protected abstract void spawnAndAttach();
+
+    protected abstract boolean shouldDoPost();
 
     @Override
     public void postApply() {
@@ -40,6 +45,5 @@ public abstract class AttackEvent extends WorldEvent implements AttackCalculator
     @Override
     public void reset() {
         super.reset();
-        behavior= null;
     }
 }

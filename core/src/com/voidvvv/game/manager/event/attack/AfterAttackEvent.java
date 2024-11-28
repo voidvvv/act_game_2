@@ -12,4 +12,9 @@ public class AfterAttackEvent extends WorldEvent {
     public void postApply() {
 
     }
+
+    @Override
+    public boolean isEnd() {
+        return false;
+    }
 }
