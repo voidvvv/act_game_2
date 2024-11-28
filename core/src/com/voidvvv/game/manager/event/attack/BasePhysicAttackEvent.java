@@ -25,6 +25,7 @@ public class BasePhysicAttackEvent extends AttackEvent{
             behavior.setAttackType(BattleContext.AttackType.ATTACK_PHYSIC);
             behavior.setDamage(fromBattle.attack);
             behavior.setWorld(to.getWorld());
+            behavior.setAttackEvent(this);
             behavior.fix();
             return behavior;
         }

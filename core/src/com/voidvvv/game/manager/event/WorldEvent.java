@@ -4,6 +4,12 @@ import com.badlogic.gdx.utils.Pool;
 import com.voidvvv.game.base.VActor;
 
 public abstract class WorldEvent implements Pool.Poolable {
+    public static final int INIT_STATUS = 0;
+    public static final int ATTACHED = 1;
+    public static final int FINISH = 2;
+
+
+    protected int status = INIT_STATUS;
     public long frameIndex;
     protected VActor targetActor;
     protected VActor fromActor;
@@ -33,6 +39,14 @@ public abstract class WorldEvent implements Pool.Poolable {
         this.targetActor = targetActor;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public abstract void apply();
     public abstract void postApply();
     public void apply(float delta) {
@@ -43,5 +57,6 @@ public abstract class WorldEvent implements Pool.Poolable {
     public void reset() {
         this.fromActor = null;
         this.targetActor = null;
+        this.status = INIT_STATUS;
     }
 }

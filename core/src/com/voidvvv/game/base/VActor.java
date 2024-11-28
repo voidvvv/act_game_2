@@ -12,6 +12,7 @@ import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.manager.behaviors.Behavior;
 import com.voidvvv.game.context.VWorld;
+import com.voidvvv.game.manager.event.attack.AttackEvent;
 import com.voidvvv.game.screen.test.ui.Box2dUnitConverter;
 import com.voidvvv.game.utils.ReflectUtil;
 
@@ -136,11 +137,11 @@ public abstract class VActor extends Actor implements Pool.Poolable {
         return true;
     }
 
-    public void postAttack(Behavior... behavior) {
+    public void postAttack(AttackEvent attackEvent) {
     }
 
 
-    public void postBeAttacked(Behavior... behavior) {
+    public void postBeAttacked(AttackEvent attackEvent) {
     }
 
 

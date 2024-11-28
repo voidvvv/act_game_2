@@ -5,10 +5,14 @@ import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.battle.BattleAttrDelta;
 import com.voidvvv.game.battle.BattleComponent;
 import com.voidvvv.game.context.VWorld;
+import com.voidvvv.game.manager.event.WorldEvent;
+import com.voidvvv.game.manager.event.attack.AttackEvent;
 import com.voidvvv.game.utils.ReflectUtil;
 
 public class DamageBehavior implements Behavior {
     public static final int BASE_BE_ATTACK_BEHAVIOR = 1;
+
+    AttackEvent attackEvent;
 
     VWorld world;
     int attackType; // magic? physic? real?
@@ -100,6 +104,15 @@ public class DamageBehavior implements Behavior {
 
     }
 
+    public void setAttackEvent(AttackEvent attackEvent) {
+        this.attackEvent = attackEvent;
+    }
+
+    @Override
+    public WorldEvent event() {
+        return this.attackEvent;
+    }
+
     public float getDamage() {
         return damage;
     }
@@ -125,6 +138,7 @@ public class DamageBehavior implements Behavior {
         owner = null;
         damage = 0f;
         trigger = null;
+        attackEvent = null;
         did = false;
     }
 

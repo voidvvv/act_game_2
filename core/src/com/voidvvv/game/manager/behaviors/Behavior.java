@@ -3,6 +3,7 @@ package com.voidvvv.game.manager.behaviors;
 import com.badlogic.gdx.utils.Pool;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.context.VWorld;
+import com.voidvvv.game.manager.event.WorldEvent;
 
 public interface Behavior extends Pool.Poolable {
     public VWorld world();
@@ -11,4 +12,10 @@ public interface Behavior extends Pool.Poolable {
     public void does();
     public int behaviorType();
     public void attach(VActor actor);
+
+    /**
+     * the event trigger this behavior
+     * @return
+     */
+    WorldEvent event();
 }

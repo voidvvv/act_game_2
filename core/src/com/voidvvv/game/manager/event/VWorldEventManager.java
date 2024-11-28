@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Pools;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,6 +19,8 @@ public class VWorldEventManager {
 
     private List<WorldEvent> initList = new ArrayList<>();
 
+    private List<WorldEvent> trashBin = new ArrayList<>();
+
     public VWorldEventManager(){};
 
     public void init () {
@@ -25,7 +28,7 @@ public class VWorldEventManager {
     }
 
     private void freeEvent(WorldEvent event) {
-        Pools.free(event);
+        trashBin.add(event);
     }
 
     public <T extends WorldEvent> T newEvent(Class<T> eventClazz) {
@@ -45,11 +48,22 @@ public class VWorldEventManager {
             events.addAll(initList);
             initList.clear();
         }
-        while (!events.isEmpty()) {
-            WorldEvent event = events.pop();
-            event.apply(delta);
-            event.postApply();
-            freeEvent(event);
+        if (!trashBin.isEmpty()) {
+            Iterator<WorldEvent> iterator = trashBin.iterator();
+            while (iterator.hasNext()) {
+                WorldEvent next = iterator.next();
+                Pools.free(next);
+                iterator.remove();
+            }
+        }
+        Iterator<WorldEvent> iterator = events.iterator();
+        while (iterator.hasNext()) {
+            WorldEvent next = iterator.next();
+            next.apply();
+            if (next.getStatus() == WorldEvent.FINISH) {
+                iterator.remove();
+                freeEvent(next);
+            }
         }
     }
 }
