@@ -5,7 +5,7 @@ import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.manager.behaviors.Behavior;
 import com.voidvvv.game.manager.event.WorldEvent;
 
-public abstract class AttackEvent extends WorldEvent implements AttackCalculator {
+public abstract class AttackEvent extends WorldEvent{
 
     protected VActor triggerObj;
 
@@ -21,9 +21,10 @@ public abstract class AttackEvent extends WorldEvent implements AttackCalculator
     public void apply() {
         if (this.status == WorldEvent.INIT_STATUS) {
             spawnAndAttach();
+            this.status = WorldEvent.ATTACHED;
         } else if (shouldDoPost()) {
             postApply();
-            this.status = WorldEvent.FINISH;
+
         } else if (shouldStop()){
             this.status = WorldEvent.FINISH;
         } else {
@@ -40,6 +41,7 @@ public abstract class AttackEvent extends WorldEvent implements AttackCalculator
     public void postApply() {
         fromActor.postAttack(this);
         targetActor.postBeAttacked(this);
+        this.status = WorldEvent.FINISH;
     }
 
     @Override

@@ -19,6 +19,7 @@ public  class SpellWorldEvent extends WorldEvent {
     @Override
     public void apply() {
         if (skillDes == null) {
+            this.status = WorldEvent.FINISH;
             return;
         }
         Class<? extends Skill> skillClass = skillDes.getSkillClass();
@@ -28,6 +29,7 @@ public  class SpellWorldEvent extends WorldEvent {
             obtain.setOwner(skillCharacter);
             skillCharacter.tryToUseSkill(obtain);
         }
+        postApply();
         this.status = WorldEvent.FINISH;
     }
 

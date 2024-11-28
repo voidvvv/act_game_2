@@ -11,7 +11,7 @@ import com.voidvvv.game.manager.event.VWorldEventManager;
 import com.voidvvv.game.manager.event.WorldEvent;
 import com.voidvvv.game.utils.ReflectUtil;
 
-public class BasePhysicAttackEvent extends AttackEvent{
+public class BasePhysicAttackEvent extends AttackEvent  implements AttackCalculator {
 
     Behavior behavior = null;
 
