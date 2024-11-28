@@ -422,6 +422,7 @@ public class VWorld {
 
     public void draw() {
         getStage().getViewport().apply();
+        ActGame.gameInstance().getCameraManager().getMainCamera().update();
         tiledMapRenderer.setView(ActGame.gameInstance().getCameraManager().getMainCamera());
         tiledMapRenderer.render();
         getStage().draw();

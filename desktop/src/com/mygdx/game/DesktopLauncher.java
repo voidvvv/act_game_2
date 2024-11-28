@@ -14,6 +14,7 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle("act_game_2");
+		config.useVsync(true);
 		new Lwjgl3Application(new ImGuiRender(ActGame.gameInstance()), config);
 
 

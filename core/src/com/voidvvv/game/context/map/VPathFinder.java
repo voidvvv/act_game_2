@@ -105,7 +105,7 @@ public class VPathFinder {
             float beforeDistance = tmp2.set(character.position.x, character.position.y).sub(currentTarget).len();
             float afterDistance = tmp2.add(vector2.scl(0.01f)).len();
             if (beforeDistance <= afterDistance) {
-                ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("beforeDistance: " + beforeDistance + " afterDistance: " + afterDistance);
+                ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("beforeDistance: [RED]" + beforeDistance + "[] afterDistance: [RED]" + afterDistance);
                 currentIndex++;
                 if (2*currentIndex < currentPath.size()-1) {
                     // move to next point
