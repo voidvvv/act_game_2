@@ -94,7 +94,6 @@ public class Bob extends VSkillCharacter {
     @Override
     public void reset() {
         super.reset();
-        System.out.println("reset!!");
 
     }
 

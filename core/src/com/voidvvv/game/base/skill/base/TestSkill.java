@@ -93,11 +93,12 @@ public class TestSkill implements Skill {
                 .mask((short) (WorldContext.OBSTACLE | WorldContext.BLACK | WorldContext.ROLE)) // who do I want to collision
                 .hx(5).hy(5)
                 .initX(this.position.x).initY(this.position.y)
+                .sensor(true)
                 .build();
 
         TestBullet testBullet = character.getWorld().spawnVActor(TestBullet.class, helper);
         testBullet.targetGroup = WorldContext.BLACK;
-        testBullet.getActualBattleAttr().moveSpeed = 200;
+        testBullet.getActualBattleAttr().moveSpeed = 500;
         testBullet.setParentVActor(character);
         testBullet.baseMove.set(direction.x,direction.y,0f);
 

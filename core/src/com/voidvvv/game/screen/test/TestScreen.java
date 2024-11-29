@@ -6,7 +6,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -24,6 +29,7 @@ import com.voidvvv.game.base.test.Bob;
 import com.voidvvv.game.context.WorldContext;
 import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.screen.test.ui.TextMessageBar;
+import com.voidvvv.game.utils.ReflectUtil;
 
 public class TestScreen extends ScreenAdapter {
 
@@ -52,17 +58,11 @@ public class TestScreen extends ScreenAdapter {
 
         VWorld vWorld = ActGame.gameInstance().currentWorld();
         vWorld.update(delta);
-
         orthographicCamera.position.lerp(cameraPosLerp.set(vWorld.getProtagonist().position.x,vWorld.getProtagonist().position.y,0.f),0.1f);
-
         vWorld.draw();
-//        vWorld.getStage().draw();
-
-
         uiStage.getViewport().apply();
         uiStage.draw();
     }
-    Vector3 v3 = new Vector3();
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
@@ -106,20 +106,30 @@ public class TestScreen extends ScreenAdapter {
         WorldHelper worldHelper = WorldHelper.builder()
                 .build();
         vWorld.init(worldHelper);
+        TiledMap map = ActGame.gameInstance().getAssetManager().get(AssetConstant.MAP_TEST_01, TiledMap.class);
+        MapLayer objLayer = map.getLayers().get("main_obj");
+        float birthPlaceX = 60f;
+        float birthPlaceY = 100f;
+        if (objLayer != null) {
+            RectangleMapObject mapObject = ReflectUtil.cast(objLayer.getObjects().get("birthPlace"), RectangleMapObject.class);
+            if (mapObject != null) {
+                birthPlaceX = mapObject.getRectangle().x + objLayer.getOffsetX();
+                birthPlaceY = mapObject.getRectangle().y - objLayer.getOffsetY();
+
+            }
+        }
         VActorSpawnHelper helper = VActorSpawnHelper.builder()
                 .bodyType(BodyDef.BodyType.DynamicBody)
                 .category((short)(WorldContext.ROLE|WorldContext.WHITE)) // who am I
                 .mask((short)(WorldContext.OBSTACLE|WorldContext.BLACK|WorldContext.ROLE)) // who do I want to collision
                 .hx(vWorld.unit()/2 - 2f).hy(2)
-                .initX(60).initY(100)
+                .initX(birthPlaceX).initY(birthPlaceY)
                 .build();
         Bob bob = vWorld.spawnVActor(Bob.class,helper);
         bob.setName("Bob");
         bob.getActualBattleAttr().attack = 500;
         vWorld.setProtagonist(bob);
-        CharacterInputListener inputListener = new CharacterInputListener();
-        inputListener.setCharacter(bob);
-        vWorld.addListener(inputListener);
+
         // input
         CharacterInputListener characterInputListener = new CharacterInputListener();
         characterInputListener.setCharacter(bob);
@@ -163,7 +173,7 @@ public class TestScreen extends ScreenAdapter {
     private void loadAsset() {
         AssetManager assetManager = ActGame.gameInstance().getAssetManager();
         // map
-        assetManager.load("map/test/act_game_02.tmx", TiledMap.class);
+        assetManager.load(AssetConstant.MAP_TEST_01, TiledMap.class);
         assetManager.load(AssetConstant.BOB_IMAGE,Texture.class);
 
         assetManager.finishLoading();

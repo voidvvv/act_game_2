@@ -174,7 +174,6 @@ public class VCharacter extends VActor implements Attackable {
     }
 
     public void jump () {
-        System.out.println(this.position.z);
         if (isFalling()) {
             return;
         }

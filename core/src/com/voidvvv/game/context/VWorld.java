@@ -1,6 +1,10 @@
 package com.voidvvv.game.context;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -15,6 +19,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.box2d.testt.CollisionListener;
@@ -24,7 +29,6 @@ import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VPhysicAttr;
 import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.base.wall.Wall;
-import com.voidvvv.game.context.input.CharacterInputListener;
 import com.voidvvv.game.context.input.Pinpoint;
 import com.voidvvv.game.context.input.PinpointData;
 import com.voidvvv.game.context.map.VMap;
@@ -118,7 +122,7 @@ public class VWorld {
         this.pinpointData = pinpointData;
     }
 
-    WorldHelper helper;
+    protected WorldHelper helper;
 
     public void init(WorldHelper helper) {
         this.helper = helper;
@@ -138,10 +142,10 @@ public class VWorld {
         this.helper = null;
     }
 
-    private void preInit() {
+    protected void preInit() {
     }
 
-    private void loadMap() {
+    protected void loadMap() {
         if (helper.map != null) {
             renderMap = helper.map;
         } else {
@@ -149,8 +153,7 @@ public class VWorld {
             renderMap = ActGame.gameInstance().getAssetManager().get(AssetConstant.MAP_TEST_01);
         }
         TiledMapTileLayer mainLayer = (TiledMapTileLayer) renderMap.getLayers().get("main");
-        TiledMapTileLayer.Cell cell = mainLayer.getCell(0, 0);
-        boundingBox.set(mainLayer.getOffsetX(), mainLayer.getOffsetY(), mainLayer.getWidth() * mainLayer.getTileWidth(), mainLayer.getHeight() * mainLayer.getTileHeight());
+        boundingBox.set(mainLayer.getOffsetX(), -mainLayer.getOffsetY(), mainLayer.getWidth() * mainLayer.getTileWidth(), mainLayer.getHeight() * mainLayer.getTileHeight());
     }
 
     protected void postInit() {
@@ -178,16 +181,18 @@ public class VWorld {
         if (helper.inputListener != null) {
             addListener(helper.inputListener);
         }
+
+
     }
 
-    private void initGraph() {
+    protected void initGraph() {
         map.init(this);
     }
 
 
-    private void initStage() {
+    protected void initStage() {
         Stage stage = helper.stage;
-        if(stage == null) {
+        if (stage == null) {
             OrthographicCamera mainCamera = ActGame.gameInstance().getCameraManager().getMainCamera();
             StretchViewport fillViewport = new StretchViewport(640, 480, mainCamera);
             stage = new Stage(fillViewport
@@ -206,8 +211,8 @@ public class VWorld {
         stage.addActor(new Pinpoint());
     }
 
-    private void initWorld() {
-        box2dWorld = new World(new Vector2(0, 0), false);
+    protected void initWorld() {
+        box2dWorld = new World(new Vector2(0, 0), true);
         if (helper.collisionListener != null) {
             box2dWorld.setContactListener(helper.collisionListener);
         } else
@@ -225,19 +230,22 @@ public class VWorld {
         mainThread(delta);
         clean();
     }
+
     class VActorCompare implements Comparator<Actor> {
 
         @Override
         public int compare(Actor o1, Actor o2) {
             VActor v1 = ReflectUtil.cast(o1, VActor.class);
             VActor v2 = ReflectUtil.cast(o2, VActor.class);
-            float a1 = v1 == null? o1.getY() : v1.position.y;
-            float a2 = v2 == null? o2.getY() : v2.position.y;
+            float a1 = v1 == null ? o1.getY() : v1.position.y;
+            float a2 = v2 == null ? o2.getY() : v2.position.y;
 
-            return (int)(a2 -a1);
+            return (int) (a2 - a1);
         }
     }
+
     VActorCompare compare = new VActorCompare();
+
     protected void mainThread(float delta) {
         vWorldEventManager.update(delta);
         box2dWorld.step(delta, 20
@@ -277,7 +285,6 @@ public class VWorld {
     public <T extends VActor> T spawnVActorObstacle(Class<T> clazz, float initX, float initY, float hx, float hy) {
         return spawnVActorObstacle(clazz, BodyDef.BodyType.StaticBody, initX, initY, hx, hy);
     }
-
 
 
     @SuppressWarnings("CheckResult")
@@ -352,7 +359,6 @@ public class VWorld {
         t.setvActive(false);
         bin.add(t);
     }
-
 
 
     public Fixture createObstacle(BodyDef.BodyType bodyType, float initX, float initY, float hx, float hy) {

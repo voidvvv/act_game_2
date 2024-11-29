@@ -92,7 +92,6 @@ public class TestBullet extends VCharacter {
     @Override
     public void onHit(VActor actor) {
         super.onHit(actor);
-        System.out.println(actor.getName() + " " + actor.isDying());
         if (actor == null || !this.couldContact(actor)) {
             return;
         }
