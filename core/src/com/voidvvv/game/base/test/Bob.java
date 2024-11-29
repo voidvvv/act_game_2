@@ -58,7 +58,9 @@ public class Bob extends VSkillCharacter {
         cube.zLength = getWorld().unit() *2;
         physicAttr.setBaseShape(cube);
         this.setPhysicAttr(physicAttr);
+        this.getActualBattleAttr().maxHp = 1500;
         this.getActualBattleAttr().hp = 1500;
+
         setName("Bob" + MathUtils.random(10));
 
         selfStatusStateMachine = new DefaultStateMachine<>(this);

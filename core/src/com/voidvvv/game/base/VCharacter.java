@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.ActGame;
+import com.voidvvv.game.base.buff.BuffComponent;
 import com.voidvvv.game.battle.Attackable;
 import com.voidvvv.game.battle.BattleAttr;
 import com.voidvvv.game.battle.BattleComponent;
@@ -24,7 +25,7 @@ import java.util.*;
 public class VCharacter extends VActor implements Attackable {
 
     protected final BattleComponent battleComponent = new BattleComponent();
-
+    protected final BuffComponent buffComponent = new BuffComponent();
 
     public Vector3 baseMove = new Vector3();
 
@@ -40,6 +41,7 @@ public class VCharacter extends VActor implements Attackable {
 
     protected boolean dying = false;
 
+
     public VCharacter() {
         for (int x= 0; x< velAffect.length;x++) {
             velAffect[x] = new Vector3();
@@ -52,7 +54,7 @@ public class VCharacter extends VActor implements Attackable {
     public void vAct(float delta) {
         super.vAct(delta);
         // fresh status
-
+        updateBuffs(delta);
         // fresh hp and checkout damage
         behaviorsApply(delta);
         otherApply(delta);
@@ -60,6 +62,10 @@ public class VCharacter extends VActor implements Attackable {
         refreshAttr(delta);
         vCAct(delta);
         synchSpeedToBox2d();
+    }
+
+    private void updateBuffs(float delta) {
+        this.buffComponent.update();
     }
 
     protected void otherApply(float delta) {
@@ -121,9 +127,15 @@ public class VCharacter extends VActor implements Attackable {
     @Override
     public void init() {
         super.init();
+        this.battleComponent.setOwner(this);
+        this.buffComponent.setOwner(this);
         finder = new VPathFinder(this,getWorld());
 
         behaviorMap.put(DamageBehavior.BASE_BE_ATTACK_BEHAVIOR,new LinkedList<>());
+    }
+
+    public BuffComponent getBuffComponent() {
+        return buffComponent;
     }
 
     @Override
