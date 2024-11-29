@@ -11,8 +11,10 @@ public class BaseBattleContext implements BattleContext {
 
     @Override
     public void fixAttack(DamageBehavior behavior) {
-        typeFix(behavior); //
-        behavior.setFixed(true);
+        if (!behavior.isFixed()) {
+            typeFix(behavior); //
+            behavior.setFixed(true);
+        }
     }
 
     private void typeFix(DamageBehavior behavior) {

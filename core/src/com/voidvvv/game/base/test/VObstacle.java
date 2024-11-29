@@ -32,7 +32,7 @@ public class VObstacle extends VActor {
         this.hy = this.physicAttr.box2dHy;
         cube.xLength = hx * 2;
         cube.yLength = hy * 2;
-        cube.zLength = 180f;
+        cube.zLength = 18f;
 
         physicAttr.setBaseShape(cube);
 
