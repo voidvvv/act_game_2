@@ -1,16 +1,18 @@
 package com.voidvvv.game.base.buff;
 
+import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.base.VActor;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 public class BuffComponent {
     VActor owner;
     private Set<Buff> init = new HashSet<>();
-    private List<Buff> buffs = new ArrayList<>();
+    private Set<Buff> buffs = new HashSet<>();
     private Set<Buff> trashBin = new HashSet<>();
 
     public VActor getOwner() {
@@ -21,7 +23,7 @@ public class BuffComponent {
         this.owner = owner;
     }
 
-    public List<Buff> getBuffs() {
+    public Set<Buff> getBuffs() {
         return buffs;
     }
 
@@ -29,7 +31,6 @@ public class BuffComponent {
         if (buff == null) {
             return;
         }
-        buff.setOwner(this.owner);
         init.add(buff);
     }
 
@@ -41,18 +42,31 @@ public class BuffComponent {
     }
 
     public void update () {
+        for (Buff buff : buffs) {
+            buff.update();
+            if (buff.expire()) {
+                remove(buff);
+            }
+        }
         if (!init.isEmpty()) {
             for (Buff buff : init) {
-                buff.enter();
+                boolean add = buffs.add(buff);
+                if (add) {
+                    buff.setOwner(owner);
+                    buff.enter();
+                } else {
+                    // add fail!
+                    Pools.free(buff);
+                }
             }
-            buffs.addAll(init);
-            buffs.sort(BuffCompare.INSTANCE);
             init.clear();
         }
-        for (Buff buff : trashBin) {
-            buff.exit();
-        }
         buffs.removeAll(trashBin);
-        trashBin.clear();
+        Iterator<Buff> iterator = trashBin.iterator();
+        while (iterator.hasNext()) {
+            Buff buff = iterator.next();
+            Pools.free(buff);
+            iterator.remove();
+        }
     }
 }

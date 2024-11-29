@@ -1,13 +1,10 @@
 package com.voidvvv.game.base.buff;
 
-import com.badlogic.gdx.Gdx;
-import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.utils.ReflectUtil;
 
-public class BasicAttrIncreaseBuff extends ExpireBuff{
-
-    public float attackAdd = 0f;
+public class BasicMoveSpeedIncreaseBuff extends ExpireBuff{
+    public float moveSpeedAdd = 0f;
 
     @Override
     public BuffOrder getOrder() {
@@ -21,8 +18,9 @@ public class BasicAttrIncreaseBuff extends ExpireBuff{
             return;
         }
         cast.getBattleComponent().battleDirty = true;
-        cast.getBattleComponent().getAttackTrans().add += this.attackAdd;
-        cast.getBattleComponent().getAttackTrans().dirty = true;
+        cast.getBattleComponent().getMoveSpeedTrans().add += this.moveSpeedAdd;
+        cast.getBattleComponent().getMoveSpeedTrans().dirty = true;
+
     }
 
     @Override
@@ -37,8 +35,8 @@ public class BasicAttrIncreaseBuff extends ExpireBuff{
             return;
         }
         cast.getBattleComponent().battleDirty = true;
-        cast.getBattleComponent().getAttackTrans().add -= this.attackAdd;
-        cast.getBattleComponent().getAttackTrans().dirty = true;
+        cast.getBattleComponent().getMoveSpeedTrans().add -= this.moveSpeedAdd;
+        cast.getBattleComponent().getMoveSpeedTrans().dirty = true;
 
     }
 
@@ -46,5 +44,10 @@ public class BasicAttrIncreaseBuff extends ExpireBuff{
     public void reset() {
         exit();
         this.owner = null;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 }

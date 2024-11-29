@@ -77,8 +77,11 @@ public class BattleComponent {
         }
 
         actualBattleAttr.hp -= currentDamage;
-//        System.out.println(actualBattleAttr.hp);
         currentDamage = 0f;
+
+        if (actualBattleAttr.hp >= actualBattleAttr.maxHp) {
+            actualBattleAttr.hp = Math.max(actualBattleAttr.maxHp, 1);
+        }
     }
 
 }
