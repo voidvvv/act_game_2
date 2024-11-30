@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.asset.BobAssetConstant;
+import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.test.Bob;
 import com.voidvvv.game.render.actor.VActorRender;
 

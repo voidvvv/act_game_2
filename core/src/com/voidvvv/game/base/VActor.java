@@ -1,5 +1,6 @@
 package com.voidvvv.game.base;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -13,6 +14,7 @@ import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.manager.behaviors.Behavior;
 import com.voidvvv.game.context.VWorld;
 import com.voidvvv.game.manager.event.attack.AttackEvent;
+import com.voidvvv.game.render.actor.VActorRender;
 import com.voidvvv.game.screen.test.ui.Box2dUnitConverter;
 import com.voidvvv.game.utils.ReflectUtil;
 
@@ -34,6 +36,8 @@ public abstract class VActor extends Actor implements Pool.Poolable {
     private Fixture fixture;
 
     private Body body;
+
+
 
     boolean vActive = true;
 
@@ -186,4 +190,5 @@ public abstract class VActor extends Actor implements Pool.Poolable {
     public boolean couldContact(VActor actor) {
         return true;
     }
+
 }

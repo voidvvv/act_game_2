@@ -19,21 +19,20 @@ import com.voidvvv.game.base.state.bob.BobStatus;
 import com.voidvvv.game.context.VActorSpawnHelper;
 import com.voidvvv.game.context.WorldContext;
 import com.voidvvv.game.context.input.InputActionMapping;
-import com.voidvvv.game.manager.event.spell.SpellWorldEvent;
 import com.voidvvv.game.render.actor.VActorRender;
 import com.voidvvv.game.render.actor.test.bob.DefaultBobRender;
 import com.voidvvv.game.utils.ReflectUtil;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Bob extends VSkillCharacter {
+public class Bob extends VSkillCharacter{
     @Getter
     @Setter
     StateMachine<Bob, BobStatus> selfStatusStateMachine;
 
     public float statusTime;
 
-    private VActorRender<Bob> vActorRender;
+    private DefaultBobRender defaultBobRender;
 
 
     @Override
@@ -66,8 +65,8 @@ public class Bob extends VSkillCharacter {
         selfStatusStateMachine = new DefaultStateMachine<>(this);
         selfStatusStateMachine.setInitialState(BobStatus.IDLE);
 
-        if (this.vActorRender == null) {
-            vActorRender = new DefaultBobRender();
+        if (this.defaultBobRender == null) {
+            defaultBobRender = new DefaultBobRender();
         }
 
         skills[0] = new SkillDes();
@@ -78,7 +77,7 @@ public class Bob extends VSkillCharacter {
     @Override
     public void draw(Batch batch, float parentAlpha) {
 //        super.draw(batch, parentAlpha);
-        vActorRender.render(this, batch, parentAlpha);
+        defaultBobRender.render(this, batch, parentAlpha);
     }
 
     public float q_standup_time = 1f;
@@ -105,7 +104,7 @@ public class Bob extends VSkillCharacter {
     }
 
     @Override
-    public void enterStatusForSkill(TestSkill testSkill) {
+    public void enterStatusForSkill(Skill testSkill) {
         this.getSelfStatusStateMachine().changeState(BobStatus.SPELL_0);
     }
 

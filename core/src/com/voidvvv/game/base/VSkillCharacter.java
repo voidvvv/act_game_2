@@ -8,7 +8,7 @@ import lombok.Getter;
 
 import java.util.Stack;
 
-public class VSkillCharacter extends VCharacter{
+public class VSkillCharacter extends VCharacter  {
     public static final int SKILL_TYPE_Q = 1;
     public static final int SKILL_TYPE_W = 2;
     public static final int SKILL_TYPE_E = 3;
@@ -93,7 +93,7 @@ public class VSkillCharacter extends VCharacter{
 
     }
 
-    public void enterStatusForSkill(TestSkill testSkill) {
+    public void enterStatusForSkill(Skill testSkill) {
 
     }
 }
