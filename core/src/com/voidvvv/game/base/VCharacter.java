@@ -86,6 +86,13 @@ public class VCharacter extends VActor implements Attackable {
         battleComponent.settlement();
         if (toDying()) {
             becomeDying();
+            afterBecomeDying();
+        }
+    }
+
+    protected void afterBecomeDying() {
+        for (VActorListener listener : listenerComponent.listeners) {
+            listener.afterBecomeDying();
         }
     }
 
@@ -293,6 +300,7 @@ public class VCharacter extends VActor implements Attackable {
         for (VActorListener initListener : listenerComponent.listeners) {
             initListener.afterMakeDamage();
         }
+        lastMakedDamageBehavior = null;
     }
 
     public DamageBehavior lastBeDamagedBehavior;
@@ -304,6 +312,7 @@ public class VCharacter extends VActor implements Attackable {
         for (VActorListener initListener : listenerComponent.listeners) {
             initListener.afterBeDamage();
         }
+        lastBeDamagedBehavior = null;
     }
 
     @Override

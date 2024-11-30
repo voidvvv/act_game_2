@@ -76,7 +76,6 @@ public class Bob extends VSkillCharacter{
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-//        super.draw(batch, parentAlpha);
         defaultBobRender.render(this, batch, parentAlpha);
     }
 

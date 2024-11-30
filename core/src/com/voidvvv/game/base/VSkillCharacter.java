@@ -79,10 +79,15 @@ public class VSkillCharacter extends VCharacter  {
         return currentSkill == null || currentSkill.couldBeReplace(skill);
     }
 
+    public Skill lastUsedSkill;
     protected void afterApplyNewSkill(Skill skill) {
         // change status and send message
+        lastUsedSkill = skill;
         skill.start();
-
+        for (VActorListener listener : listenerComponent.listeners) {
+            listener.afterUseSkill();
+        }
+        lastUsedSkill = null;
     }
 
     public Skill currentSkill () {
