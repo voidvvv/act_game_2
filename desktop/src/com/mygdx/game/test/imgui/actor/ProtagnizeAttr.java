@@ -5,6 +5,7 @@ import com.mygdx.game.test.imgui.UIRender;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VCharacter;
+import com.voidvvv.game.base.buff.BasicAttrIncreaseBuff;
 import com.voidvvv.game.base.buff.BasicMoveSpeedIncreaseBuff;
 import com.voidvvv.game.base.buff.Buff;
 import com.voidvvv.game.battle.BattleAttr;
@@ -43,13 +44,18 @@ public class ProtagnizeAttr implements UIRender {
                 Buff buff = makeMoveSpeedBuff(10f, 200);
                 character.getBuffComponent().add(buff);
             }
+            flag = ImGui.button("施加攻击路buff 10秒钟");
+            if (flag) {
+                Buff buff = makeAttackUpBuff(10f, 1000);
+                character.getBuffComponent().add(buff);
+            }
             ImGui.end();
         }
     }
 
     public static final int TEST_MOVE_SPEED_ID = -1;
+    public static final int TEST_ATTACK_UP_ID = -2;
 
-    Set<Buff> testSet = new HashSet<>();
     public Buff makeMoveSpeedBuff (float time, float speedAdd) {
         BasicMoveSpeedIncreaseBuff buff = Pools.obtain(BasicMoveSpeedIncreaseBuff.class);
         buff.time = time;
@@ -57,4 +63,13 @@ public class ProtagnizeAttr implements UIRender {
         buff.setId(TEST_MOVE_SPEED_ID);
         return buff;
     }
+
+    public Buff makeAttackUpBuff (float time, float attackUp) {
+        BasicAttrIncreaseBuff buff = Pools.obtain(BasicAttrIncreaseBuff.class);
+        buff.time = time;
+        buff.attackAdd = attackUp;
+        buff.setId(TEST_ATTACK_UP_ID);
+        return buff;
+    }
+
 }
