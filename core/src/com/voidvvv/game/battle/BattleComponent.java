@@ -19,14 +19,12 @@ public class BattleComponent {
 
     public final BattleAttr transformBattleAttr = new BattleAttr();
 
-
     public final BattleAttr originBattleAttr = new BattleAttr();
 
     @Getter
     private BattleAttrDeltaData attackTrans = new BattleAttrDeltaData();
     @Getter
     private BattleAttrDeltaData attackSpeedTrans = new BattleAttrDeltaData();
-
     @Getter
     private BattleAttrDeltaData moveSpeedTrans = new BattleAttrDeltaData();
 

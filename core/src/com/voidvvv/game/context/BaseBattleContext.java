@@ -4,6 +4,8 @@ import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.manager.behaviors.DamageBehavior;
 
 public class BaseBattleContext implements BattleContext {
+    private DamageBehavior behavior;
+
     @Override
     public void init() {
 
@@ -18,6 +20,7 @@ public class BaseBattleContext implements BattleContext {
     }
 
     private void typeFix(DamageBehavior behavior) {
+        this.behavior = behavior;
         VActor from = behavior.getFrom();
         VActor to = behavior.getTo();
         int attackType = behavior.getAttackType();

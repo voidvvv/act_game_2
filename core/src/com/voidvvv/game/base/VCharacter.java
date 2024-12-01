@@ -14,6 +14,7 @@ import com.voidvvv.game.context.map.VPathFinder;
 import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.manager.behaviors.DamageBehavior;
 import com.voidvvv.game.manager.behaviors.Behavior;
+import com.voidvvv.game.manager.event.attack.AttackEvent;
 import com.voidvvv.game.screen.test.ui.Box2dUnitConverter;
 import com.voidvvv.game.utils.ReflectUtil;
 
@@ -26,6 +27,7 @@ public class VCharacter extends VActor implements Attackable {
 
     protected final BattleComponent battleComponent = new BattleComponent();
     protected final BuffComponent buffComponent = new BuffComponent();
+    protected final VActorListenerComponent listenerComponent = new VActorListenerComponent();
 
     public Vector3 baseMove = new Vector3();
 
@@ -69,6 +71,7 @@ public class VCharacter extends VActor implements Attackable {
     }
 
     protected void otherApply(float delta) {
+        listenerComponent.update();
     }
 
     protected void vCAct(float delta) {
@@ -83,6 +86,13 @@ public class VCharacter extends VActor implements Attackable {
         battleComponent.settlement();
         if (toDying()) {
             becomeDying();
+            afterBecomeDying();
+        }
+    }
+
+    protected void afterBecomeDying() {
+        for (VActorListener listener : listenerComponent.listeners) {
+            listener.afterBecomeDying();
         }
     }
 
@@ -196,14 +206,6 @@ public class VCharacter extends VActor implements Attackable {
         return this.position.z > 0.f;
     }
 
-    public void applyExternalVel (Vector3 vel) {
-        updateFrameIndex();
-        if (this.velAffectCap >= this.velAffect.length) {
-            return;
-        }
-        this.velAffect[velAffectCap++].set(vel);
-    }
-
     @Override
     public float getHp() {
         return battleComponent.actualBattleAttr.hp;
@@ -267,8 +269,7 @@ public class VCharacter extends VActor implements Attackable {
     private void fixBattleField() {
 //        BattleAttrDelta battleAttrDelta1 = this.battleAttrDelta;
 //        BattleAttr originBattleAttr1 = this.originBattleAttr;
-
-        battleComponent.battleDirty=false;
+        battleComponent.settlement();
     }
 
     public BattleComponent getBattleComponent() {
@@ -284,24 +285,34 @@ public class VCharacter extends VActor implements Attackable {
             DamageBehavior damage = ReflectUtil.cast(behavior, DamageBehavior.class);
             if (damage != null) {
                 if (damage.getTo() == this) {
-                    beDamaged(damage);
+                    afterBeDamaged(damage);
                 }
                 if (damage.getFrom() == this) {
                     afterMakeDamage(damage);
                 }
             }
         }
-
     }
 
+    public DamageBehavior lastMakedDamageBehavior;
     protected void afterMakeDamage(DamageBehavior damage) {
-
+        lastMakedDamageBehavior = damage;
+        for (VActorListener initListener : listenerComponent.listeners) {
+            initListener.afterMakeDamage();
+        }
+        lastMakedDamageBehavior = null;
     }
 
-    protected void beDamaged(DamageBehavior damage) {
-        SystemNotifyMessageManager systemNotifyMessageManager = ActGame.gameInstance().getSystemNotifyMessageManager();
-        String msg = this.getName() + "受到了来自[" + damage.getFrom().getName() + "] 的 [" + (int)damage.getDamage() + "] 点伤害, 方式为: [" + damage.getTrigger() + "]  类型为: " + damage.getAttackType() + "  当前生命值: " + getBattleComponent().actualBattleAttr.hp;
-        systemNotifyMessageManager.pushMessage(msg);
+    public DamageBehavior lastBeDamagedBehavior;
+    protected void afterBeDamaged(DamageBehavior damage) {
+//        SystemNotifyMessageManager systemNotifyMessageManager = ActGame.gameInstance().getSystemNotifyMessageManager();
+//        String msg = this.getName() + "受到了来自[" + damage.getFrom().getName() + "] 的 [" + (int)damage.getDamage() + "] 点伤害, 方式为: [" + damage.getTrigger() + "]  类型为: " + damage.getAttackType() + "  当前生命值: " + getBattleComponent().actualBattleAttr.hp;
+//        systemNotifyMessageManager.pushMessage(msg);
+        lastBeDamagedBehavior = damage;
+        for (VActorListener initListener : listenerComponent.listeners) {
+            initListener.afterBeDamage();
+        }
+        lastBeDamagedBehavior = null;
     }
 
     @Override
@@ -319,7 +330,10 @@ public class VCharacter extends VActor implements Attackable {
         super.reset();
         for (Map.Entry<Integer, Deque<Behavior>> entry :behaviorMap.entrySet()) {
             Deque<Behavior> value = entry.getValue();
-            Pools.free(value);
+            for (Behavior b: value) {
+                Pools.free(b);
+            }
+            value.clear();
         }
         behaviorMap.clear();
         finder = null;
@@ -346,5 +360,29 @@ public class VCharacter extends VActor implements Attackable {
     @Override
     public boolean couldContact(VActor another) {
         return !this.isDying() && !another.isDying();
+    }
+
+    public VActorListenerComponent getListenerComponent() {
+        return listenerComponent;
+    }
+
+    public AttackEvent lastMadeAttack;
+    @Override
+    public void postAttack(AttackEvent attackEvent) {
+        lastMadeAttack = attackEvent;
+        for (VActorListener initListener : listenerComponent.listeners) {
+            initListener.afterMakeAttackEvent();
+        }
+        lastMadeAttack = null;
+    }
+    public AttackEvent lastBeAttackedEvent;
+
+    @Override
+    public void postBeAttacked(AttackEvent attackEvent) {
+        lastBeAttackedEvent = attackEvent;
+        for (VActorListener initListener : listenerComponent.listeners) {
+            initListener.afterBeAttackEvent();
+        }
+        lastBeAttackedEvent = null;
     }
 }

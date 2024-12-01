@@ -8,7 +8,7 @@ import lombok.Getter;
 
 import java.util.Stack;
 
-public class VSkillCharacter extends VCharacter{
+public class VSkillCharacter extends VCharacter  {
     public static final int SKILL_TYPE_Q = 1;
     public static final int SKILL_TYPE_W = 2;
     public static final int SKILL_TYPE_E = 3;
@@ -79,10 +79,15 @@ public class VSkillCharacter extends VCharacter{
         return currentSkill == null || currentSkill.couldBeReplace(skill);
     }
 
+    public Skill lastUsedSkill;
     protected void afterApplyNewSkill(Skill skill) {
         // change status and send message
+        lastUsedSkill = skill;
         skill.start();
-
+        for (VActorListener listener : listenerComponent.listeners) {
+            listener.afterUseSkill();
+        }
+        lastUsedSkill = null;
     }
 
     public Skill currentSkill () {
@@ -93,7 +98,7 @@ public class VSkillCharacter extends VCharacter{
 
     }
 
-    public void enterStatusForSkill(TestSkill testSkill) {
+    public void enterStatusForSkill(Skill testSkill) {
 
     }
 }
