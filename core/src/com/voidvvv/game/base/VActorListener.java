@@ -20,4 +20,6 @@ public interface VActorListener extends Pool.Poolable {
     void afterBeAttackEvent();
 
     void afterUseSkill();
+
+    void afterHitOnActor();
 }

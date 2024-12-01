@@ -50,7 +50,7 @@ public class BattleComponent {
 
     public void settlement() {
         if (battleDirty) {
-            battleDirty = false;
+             battleDirty = false;
             // calculate actual attribute from originBattleAttr and buff list
             if (attackTrans.dirty) {
                 float attack = originBattleAttr.attack;

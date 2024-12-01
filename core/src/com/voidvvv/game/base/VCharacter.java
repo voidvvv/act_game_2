@@ -29,6 +29,8 @@ public class VCharacter extends VActor implements Attackable {
     protected final BuffComponent buffComponent = new BuffComponent();
     protected final VActorListenerComponent listenerComponent = new VActorListenerComponent();
 
+    public float statusTime;
+
     public Vector3 baseMove = new Vector3();
 
     public boolean flip = false;
@@ -384,5 +386,16 @@ public class VCharacter extends VActor implements Attackable {
             initListener.afterBeAttackEvent();
         }
         lastBeAttackedEvent = null;
+    }
+
+    public VActor lastHitActor;
+    @Override
+    public void onHit(VActor actor) {
+        lastHitActor = actor;
+        super.onHit(actor);
+        for (VActorListener listener : listenerComponent.listeners) {
+            listener.afterHitOnActor();
+        }
+        lastHitActor = null;
     }
 }

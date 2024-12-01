@@ -1,27 +1,18 @@
 package com.voidvvv.game.base.test;
 
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
-import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.utils.Pools;
-import com.voidvvv.game.ActGame;
-import com.voidvvv.game.base.VActor;
-import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.VSkillCharacter;
 import com.voidvvv.game.base.shape.VCube;
 import com.voidvvv.game.base.skill.Skill;
 import com.voidvvv.game.base.skill.SkillDes;
 import com.voidvvv.game.base.skill.base.TestSkill;
 import com.voidvvv.game.base.state.bob.BobStatus;
-import com.voidvvv.game.context.VActorSpawnHelper;
-import com.voidvvv.game.context.WorldContext;
 import com.voidvvv.game.context.input.InputActionMapping;
-import com.voidvvv.game.render.actor.VActorRender;
 import com.voidvvv.game.render.actor.test.bob.DefaultBobRender;
-import com.voidvvv.game.utils.ReflectUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,8 +20,6 @@ public class Bob extends VSkillCharacter{
     @Getter
     @Setter
     StateMachine<Bob, BobStatus> selfStatusStateMachine;
-
-    public float statusTime;
 
     private DefaultBobRender defaultBobRender;
 
@@ -69,10 +58,13 @@ public class Bob extends VSkillCharacter{
             defaultBobRender = new DefaultBobRender();
         }
 
-        skills[0] = new SkillDes();
-        skills[0].setDes("发射闪光炸弹");
-        skills[0].setSkillClass(TestSkill.class);
+        SkillDes lightingBoom = new SkillDes();
+        lightingBoom.setSkillClass(TestSkill.class);
+        lightingBoom.setDes("闪光炸弹");
+        replaceSkill(0, lightingBoom);
+
     }
+
 
     @Override
     public void draw(Batch batch, float parentAlpha) {

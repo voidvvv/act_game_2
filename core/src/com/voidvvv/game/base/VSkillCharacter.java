@@ -8,7 +8,7 @@ import lombok.Getter;
 
 import java.util.Stack;
 
-public class VSkillCharacter extends VCharacter  {
+public abstract class VSkillCharacter extends VCharacter  {
     public static final int SKILL_TYPE_Q = 1;
     public static final int SKILL_TYPE_W = 2;
     public static final int SKILL_TYPE_E = 3;
@@ -60,7 +60,8 @@ public class VSkillCharacter extends VCharacter  {
             skill.init(this);
             useNewSkill(skill);
             skillQueue.clear();
-
+            return true;
+        } else if (couldMerge(skill)) {
             return true;
         } else if (couldWait(skill)) {
             skill.init(this);
@@ -68,6 +69,10 @@ public class VSkillCharacter extends VCharacter  {
         } else {
             Pools.free(skill);
         }
+        return false;
+    }
+
+    protected boolean couldMerge(Skill skill) {
         return false;
     }
 
@@ -92,6 +97,25 @@ public class VSkillCharacter extends VCharacter  {
 
     public Skill currentSkill () {
         return currentSkill;
+    }
+
+    protected  void replaceSkill(int i, SkillDes skillDes) {
+        if (skillDes == null) {
+            return;
+        }
+        if (i < 0 || i >= skills.length) {
+            return;
+        }
+        SkillDes lastSkill = skills[i];
+        if (lastSkill != null) {
+            exitSkill(lastSkill);
+        }
+        skills[i] = skillDes;
+        skillDes.afterAdd(this);
+    }
+
+    private void exitSkill(SkillDes lastSkill) {
+        lastSkill.afterRemove(this);
     }
 
     public void tryToBackToNormal() {
