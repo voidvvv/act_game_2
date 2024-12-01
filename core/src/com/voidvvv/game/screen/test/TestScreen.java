@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.*;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.asset.AssetConstant;
+import com.voidvvv.game.base.actors.Slime;
 import com.voidvvv.game.base.test.VObstacle;
 import com.voidvvv.game.context.VActorSpawnHelper;
 import com.voidvvv.game.context.VWorld;
@@ -158,6 +159,21 @@ public class TestScreen extends ScreenAdapter {
         VObstacle vObstacle = vWorld.spawnVActor(VObstacle.class, helper);
         vObstacle.setName("Rocky!");
 
+        addSlime();
+
+    }
+
+    private void addSlime() {
+        VActorSpawnHelper helper = VActorSpawnHelper.builder()
+                .bodyType(BodyDef.BodyType.DynamicBody)
+                .category((short)(WorldContext.ROLE|WorldContext.WHITE)) // who am I
+                .mask((short)(WorldContext.OBSTACLE|WorldContext.BLACK|WorldContext.ROLE)) // who do I want to collision
+                .hx(vWorld.unit()/2 - 2f).hy(2)
+                .initX(100f).initY(100f)
+                .build();
+        Slime bob = vWorld.spawnVActor(Slime.class,helper);
+        bob.setName("Slime");
+        bob.getActualBattleAttr().attack = 1;
     }
 
     private void initParam() {

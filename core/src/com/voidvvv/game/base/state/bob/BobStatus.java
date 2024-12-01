@@ -12,7 +12,6 @@ public enum BobStatus implements State<Bob> {
     IDLE(){
         @Override
         public void enter(Bob entity) {
-            ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("IDLE 进入");
 
         }
 
@@ -40,8 +39,6 @@ public enum BobStatus implements State<Bob> {
             } else if (entity.baseMove.x < 0) {
                 entity.flip = true;
             }
-            ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("WALKING 进入");
-
         }
 
 
@@ -151,7 +148,6 @@ public enum BobStatus implements State<Bob> {
         public void exit(Bob entity) {
             super.exit(entity);
             if (entity.currentSkill() != null && !entity.skillNew) {
-                entity.currentSkill().end();
                 entity.over(entity.currentSkill());
             }
         }
