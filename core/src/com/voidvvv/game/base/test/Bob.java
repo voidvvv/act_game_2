@@ -91,7 +91,11 @@ public class Bob extends VSkillCharacter{
 
     @Override
     public void tryToBackToNormal() {
+        Skill skill = currentSkill;
         this.getSelfStatusStateMachine().changeState(BobStatus.IDLE);
+        if (skill != null) {
+            Pools.free(skill);
+        }
     }
 
     @Override

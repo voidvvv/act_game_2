@@ -1,6 +1,7 @@
 package com.voidvvv.game.context;
 
 import com.voidvvv.game.base.VActor;
+import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.manager.behaviors.DamageBehavior;
 
 public class BaseBattleContext implements BattleContext {
@@ -27,7 +28,7 @@ public class BaseBattleContext implements BattleContext {
         float damage = behavior.getDamage();
         if (attackType == AttackType.ATTACK_PHYSIC) {
             // physic
-            float defence = to.getFloat(ActorFields.DEFENCE_FIELD);
+            float defence = to.getFloat(ActorConstants.DEFENCE_FIELD);
             damage = (damage * 100) / (100 + defence);
             behavior.setDamage(damage);
         }else if (attackType == AttackType.ATTACK_MAGIC){

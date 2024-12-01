@@ -1,16 +1,20 @@
 package com.voidvvv.game.base;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.ActGame;
+import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.buff.BuffComponent;
 import com.voidvvv.game.battle.Attackable;
 import com.voidvvv.game.battle.BattleAttr;
 import com.voidvvv.game.battle.BattleComponent;
 import com.voidvvv.game.context.BattleContext;
 import com.voidvvv.game.context.map.VPathFinder;
+import com.voidvvv.game.manager.FontManager;
 import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.manager.behaviors.DamageBehavior;
 import com.voidvvv.game.manager.behaviors.Behavior;
@@ -134,6 +138,17 @@ public class VCharacter extends VActor implements Attackable {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         finder.draw(batch,parentAlpha);
+        FontManager fontManager = ActGame.gameInstance().getFontManager();
+        BitmapFont baseFont = fontManager.getBaseFont();
+        baseFont.draw(batch, getName(), position.x, position.y);
+
+        batch.end();
+        ShapeRenderer shapeRenderer = ActGame.gameInstance().getDrawManager().getShapeRenderer();
+        shapeRenderer.setProjectionMatrix(getStage().getCamera().combined);
+        shapeRenderer.begin();
+        shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
+        shapeRenderer.end();
+        batch.begin();
     }
 
     @Override
@@ -319,9 +334,9 @@ public class VCharacter extends VActor implements Attackable {
 
     @Override
     public float getFloat(int type) {
-        if (type == BattleContext.ActorFields.DEFENCE_FIELD) {
+        if (type == ActorConstants.DEFENCE_FIELD) {
             return this.getActualBattleAttr().defense;
-        } else if (type == BattleContext.ActorFields.ATTACK_FIELD) {
+        } else if (type == ActorConstants.ATTACK_FIELD) {
             return this.getActualBattleAttr().attack;
         }
         return 0f;

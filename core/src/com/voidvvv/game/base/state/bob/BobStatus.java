@@ -148,7 +148,6 @@ public enum BobStatus implements State<Bob> {
         public void exit(Bob entity) {
             super.exit(entity);
             if (entity.currentSkill() != null && !entity.skillNew) {
-                entity.currentSkill().end();
                 entity.over(entity.currentSkill());
             }
         }
