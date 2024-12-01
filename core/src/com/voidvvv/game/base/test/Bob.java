@@ -9,6 +9,7 @@ import com.voidvvv.game.base.VSkillCharacter;
 import com.voidvvv.game.base.shape.VCube;
 import com.voidvvv.game.base.skill.Skill;
 import com.voidvvv.game.base.skill.SkillDes;
+import com.voidvvv.game.base.skill.base.Hit;
 import com.voidvvv.game.base.skill.base.TestSkill;
 import com.voidvvv.game.base.state.bob.BobStatus;
 import com.voidvvv.game.context.input.InputActionMapping;
@@ -62,7 +63,10 @@ public class Bob extends VSkillCharacter{
         lightingBoom.setSkillClass(TestSkill.class);
         lightingBoom.setDes("闪光炸弹");
         replaceSkill(0, lightingBoom);
-
+        SkillDes hitSkillDes = new SkillDes();
+        hitSkillDes.setSkillClass(Hit.class);
+        hitSkillDes.setDes("冲撞");
+        replaceSkill(1, hitSkillDes);
     }
 
 
@@ -77,6 +81,11 @@ public class Bob extends VSkillCharacter{
     public void useSkill(int skillCode) {
         if (skillCode == InputActionMapping.SKILL_Q) {
             Skill obtain = Pools.obtain(skills[0].getSkillClass());
+            obtain.setOwner(this);
+            this.tryToUseSkill(obtain);
+        }
+        if (skillCode == InputActionMapping.SKILL_W) {
+            Skill obtain = Pools.obtain(skills[1].getSkillClass());
             obtain.setOwner(this);
             this.tryToUseSkill(obtain);
         }

@@ -1,5 +1,6 @@
 package com.voidvvv.game.base.skill.base;
 
+import com.voidvvv.game.ActGame;
 import com.voidvvv.game.VActorAdaptor;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VActorListener;
@@ -16,6 +17,7 @@ public class Hit implements Skill {
 
     VSkillCharacter owner;
     HitListener listener = new HitListener();
+    float process = 0;
     @Override
     public int type() {
         return 0;
@@ -23,11 +25,13 @@ public class Hit implements Skill {
 
     @Override
     public float percentage() {
-        return 0;
+        return process;
     }
 
     @Override
     public int init(VSkillCharacter character) {
+        this.setOwner(character);
+        ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage(character.getName() + " 使用了撞击!");
         return 0;
     }
 
@@ -48,27 +52,43 @@ public class Hit implements Skill {
 
     @Override
     public void start() {
+        ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("撞击技能开始，获得霸体，并且进入冲撞状态");
+        owner.getListenerComponent().add(listener);
+        ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("并且给owner添加撞击技能的监听");
+        owner.enterStatusForSkill(this);
 
     }
 
     @Override
     public void process(float delta) {
+        updateProcess(delta);
+        if (isEnding()) {
+            ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("back to normal");
+            owner.tryToBackToNormal(); // 技能结束，将人物回归初始IDLE 状态
+        }
+    }
 
+    private void updateProcess(float delta) {
+        process += delta;
     }
 
     @Override
     public void end() {
-
+        // 结束时，给owner移除冲撞监听器
+        owner.getListenerComponent().remove(listener);
+        owner = null;
     }
 
     @Override
     public boolean isEnding() {
-        return false;
+        return process >= 1f;
     }
 
     @Override
     public void reset() {
+        process = 0f;
         listener.reset();
+        this.end();
     }
 
     class HitListener extends VActorAdaptor {
@@ -84,6 +104,7 @@ public class Hit implements Skill {
             boolean add = actorSet.add(character);
             if (add) {
                 // generate an event try to damage the character
+                ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage(owner.getName() + " 的  冲撞技能命中了: " + character.getName());
             }
         }
 
