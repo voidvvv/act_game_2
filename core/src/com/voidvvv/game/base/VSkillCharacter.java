@@ -28,7 +28,7 @@ public abstract class VSkillCharacter extends VCharacter  {
     protected void otherApply(float delta) {
         super.otherApply(delta);
         if (currentSkill == null && !skillQueue.isEmpty()) {
-            useNewSkill(skillQueue.pop());
+            tryToUseSkill(skillQueue.pop(), false);
         }
     }
 
@@ -55,11 +55,13 @@ public abstract class VSkillCharacter extends VCharacter  {
         skills[type] = skill;
     }
 
-    public boolean tryToUseSkill (Skill skill) {
+    public boolean tryToUseSkill (Skill skill, boolean clear) {
         if (couldApplyNewSkill(skill)) {
             skill.init(this);
             useNewSkill(skill);
-            skillQueue.clear();
+            if (clear) {
+                skillQueue.clear();
+            }
             return true;
         } else if (couldMerge(skill)) {
             return true;
@@ -72,6 +74,10 @@ public abstract class VSkillCharacter extends VCharacter  {
         return false;
     }
 
+    public boolean tryToUseSkill (Skill skill) {
+        return tryToUseSkill(skill, true);
+    }
+
     protected boolean couldMerge(Skill skill) {
         return false;
     }
@@ -81,7 +87,12 @@ public abstract class VSkillCharacter extends VCharacter  {
     }
 
     protected boolean couldApplyNewSkill(Skill skill) {
-        return currentSkill == null || currentSkill.couldBeReplace(skill);
+        return (currentSkill == null || currentSkill.couldBeReplace(skill)) && this.couldAffordSkill(skill);
+    }
+
+    protected boolean couldAffordSkill(Skill skill) {
+
+        return getWorld().getBattleContext().payForSkill(this, skill);
     }
 
     public Skill lastUsedSkill;

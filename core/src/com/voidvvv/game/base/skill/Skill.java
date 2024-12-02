@@ -11,7 +11,6 @@ public interface Skill extends Pool.Poolable {
 
     int init(VSkillCharacter character);
 
-
     VSkillCharacter owner();
 
     void setOwner(VSkillCharacter owner);
@@ -25,4 +24,7 @@ public interface Skill extends Pool.Poolable {
     void end();
 
     boolean isEnding();
+
+
+    Cost cost();
 }

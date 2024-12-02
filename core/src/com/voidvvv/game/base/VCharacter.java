@@ -9,6 +9,8 @@ import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.buff.BuffComponent;
+import com.voidvvv.game.base.skill.Cost;
+import com.voidvvv.game.base.skill.Skill;
 import com.voidvvv.game.battle.Attackable;
 import com.voidvvv.game.battle.BattleAttr;
 import com.voidvvv.game.battle.BattleComponent;
@@ -49,6 +51,7 @@ public class VCharacter extends VActor implements Attackable {
 
     protected boolean dying = false;
 
+    public float justUsedMp = 0f;
 
     public VCharacter() {
         for (int x= 0; x< velAffect.length;x++) {
@@ -412,5 +415,11 @@ public class VCharacter extends VActor implements Attackable {
             listener.afterHitOnActor();
         }
         lastHitActor = null;
+    }
+
+    public boolean payForUse(Skill skill) {
+        Cost cost = skill.cost();
+
+        return false;
     }
 }

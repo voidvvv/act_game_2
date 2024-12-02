@@ -3,8 +3,11 @@ package com.voidvvv.game.base.skill.base;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.voidvvv.game.base.VSkillCharacter;
+import com.voidvvv.game.base.actors.ActorConstants;
+import com.voidvvv.game.base.skill.Cost;
 import com.voidvvv.game.base.skill.Skill;
 import com.voidvvv.game.base.test.TestBullet;
+import com.voidvvv.game.battle.BattleComponent;
 import com.voidvvv.game.context.VActorSpawnHelper;
 import com.voidvvv.game.context.WorldContext;
 
@@ -19,6 +22,8 @@ public class TestSkill implements Skill {
 
     public Vector2 position = new Vector2();
     public Vector2 direction = new Vector2();
+
+    Cost cost = new Cost();
 
     @Override
     public boolean couldBeReplace(Skill skill) {
@@ -70,7 +75,7 @@ public class TestSkill implements Skill {
         character.baseMove.y = 0;
 //        character.interruptPathFinding();
         if (this.progress >= triggerTime && !send) {
-            launch ();
+            launch();
         }
         if (isEnding()) {
             character.tryToBackToNormal();
@@ -82,7 +87,27 @@ public class TestSkill implements Skill {
         return this.progress >= 1f && send;
     }
 
-    public void launch () {
+    public boolean payForUse(VSkillCharacter character) {
+        BattleComponent battleComponent = character.getBattleComponent();
+        float currentMagic = battleComponent.currentMagic;
+        float mp = battleComponent.actualBattleAttr.mp;
+        Float mpNeedCost = cost.getFloat(ActorConstants.MP_FIELD);
+        if (mpNeedCost != null) {
+            if ((mp - currentMagic) >= mpNeedCost) {
+                return true;
+            }
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Cost cost() {
+        return cost;
+    }
+
+    public void launch() {
         send = true;
         if (character == null) {
             return;
@@ -100,7 +125,7 @@ public class TestSkill implements Skill {
         testBullet.targetGroup = WorldContext.BLACK;
         testBullet.getActualBattleAttr().moveSpeed = 500;
         testBullet.setParentVActor(character);
-        testBullet.baseMove.set(direction.x,direction.y,0f);
+        testBullet.baseMove.set(direction.x, direction.y, 0f);
 
     }
 
@@ -119,8 +144,8 @@ public class TestSkill implements Skill {
         progress = 0f;
         this.character = null;
         send = false;
-        position.set(0,0);
-        direction.set(1,0);
+        position.set(0, 0);
+        direction.set(1, 0);
         speed = 1f;
         end();
     }

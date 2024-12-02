@@ -12,8 +12,8 @@ import java.util.Map;
 
 public class BattleComponent {
     VCharacter owner;
-    float currentDamage;
-    float currentMagic;
+    public float currentDamage;
+    public float currentMagic;
 
     public final BattleAttr actualBattleAttr = new BattleAttr();
 
@@ -77,10 +77,16 @@ public class BattleComponent {
         actualBattleAttr.hp -= currentDamage;
         currentDamage = 0f;
 
+        actualBattleAttr.mp -= currentMagic;
+        currentMagic = 0f;
+
         if (actualBattleAttr.hp >= actualBattleAttr.maxHp) {
             actualBattleAttr.hp = Math.max(actualBattleAttr.maxHp, 1);
         }
     }
 
+    public void useMp(Float mpNeedCost) {
+        this.currentMagic += mpNeedCost;
+    }
 }
 
