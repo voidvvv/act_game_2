@@ -24,7 +24,6 @@ public abstract class AttackEvent extends WorldEvent{
             this.status = WorldEvent.ATTACHED;
         } else if (shouldDoPost()) {
             postApply();
-
         } else if (shouldStop()){
             this.status = WorldEvent.FINISH;
         } else {

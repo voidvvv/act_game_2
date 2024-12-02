@@ -6,6 +6,7 @@ import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VActorListener;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.VSkillCharacter;
+import com.voidvvv.game.base.skill.Cost;
 import com.voidvvv.game.base.skill.Skill;
 import com.voidvvv.game.utils.ReflectUtil;
 
@@ -14,6 +15,7 @@ import java.util.Set;
 
 
 public class Hit implements Skill {
+    Cost cost = new Cost();
 
     VSkillCharacter owner;
     HitListener listener = new HitListener();
@@ -82,6 +84,12 @@ public class Hit implements Skill {
     @Override
     public boolean isEnding() {
         return process >= 1f;
+    }
+
+
+    @Override
+    public Cost cost() {
+        return cost;
     }
 
     @Override

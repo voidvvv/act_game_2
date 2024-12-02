@@ -129,6 +129,7 @@ public class TestScreen extends ScreenAdapter {
         Bob bob = vWorld.spawnVActor(Bob.class,helper);
         bob.setName("Bob");
         bob.getActualBattleAttr().attack = 1;
+        bob.getActualBattleAttr().mp = 1000;
         vWorld.setProtagonist(bob);
 
         // input
