@@ -14,10 +14,8 @@ import com.voidvvv.game.base.skill.Skill;
 import com.voidvvv.game.battle.Attackable;
 import com.voidvvv.game.battle.BattleAttr;
 import com.voidvvv.game.battle.BattleComponent;
-import com.voidvvv.game.context.BattleContext;
 import com.voidvvv.game.context.map.VPathFinder;
 import com.voidvvv.game.manager.FontManager;
-import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.manager.behaviors.DamageBehavior;
 import com.voidvvv.game.manager.behaviors.Behavior;
 import com.voidvvv.game.manager.event.attack.AttackEvent;
@@ -417,7 +415,7 @@ public class VCharacter extends VActor implements Attackable {
         lastHitActor = null;
     }
 
-    public boolean payForUse(Skill skill) {
+    public boolean couldPayForUse(Skill skill) {
         Cost cost = skill.cost();
 
         return true;

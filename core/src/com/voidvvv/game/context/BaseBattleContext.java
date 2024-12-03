@@ -11,7 +11,7 @@ public class BaseBattleContext implements BattleContext {
 
     @Override
     public boolean payForSkill(VSkillCharacter character, Skill skill) {
-        return character.payForUse(skill);
+        return character.couldPayForUse(skill);
     }
 
     @Override

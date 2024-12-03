@@ -27,4 +27,6 @@ public interface Skill extends Pool.Poolable {
 
 
     Cost cost();
+
+    void onMove();
 }
