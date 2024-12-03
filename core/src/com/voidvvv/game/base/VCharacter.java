@@ -420,6 +420,10 @@ public class VCharacter extends VActor implements Attackable {
     public boolean payForUse(Skill skill) {
         Cost cost = skill.cost();
 
-        return false;
+        return true;
+    }
+
+    public void setFrameSkill(int keycode) {
+
     }
 }

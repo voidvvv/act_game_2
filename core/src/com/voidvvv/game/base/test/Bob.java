@@ -28,8 +28,14 @@ public class Bob extends VSkillCharacter{
     @Override
     public void vCAct(float delta) {
         super.vCAct(delta);
-
+        // skill update
+        skillUpdate();
         stateUpdate(delta);
+    }
+
+    protected void skillUpdate() {
+        useSkill(this.skillCode);
+        this.skillCode = -1;
     }
 
     private void stateUpdate(float delta) {
@@ -77,6 +83,14 @@ public class Bob extends VSkillCharacter{
 
     public float q_standup_time = 1f;
     public boolean q_consume = false;
+
+    public int skillCode = -1;
+    @Override
+    public void setFrameSkill(int keycode) {
+        skillCode = keycode;
+        System.out.println("skill code: " + skillCode);
+    }
+
     @Override
     public void useSkill(int skillCode) {
         if (skillCode == InputActionMapping.SKILL_Q) {
