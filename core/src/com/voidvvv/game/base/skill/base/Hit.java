@@ -93,6 +93,11 @@ public class Hit implements Skill {
     }
 
     @Override
+    public void onMove() {
+
+    }
+
+    @Override
     public void reset() {
         process = 0f;
         listener.reset();

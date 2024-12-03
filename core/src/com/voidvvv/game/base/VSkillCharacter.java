@@ -60,6 +60,9 @@ public abstract class VSkillCharacter extends VCharacter  {
             skill.init(this);
             useNewSkill(skill);
             if (clear) {
+                for (Skill skill1 : skillQueue) {
+                    Pools.free(skill1);
+                }
                 skillQueue.clear();
             }
             return true;
@@ -72,6 +75,15 @@ public abstract class VSkillCharacter extends VCharacter  {
             Pools.free(skill);
         }
         return false;
+    }
+
+    @Override
+    public boolean findPath(float x, float y) {
+        boolean path = super.findPath(x, y);
+        if (path && this.currentSkill != null) {
+            this.currentSkill.onMove();
+        }
+        return path;
     }
 
     public boolean tryToUseSkill (Skill skill) {

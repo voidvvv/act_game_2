@@ -107,6 +107,11 @@ public class TestSkill implements Skill {
         return cost;
     }
 
+    @Override
+    public void onMove() {
+
+    }
+
     public void launch() {
         send = true;
         if (character == null) {

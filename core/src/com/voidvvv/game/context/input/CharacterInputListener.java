@@ -42,7 +42,6 @@ public class CharacterInputListener extends InputListener {
         }
         if (keycode == InputActionMapping.SKILL_R) {
             result = true;
-
         }
         if (keycode == InputActionMapping.SKILL_W) {
             result = true;
@@ -52,7 +51,7 @@ public class CharacterInputListener extends InputListener {
             result = true;
         }
         if (result) {
-            character.useSkill(keycode);
+            character.setFrameSkill(keycode);
         }
         return result;
     }
