@@ -148,4 +148,10 @@ public abstract class VSkillCharacter extends VCharacter  {
     public void enterStatusForSkill(Skill testSkill) {
 
     }
+
+    @Override
+    public void endSkill(Skill testSkill) {
+        super.endSkill(testSkill);
+        this.tryToBackToNormal();
+    }
 }

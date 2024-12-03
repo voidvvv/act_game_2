@@ -11,6 +11,7 @@ import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.buff.BuffComponent;
 import com.voidvvv.game.base.skill.Cost;
 import com.voidvvv.game.base.skill.Skill;
+import com.voidvvv.game.base.skill.base.TestSkill;
 import com.voidvvv.game.battle.Attackable;
 import com.voidvvv.game.battle.BattleAttr;
 import com.voidvvv.game.battle.BattleComponent;
@@ -49,7 +50,6 @@ public class VCharacter extends VActor implements Attackable {
 
     protected boolean dying = false;
 
-    public float justUsedMp = 0f;
 
     public VCharacter() {
         for (int x= 0; x< velAffect.length;x++) {
@@ -423,5 +423,32 @@ public class VCharacter extends VActor implements Attackable {
 
     public void setFrameSkill(int keycode) {
 
+    }
+
+    public float justUsedMp = 0f;
+
+    public void consumeMp(TestSkill testSkill) {
+        BattleComponent battleComponent = this.getBattleComponent();
+        float currentMagic = battleComponent.currentMagic;
+        float mp = battleComponent.actualBattleAttr.mp;
+        Float mpNeedCost = testSkill.cost().getFloat(ActorConstants.MP_FIELD);
+        if (mpNeedCost == null) {
+            return;
+        }
+        battleComponent.currentMagic += mpNeedCost;
+        justUsedMp = mpNeedCost;
+        for (VActorListener listener : this.listenerComponent.listeners) {
+            listener.afterConsumeMp();
+        }
+        justUsedMp = 0f;
+    }
+
+    public Skill lastEndSkill;
+    public void endSkill(Skill skill) {
+        lastEndSkill = skill;
+        for (VActorListener listener : this.listenerComponent.listeners) {
+            listener.afterEndSkill();
+        }
+        lastEndSkill = null;
     }
 }

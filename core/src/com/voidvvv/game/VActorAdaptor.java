@@ -45,6 +45,16 @@ public class VActorAdaptor implements VActorListener {
     }
 
     @Override
+    public void afterConsumeMp() {
+
+    }
+
+    @Override
+    public void afterEndSkill() {
+
+    }
+
+    @Override
     public void reset() {
 
     }

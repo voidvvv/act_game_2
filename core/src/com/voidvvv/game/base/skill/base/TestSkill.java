@@ -66,6 +66,9 @@ public class TestSkill implements Skill {
     public void start() {
         // start
         character.enterStatusForSkill(this);
+
+        // consume
+        character.consumeMp(this);
     }
 
     @Override
@@ -78,7 +81,7 @@ public class TestSkill implements Skill {
             launch();
         }
         if (isEnding()) {
-            character.tryToBackToNormal();
+            character.endSkill(this);
         }
     }
 
