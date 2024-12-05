@@ -95,7 +95,7 @@ public class BobAssetConstant {
         if (status == BobStatus.SPELL_0) {
             Animation<TextureRegion> tr = flip ? spell_animation_mirror : spell_animation;
 
-            return tr.getKeyFrame(tr.getAnimationDuration() * 1.0f);
+            return tr.getKeyFrame(tr.getAnimationDuration() * actor.statusProgress);
         }
 
         if (status == BobStatus.DYING) {

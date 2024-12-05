@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.shape.VCube;
-import com.voidvvv.game.base.skill.Skill;
-import com.voidvvv.game.base.skill.base.Hit;
 import com.voidvvv.game.base.state.slime.SlimeStatus;
 import com.voidvvv.game.context.input.InputActionMapping;
 

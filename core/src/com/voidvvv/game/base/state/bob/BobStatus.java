@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.voidvvv.game.ActGame;
-import com.voidvvv.game.base.skill.Skill;
 import com.voidvvv.game.base.test.Bob;
 
 public enum BobStatus implements State<Bob> {

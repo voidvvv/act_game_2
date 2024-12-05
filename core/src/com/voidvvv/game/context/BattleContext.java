@@ -1,6 +1,5 @@
 package com.voidvvv.game.context;
 
-import com.voidvvv.game.base.skill.Skill;
 import com.voidvvv.game.manager.behaviors.DamageBehavior;
 
 public interface BattleContext {

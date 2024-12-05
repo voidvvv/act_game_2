@@ -11,7 +11,6 @@ import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.buff.Buff;
 import com.voidvvv.game.base.buff.BuffComponent;
 import com.voidvvv.game.base.skill.Cost;
-import com.voidvvv.game.base.skill.Skill;
 import com.voidvvv.game.battle.Attackable;
 import com.voidvvv.game.battle.BattleAttr;
 import com.voidvvv.game.battle.BattleComponent;
@@ -444,12 +443,6 @@ public class VCharacter extends VActor implements Attackable {
             listener.afterAddBuff();
         }
         lastAddedAbuff = null;
-    }
-
-    public boolean couldPayForUse(Skill skill) {
-        Cost cost = skill.cost();
-
-        return true;
     }
 
     public void setFrameSkill(int keycode) {

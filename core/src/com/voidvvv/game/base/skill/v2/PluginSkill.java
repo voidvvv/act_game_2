@@ -16,7 +16,6 @@ public abstract class PluginSkill extends Skill {
             SkillPlugin sp = Pools.obtain(pluginClass);
             sp.skill = this;
             this.owner.getPluginComponent().addPlugin(sp);
-            System.out.println("does!!!");
         }
     }
 }
