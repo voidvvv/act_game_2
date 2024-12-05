@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.voidvvv.game.ActGame;
+import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.test.Bob;
 
 public enum BobStatus implements State<Bob> {
@@ -13,7 +14,10 @@ public enum BobStatus implements State<Bob> {
         public void enter(Bob entity) {
             super.enter(entity);
         }
-
+        @Override
+        public int getId() {
+            return ActorConstants.STATUS_IDLE;
+        }
         @Override
         public void update(Bob entity) {
             super.update(entity);
@@ -41,7 +45,10 @@ public enum BobStatus implements State<Bob> {
                 entity.flip = true;
             }
         }
-
+        @Override
+        public int getId() {
+            return ActorConstants.STATUS_WALKING;
+        }
 
         @Override
         public boolean onMessage(Bob entity, Telegram telegram) {
@@ -142,6 +149,11 @@ public enum BobStatus implements State<Bob> {
         }
 
         @Override
+        public int getId() {
+            return ActorConstants.STATUS_SPELLING_01;
+        }
+
+        @Override
         public void exit(Bob entity) {
             super.exit(entity);
         }
@@ -206,6 +218,10 @@ public enum BobStatus implements State<Bob> {
     @Override
     public void exit(Bob entity) {
         entity.statusTime = 0;entity.statusProgress = 0f;
+    }
+
+    public int getId () {
+        return 0;
     }
 
 }

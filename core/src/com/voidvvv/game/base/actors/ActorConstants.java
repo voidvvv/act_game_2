@@ -12,5 +12,8 @@ public class ActorConstants {
 
 
     public static final int STATUS_IDLE = 8;
-    public static final int STATUS_SPELLING_01 = 9;
+    public static final int STATUS_WALKING = 9;
+
+    public static final int STATUS_SPELLING_01 = 10;
+
 }

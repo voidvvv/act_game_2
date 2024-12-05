@@ -9,4 +9,14 @@ public abstract class SkillPlugin implements Plugin {
     public void reset() {
         this.skill = null;
     }
+
+    @Override
+    public String des() {
+        return "";
+    }
+
+    @Override
+    public float progress() {
+        return 0;
+    }
 }

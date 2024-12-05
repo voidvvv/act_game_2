@@ -58,6 +58,7 @@ public class Bob extends VCharacter {
         this.setPhysicAttr(physicAttr);
         this.getActualBattleAttr().maxHp = 1500;
         this.getActualBattleAttr().hp = 1500;
+        this.getActualBattleAttr().mp = 0f;
 
         setName("Bob" + MathUtils.random(10));
 
@@ -125,5 +126,8 @@ public class Bob extends VCharacter {
         return this.selfStatusStateMachine.getCurrentState() == BobStatus.DYING;
     }
 
-
+    @Override
+    public int currentStateId() {
+        return this.selfStatusStateMachine.getCurrentState().getId();
+    }
 }

@@ -160,6 +160,10 @@ public abstract class VActor extends Actor implements Pool.Poolable {
 
     }
 
+    public int currentStateId() {
+        return 0;
+    }
+
 
     public static class VActorCompare implements Comparator<VActor> {
 
