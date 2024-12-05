@@ -1,11 +1,16 @@
 package com.voidvvv.game.base.actors;
 
+import com.badlogic.gdx.ai.btree.BehaviorTree;
+import com.badlogic.gdx.ai.btree.utils.BehaviorTreeLibrary;
+import com.badlogic.gdx.ai.btree.utils.BehaviorTreeLibraryManager;
+import com.badlogic.gdx.ai.btree.utils.BehaviorTreeParser;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.base.VCharacter;
+import com.voidvvv.game.base.btree.slime.Idle;
 import com.voidvvv.game.base.shape.VCube;
 import com.voidvvv.game.base.state.slime.SlimeStatus;
 import com.voidvvv.game.context.input.InputActionMapping;
@@ -13,6 +18,8 @@ import com.voidvvv.game.context.input.InputActionMapping;
 public class Slime extends VCharacter {
 
     StateMachine<Slime, State<Slime>> defalutStateMachine;
+
+    BehaviorTree<Slime> behaviorTree;
 
     @Override
     public void init() {
@@ -26,6 +33,14 @@ public class Slime extends VCharacter {
         if (defalutStateMachine == null) {
             defalutStateMachine = new DefaultStateMachine<>(this);
         }
+
+        if (behaviorTree == null) {
+            BehaviorTreeLibraryManager libraryManager = BehaviorTreeLibraryManager.getInstance();
+            BehaviorTreeLibrary library = new BehaviorTreeLibrary(BehaviorTreeParser.DEBUG_HIGH);
+            library.registerArchetypeTree("slime_normal", new BehaviorTree<Slime>(new Idle()));
+            libraryManager.setLibrary(library);
+            behaviorTree = libraryManager.createBehaviorTree("slime_normal", this);
+        }
     }
 
     public StateMachine<Slime, State<Slime>> getDefalutStateMachine() {
@@ -35,6 +50,7 @@ public class Slime extends VCharacter {
     @Override
     public void vCAct(float delta) {
         super.vCAct(delta);
+        behaviorTree.step();
         defalutStateMachine.changeState(SlimeStatus.IDEL);
         stateUpdate(delta);
     }
