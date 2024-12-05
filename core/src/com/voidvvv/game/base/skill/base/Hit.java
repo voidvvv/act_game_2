@@ -3,9 +3,7 @@ package com.voidvvv.game.base.skill.base;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.VActorAdaptor;
 import com.voidvvv.game.base.VActor;
-import com.voidvvv.game.base.VActorListener;
 import com.voidvvv.game.base.VCharacter;
-import com.voidvvv.game.base.VSkillCharacter;
 import com.voidvvv.game.base.skill.Cost;
 import com.voidvvv.game.base.skill.Skill;
 import com.voidvvv.game.utils.ReflectUtil;
@@ -17,7 +15,7 @@ import java.util.Set;
 public class Hit implements Skill {
     Cost cost = new Cost();
 
-    VSkillCharacter owner;
+    VCharacter owner;
     HitListener listener = new HitListener();
     float process = 0;
     @Override
@@ -31,19 +29,19 @@ public class Hit implements Skill {
     }
 
     @Override
-    public int init(VSkillCharacter character) {
+    public int init(VCharacter character) {
         this.setOwner(character);
         ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage(character.getName() + " 使用了撞击!");
         return 0;
     }
 
     @Override
-    public VSkillCharacter owner() {
+    public VCharacter owner() {
         return owner;
     }
 
     @Override
-    public void setOwner(VSkillCharacter owner) {
+    public void setOwner(VCharacter owner) {
         this.owner = owner;
     }
 
@@ -57,7 +55,6 @@ public class Hit implements Skill {
         ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("撞击技能开始，获得霸体，并且进入冲撞状态");
         owner.getListenerComponent().add(listener);
         ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("并且给owner添加撞击技能的监听");
-        owner.enterStatusForSkill(this);
 
     }
 
@@ -66,7 +63,6 @@ public class Hit implements Skill {
         updateProcess(delta);
         if (isEnding()) {
             ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("back to normal");
-            owner.tryToBackToNormal(); // 技能结束，将人物回归初始IDLE 状态
         }
     }
 

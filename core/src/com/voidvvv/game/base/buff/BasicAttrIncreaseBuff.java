@@ -42,9 +42,4 @@ public class BasicAttrIncreaseBuff extends ExpireBuff{
 
     }
 
-    @Override
-    public void reset() {
-        exit();
-        this.owner = null;
-    }
 }

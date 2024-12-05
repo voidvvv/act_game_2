@@ -11,4 +11,6 @@ public class ActorConstants {
     public static final int SPELL_SPEED_FIELD = 7;
 
 
+    public static final int STATUS_IDLE = 8;
+    public static final int STATUS_SPELLING_01 = 9;
 }

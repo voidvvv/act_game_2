@@ -1,6 +1,11 @@
 package com.voidvvv.game.plugin;
 
-public interface Plugin {
+import com.badlogic.gdx.utils.Pool;
+import com.voidvvv.game.base.Stoppable;
+
+public interface Plugin extends Pool.Poolable, Stoppable {
 
     int version();
+    void start();
+    public void update(float delta);
 }

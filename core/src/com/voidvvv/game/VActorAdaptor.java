@@ -45,6 +45,11 @@ public class VActorAdaptor implements VActorListener {
     }
 
     @Override
+    public void afterAddBuff() {
+
+    }
+
+    @Override
     public void reset() {
 
     }

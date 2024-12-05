@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VActorListenerComponent {
-    List<VActorListener> initListeners = new ArrayList<VActorListener>();
-    List<VActorListener> listeners = new ArrayList<VActorListener>();
-    List<VActorListener> trashBin = new ArrayList<VActorListener>();
+    public List<VActorListener> initListeners = new ArrayList<VActorListener>();
+    public List<VActorListener> listeners = new ArrayList<VActorListener>();
+    public List<VActorListener> trashBin = new ArrayList<VActorListener>();
 
 
     public void add(VActorListener listener) {

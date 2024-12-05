@@ -2,6 +2,7 @@ package com.voidvvv.game.base.test;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.voidvvv.game.base.VActor;
+import com.voidvvv.game.base.buff.Buff;
 import com.voidvvv.game.base.shape.VCube;
 import com.voidvvv.game.render.actor.VActorRender;
 import com.voidvvv.game.render.actor.test.stone.StoneRender;
@@ -46,6 +47,11 @@ public class VObstacle extends VActor {
     @Override
     public void update(float delta) {
         super.update(delta);
+    }
+
+    @Override
+    public void postAddBuff(Buff buff) {
+
     }
 
     @Override

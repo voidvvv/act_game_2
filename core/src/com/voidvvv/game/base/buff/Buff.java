@@ -43,6 +43,11 @@ public abstract class Buff implements Pool.Poolable {
     }
 
     @Override
+    public void reset() {
+        exit();
+        this.owner = null;
+    }
+    @Override
     public int hashCode() {
         return Objects.hashCode(id);
     }

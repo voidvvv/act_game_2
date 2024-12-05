@@ -5,17 +5,14 @@ import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.Pools;
-import com.voidvvv.game.base.VActor;
-import com.voidvvv.game.base.VSkillCharacter;
+import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.shape.VCube;
 import com.voidvvv.game.base.skill.Skill;
-import com.voidvvv.game.base.skill.SkillDes;
 import com.voidvvv.game.base.skill.base.Hit;
-import com.voidvvv.game.base.state.bob.BobStatus;
 import com.voidvvv.game.base.state.slime.SlimeStatus;
 import com.voidvvv.game.context.input.InputActionMapping;
 
-public class Slime extends VSkillCharacter {
+public class Slime extends VCharacter {
 
     StateMachine<Slime, State<Slime>> defalutStateMachine;
 
@@ -31,10 +28,6 @@ public class Slime extends VSkillCharacter {
         if (defalutStateMachine == null) {
             defalutStateMachine = new DefaultStateMachine<>(this);
         }
-        SkillDes sd = new SkillDes();
-        sd.setSkillClass(Hit.class);
-        sd.setDes("撞击");
-        replaceSkill(1, sd);
     }
 
     public StateMachine<Slime, State<Slime>> getDefalutStateMachine() {
@@ -59,11 +52,7 @@ public class Slime extends VSkillCharacter {
 
     @Override
     public void useSkill(int skillCode) {
-        if (skillCode == InputActionMapping.SKILL_Q) {
-            Skill obtain = Pools.obtain(skills[0].getSkillClass());
-            obtain.setOwner(this);
-            this.tryToUseSkill(obtain);
-        }
+
     }
 
     @Override
@@ -72,14 +61,6 @@ public class Slime extends VSkillCharacter {
     }
 
 
-    @Override
-    public void tryToBackToNormal() {
-        // when skill movement over, free skill, change status
-    }
-
-    @Override
-    public void enterStatusForSkill(Skill testSkill) {
-    }
 
     @Override
     protected void becomeDying() {

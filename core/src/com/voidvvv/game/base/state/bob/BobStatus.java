@@ -12,12 +12,14 @@ public enum BobStatus implements State<Bob> {
     IDLE(){
         @Override
         public void enter(Bob entity) {
-
+            super.enter(entity);
         }
 
         @Override
         public void update(Bob entity) {
             super.update(entity);
+            entity.statusProgress += Gdx.graphics.getDeltaTime();
+
             if (entity.baseMove.len() > 0f) {
                 // have velocity
                 entity.getSelfStatusStateMachine().changeState(BobStatus.WALKING);
@@ -50,6 +52,8 @@ public enum BobStatus implements State<Bob> {
         @Override
         public void update(Bob entity) {
             super.update(entity);
+            entity.statusProgress += Gdx.graphics.getDeltaTime() * (entity.getBattleComponent().actualBattleAttr.moveSpeed / 75f);
+
             if (entity.baseMove.len() <= 0) {
                 entity.getSelfStatusStateMachine().changeState(BobStatus.IDLE);
             }
@@ -136,32 +140,17 @@ public enum BobStatus implements State<Bob> {
         @Override
         public void enter(Bob entity) {
             super.enter(entity);
-            Skill skill = entity.currentSkill();
-            if (skill == null || !entity.skillNew) {
-                entity.getSelfStatusStateMachine().changeState(BobStatus.IDLE);
-            } else {
-                entity.skillNew = false;
-            }
         }
 
         @Override
         public void exit(Bob entity) {
             super.exit(entity);
-            if (entity.currentSkill() != null && !entity.skillNew) {
-                entity.over(entity.currentSkill());
-            }
         }
 
         @Override
         public void update(Bob entity) {
             super.update(entity);
-            Skill skill = entity.currentSkill();
-            if (skill != null  && !entity.skillNew) {
-                skill.process(Gdx.graphics.getDeltaTime());
 
-            } else {
-                entity.getSelfStatusStateMachine().changeState(BobStatus.IDLE);
-            }
         }
 
         @Override
@@ -169,10 +158,6 @@ public enum BobStatus implements State<Bob> {
             return false;
         }
 
-        @Override
-        public Skill findSkill(Bob entity) {
-            return entity.currentSkill();
-        }
     },
     DYING{
         @Override
@@ -187,10 +172,6 @@ public enum BobStatus implements State<Bob> {
 
         }
 
-        @Override
-        public Skill findSkill(Bob entity) {
-            return super.findSkill(entity);
-        }
 
         @Override
         public void update(Bob entity) {
@@ -212,6 +193,7 @@ public enum BobStatus implements State<Bob> {
     @Override
     public void enter(Bob entity) {
         entity.statusTime = 0;
+        entity.statusProgress = 0f;
     }
 
 
@@ -219,14 +201,12 @@ public enum BobStatus implements State<Bob> {
     @Override
     public void update(Bob entity) {
         entity.statusTime += Gdx.graphics.getDeltaTime();
+
     }
 
     @Override
     public void exit(Bob entity) {
-        entity.statusTime = 0;
+        entity.statusTime = 0;entity.statusProgress = 0f;
     }
 
-    public Skill findSkill (Bob entity) {
-        return null;
-    }
 }
