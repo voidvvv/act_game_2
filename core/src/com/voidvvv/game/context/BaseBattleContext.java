@@ -1,18 +1,12 @@
 package com.voidvvv.game.context;
 
 import com.voidvvv.game.base.VActor;
-import com.voidvvv.game.base.VSkillCharacter;
 import com.voidvvv.game.base.actors.ActorConstants;
-import com.voidvvv.game.base.skill.Skill;
 import com.voidvvv.game.manager.behaviors.DamageBehavior;
 
 public class BaseBattleContext implements BattleContext {
     private DamageBehavior behavior;
 
-    @Override
-    public boolean payForSkill(VSkillCharacter character, Skill skill) {
-        return character.couldPayForUse(skill);
-    }
 
     @Override
     public void init() {

@@ -1,28 +1,30 @@
 package com.voidvvv.game.base.test;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Pools;
-import com.voidvvv.game.base.VSkillCharacter;
+import com.voidvvv.game.base.VCharacter;
+import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.shape.VCube;
-import com.voidvvv.game.base.skill.Skill;
-import com.voidvvv.game.base.skill.SkillDes;
-import com.voidvvv.game.base.skill.base.Hit;
-import com.voidvvv.game.base.skill.base.TestSkill;
+import com.voidvvv.game.base.skill.v2.LightBoomSkill;
+import com.voidvvv.game.base.skill.v2.Skill;
 import com.voidvvv.game.base.state.bob.BobStatus;
 import com.voidvvv.game.context.input.InputActionMapping;
 import com.voidvvv.game.render.actor.test.bob.DefaultBobRender;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Bob extends VSkillCharacter{
+public class Bob extends VCharacter {
     @Getter
     @Setter
     StateMachine<Bob, BobStatus> selfStatusStateMachine;
 
     private DefaultBobRender defaultBobRender;
+
+
 
 
     @Override
@@ -35,6 +37,7 @@ public class Bob extends VSkillCharacter{
 
     protected void skillUpdate() {
         useSkill(this.skillCode);
+        skill.update(Gdx.graphics.getDeltaTime());
         this.skillCode = -1;
     }
 
@@ -55,6 +58,7 @@ public class Bob extends VSkillCharacter{
         this.setPhysicAttr(physicAttr);
         this.getActualBattleAttr().maxHp = 1500;
         this.getActualBattleAttr().hp = 1500;
+        this.getActualBattleAttr().mp = 0f;
 
         setName("Bob" + MathUtils.random(10));
 
@@ -64,15 +68,10 @@ public class Bob extends VSkillCharacter{
         if (this.defaultBobRender == null) {
             defaultBobRender = new DefaultBobRender();
         }
-
-        SkillDes lightingBoom = new SkillDes();
-        lightingBoom.setSkillClass(TestSkill.class);
-        lightingBoom.setDes("闪光炸弹");
-        replaceSkill(0, lightingBoom);
-        SkillDes hitSkillDes = new SkillDes();
-        hitSkillDes.setSkillClass(Hit.class);
-        hitSkillDes.setDes("冲撞");
-        replaceSkill(1, hitSkillDes);
+        if (skill == null) {
+            skill = new LightBoomSkill();
+            skill.setOwner(this);
+        }
     }
 
 
@@ -88,20 +87,14 @@ public class Bob extends VSkillCharacter{
     @Override
     public void setFrameSkill(int keycode) {
         skillCode = keycode;
-        System.out.println("skill code: " + skillCode);
     }
 
+    Skill skill;
     @Override
     public void useSkill(int skillCode) {
-        if (skillCode == InputActionMapping.SKILL_Q) {
-            Skill obtain = Pools.obtain(skills[0].getSkillClass());
-            obtain.setOwner(this);
-            this.tryToUseSkill(obtain);
-        }
-        if (skillCode == InputActionMapping.SKILL_W) {
-            Skill obtain = Pools.obtain(skills[1].getSkillClass());
-            obtain.setOwner(this);
-            this.tryToUseSkill(obtain);
+        if (skillCode >= 0) {
+            System.out.println("use skill");
+            skill.use();
         }
     }
 
@@ -113,17 +106,12 @@ public class Bob extends VSkillCharacter{
     }
 
     @Override
-    public void tryToBackToNormal() {
-        Skill skill = currentSkill;
-        this.getSelfStatusStateMachine().changeState(BobStatus.IDLE);
-        if (skill != null) {
-            Pools.free(skill);
+    public void changeStatus(int status) {
+        if (status == ActorConstants.STATUS_IDLE) {
+            this.selfStatusStateMachine.changeState(BobStatus.IDLE);
+        } else if (status == ActorConstants.STATUS_SPELLING_01) {
+            this.selfStatusStateMachine.changeState(BobStatus.SPELL_0);
         }
-    }
-
-    @Override
-    public void enterStatusForSkill(Skill testSkill) {
-        this.getSelfStatusStateMachine().changeState(BobStatus.SPELL_0);
     }
 
     @Override
@@ -138,5 +126,8 @@ public class Bob extends VSkillCharacter{
         return this.selfStatusStateMachine.getCurrentState() == BobStatus.DYING;
     }
 
-
+    @Override
+    public int currentStateId() {
+        return this.selfStatusStateMachine.getCurrentState().getId();
+    }
 }

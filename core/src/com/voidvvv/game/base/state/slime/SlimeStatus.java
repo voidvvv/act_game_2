@@ -14,7 +14,7 @@ public enum SlimeStatus implements State<Slime> {
 
         @Override
         public void exit(Slime entity) {
-            super.enter(entity);
+            super.exit(entity);
         }
 
         @Override

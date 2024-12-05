@@ -174,6 +174,7 @@ public class TestScreen extends ScreenAdapter {
                 .build();
         Slime bob = vWorld.spawnVActor(Slime.class,helper);
         bob.setName("Slime");
+        bob.getActualBattleAttr().moveSpeed = 30f;
         bob.getActualBattleAttr().attack = 1;
     }
 

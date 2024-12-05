@@ -40,11 +40,7 @@ public class BasicMoveSpeedIncreaseBuff extends ExpireBuff{
 
     }
 
-    @Override
-    public void reset() {
-        exit();
-        this.owner = null;
-    }
+
 
     @Override
     public boolean equals(Object obj) {

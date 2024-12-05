@@ -1,47 +1,44 @@
 package com.voidvvv.game.manager.event.spell;
 
-import com.badlogic.gdx.ai.msg.MessageManager;
-import com.badlogic.gdx.utils.Pools;
-import com.voidvvv.game.base.VSkillCharacter;
-import com.voidvvv.game.base.skill.Skill;
-import com.voidvvv.game.base.skill.SkillDes;
+
+import com.voidvvv.game.base.VCharacter;
+import com.voidvvv.game.base.skill.v2.Skill;
 import com.voidvvv.game.manager.event.WorldEvent;
 import com.voidvvv.game.utils.ReflectUtil;
-import lombok.Getter;
 import lombok.Setter;
 
-public  class SpellWorldEvent extends WorldEvent {
-    @Setter @Getter
-    protected SkillDes skillDes;
+public class SpellWorldEvent extends WorldEvent {
 
-    public SpellWorldEvent() {}
+    @Setter
+    Skill skill;
+
+    public SpellWorldEvent() {
+    }
+
+    public boolean shouldDoPost = false;
 
     @Override
     public void apply() {
-        if (skillDes == null) {
-            this.status = WorldEvent.FINISH;
-            return;
+        if (skill != null) {
+            this.shouldDoPost = skill.shouldDoPost;
+            skill.does();
         }
-        Class<? extends Skill> skillClass = skillDes.getSkillClass();
-        Skill obtain = Pools.obtain(skillClass);
-        VSkillCharacter skillCharacter = ReflectUtil.cast(fromActor, VSkillCharacter.class);
-        if (skillCharacter != null) {
-            obtain.setOwner(skillCharacter);
-            skillCharacter.tryToUseSkill(obtain);
-        }
-        postApply();
         this.status = WorldEvent.FINISH;
     }
 
     @Override
     public void postApply() {
-
+        VCharacter vch = null;
+        if (shouldDoPost && (vch = ReflectUtil.cast(this.fromActor, VCharacter.class)) != null) {
+            vch.postUseSkill(skill);
+        }
     }
 
     @Override
     public void reset() {
         super.reset();
-        this.setSkillDes(null);
+        shouldDoPost = false;
+        skill = null;
     }
 
     @Override

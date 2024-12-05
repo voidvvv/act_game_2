@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Pool;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.b2d.UserData;
+import com.voidvvv.game.base.buff.Buff;
 import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.manager.behaviors.Behavior;
 import com.voidvvv.game.context.VWorld;
@@ -129,6 +130,7 @@ public abstract class VActor extends Actor implements Pool.Poolable {
         }
     }
 
+
     @Override
     public void reset() {
         this.getWorld().getBox2dWorld().destroyBody(body);
@@ -146,6 +148,20 @@ public abstract class VActor extends Actor implements Pool.Poolable {
 
 
     public void postBeAttacked(AttackEvent attackEvent) {
+    }
+
+    public void postUseSkill (com.voidvvv.game.base.skill.v2.Skill skill) {
+
+    }
+
+    public abstract void postAddBuff(Buff buff);
+
+    public void changeStatus(int statusIdle) {
+
+    }
+
+    public int currentStateId() {
+        return 0;
     }
 
 

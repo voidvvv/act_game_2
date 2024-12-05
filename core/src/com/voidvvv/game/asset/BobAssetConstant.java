@@ -80,14 +80,14 @@ public class BobAssetConstant {
     public TextureRegion currentAnim(Bob actor) {
         BobStatus status = actor.getSelfStatusStateMachine().getCurrentState();
         boolean flip = actor.flip;
-        float time = actor.statusTime;
+        float time = actor.statusProgress;
         if (status == BobStatus.IDLE) {
             return flip ? idle_animation_mirror.getKeyFrame(time) : idle_animation.getKeyFrame(time);
         }
         if (status == BobStatus.WALKING) {
             return flip ? walk_animation_mirror.getKeyFrame(time) : walk_animation.getKeyFrame(time);
         }
-        if (status == BobStatus.ATTACKING_0 && actor.currentSkill() != null) {
+        if (status == BobStatus.ATTACKING_0 ) {
             return flip ? attack_animation_mirror.getKeyFrame(time) : attack_animation.getKeyFrame(time);
 
         }
@@ -95,7 +95,7 @@ public class BobAssetConstant {
         if (status == BobStatus.SPELL_0) {
             Animation<TextureRegion> tr = flip ? spell_animation_mirror : spell_animation;
 
-            return tr.getKeyFrame(tr.getAnimationDuration() * actor.currentSkill().percentage());
+            return tr.getKeyFrame(tr.getAnimationDuration() * actor.statusProgress);
         }
 
         if (status == BobStatus.DYING) {

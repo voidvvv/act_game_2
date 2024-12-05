@@ -8,9 +8,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.actors.ActorConstants;
+import com.voidvvv.game.base.buff.Buff;
 import com.voidvvv.game.base.buff.BuffComponent;
 import com.voidvvv.game.base.skill.Cost;
-import com.voidvvv.game.base.skill.Skill;
 import com.voidvvv.game.battle.Attackable;
 import com.voidvvv.game.battle.BattleAttr;
 import com.voidvvv.game.battle.BattleComponent;
@@ -19,6 +19,7 @@ import com.voidvvv.game.manager.FontManager;
 import com.voidvvv.game.manager.behaviors.DamageBehavior;
 import com.voidvvv.game.manager.behaviors.Behavior;
 import com.voidvvv.game.manager.event.attack.AttackEvent;
+import com.voidvvv.game.plugin.PluginComponent;
 import com.voidvvv.game.screen.test.ui.Box2dUnitConverter;
 import com.voidvvv.game.utils.ReflectUtil;
 
@@ -32,8 +33,11 @@ public class VCharacter extends VActor implements Attackable {
     protected final BattleComponent battleComponent = new BattleComponent();
     protected final BuffComponent buffComponent = new BuffComponent();
     protected final VActorListenerComponent listenerComponent = new VActorListenerComponent();
+    protected final PluginComponent pluginComponent = new PluginComponent();
+
 
     public float statusTime;
+    public float statusProgress;
 
     public Vector3 baseMove = new Vector3();
 
@@ -70,6 +74,7 @@ public class VCharacter extends VActor implements Attackable {
         // refresh attr
         refreshAttr(delta);
         vCAct(delta);
+
         synchSpeedToBox2d();
     }
 
@@ -79,6 +84,7 @@ public class VCharacter extends VActor implements Attackable {
 
     protected void otherApply(float delta) {
         listenerComponent.update();
+        pluginComponent.update(delta);
     }
 
     protected void vCAct(float delta) {
@@ -384,6 +390,10 @@ public class VCharacter extends VActor implements Attackable {
         return listenerComponent;
     }
 
+    public PluginComponent getPluginComponent() {
+        return pluginComponent;
+    }
+
     public AttackEvent lastMadeAttack;
     @Override
     public void postAttack(AttackEvent attackEvent) {
@@ -404,6 +414,16 @@ public class VCharacter extends VActor implements Attackable {
         lastBeAttackedEvent = null;
     }
 
+    public com.voidvvv.game.base.skill.v2.Skill lastUsedSkill;
+    @Override
+    public void postUseSkill(com.voidvvv.game.base.skill.v2.Skill skill) {
+        lastUsedSkill = skill;
+        for (VActorListener listener : listenerComponent.listeners) {
+            listener.afterUseSkill();
+        }
+        lastUsedSkill = null;
+    }
+
     public VActor lastHitActor;
     @Override
     public void onHit(VActor actor) {
@@ -415,10 +435,14 @@ public class VCharacter extends VActor implements Attackable {
         lastHitActor = null;
     }
 
-    public boolean couldPayForUse(Skill skill) {
-        Cost cost = skill.cost();
-
-        return true;
+    public Buff lastAddedAbuff;
+    @Override
+    public void postAddBuff(Buff buff) {
+        lastAddedAbuff = buff;
+        for (VActorListener listener : listenerComponent.listeners) {
+            listener.afterAddBuff();
+        }
+        lastAddedAbuff = null;
     }
 
     public void setFrameSkill(int keycode) {
