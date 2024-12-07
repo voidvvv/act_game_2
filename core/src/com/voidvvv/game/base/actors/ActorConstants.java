@@ -16,4 +16,6 @@ public class ActorConstants {
 
     public static final int STATUS_SPELLING_01 = 10;
 
+    public static final int MSG_RESET_ACTOR = 11;
+
 }

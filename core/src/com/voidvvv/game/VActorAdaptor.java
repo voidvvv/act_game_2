@@ -50,6 +50,12 @@ public class VActorAdaptor implements VActorListener {
     }
 
     @Override
+    public void afterMove() {
+
+    }
+
+
+    @Override
     public void reset() {
 
     }

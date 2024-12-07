@@ -57,6 +57,27 @@ public enum SlimeStatus implements State<Slime> {
                 entity.flip = true;
             }
         }
+    },
+    DYING{
+        @Override
+        public void enter(Slime entity) {
+            super.enter(entity);
+        }
+
+        @Override
+        public void exit(Slime entity) {
+            super.exit(entity);
+        }
+
+        @Override
+        public boolean onMessage(Slime entity, Telegram telegram) {
+            return false;
+        }
+
+        @Override
+        public void update(Slime entity) {
+
+        }
     };
 
 

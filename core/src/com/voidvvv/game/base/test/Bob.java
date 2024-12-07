@@ -93,7 +93,6 @@ public class Bob extends VCharacter {
     @Override
     public void useSkill(int skillCode) {
         if (skillCode >= 0) {
-            System.out.println("use skill");
             skill.use();
         }
     }

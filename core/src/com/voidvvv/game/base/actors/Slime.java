@@ -1,25 +1,21 @@
 package com.voidvvv.game.base.actors;
 
 import com.badlogic.gdx.ai.btree.BehaviorTree;
-import com.badlogic.gdx.ai.btree.utils.BehaviorTreeLibrary;
 import com.badlogic.gdx.ai.btree.utils.BehaviorTreeLibraryManager;
-import com.badlogic.gdx.ai.btree.utils.BehaviorTreeParser;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.base.VCharacter;
-import com.voidvvv.game.base.btree.slime.Idle;
+import com.voidvvv.game.base.btree.BTManager;
 import com.voidvvv.game.base.shape.VCube;
 import com.voidvvv.game.base.state.slime.SlimeStatus;
-import com.voidvvv.game.context.input.InputActionMapping;
 
 public class Slime extends VCharacter {
 
     StateMachine<Slime, State<Slime>> defalutStateMachine;
-
-    BehaviorTree<Slime> behaviorTree;
+    float btUpdateStep = 0.1f;
+    float btrCurrentStep = 0f;
 
     @Override
     public void init() {
@@ -34,13 +30,6 @@ public class Slime extends VCharacter {
             defalutStateMachine = new DefaultStateMachine<>(this);
         }
 
-        if (behaviorTree == null) {
-            BehaviorTreeLibraryManager libraryManager = BehaviorTreeLibraryManager.getInstance();
-            BehaviorTreeLibrary library = new BehaviorTreeLibrary(BehaviorTreeParser.DEBUG_HIGH);
-            library.registerArchetypeTree("slime_normal", new BehaviorTree<Slime>(new Idle()));
-            libraryManager.setLibrary(library);
-            behaviorTree = libraryManager.createBehaviorTree("slime_normal", this);
-        }
     }
 
     public StateMachine<Slime, State<Slime>> getDefalutStateMachine() {
@@ -50,8 +39,12 @@ public class Slime extends VCharacter {
     @Override
     public void vCAct(float delta) {
         super.vCAct(delta);
-        behaviorTree.step();
-        defalutStateMachine.changeState(SlimeStatus.IDEL);
+        btrCurrentStep += delta;
+        if (btrCurrentStep > btUpdateStep) {
+            btrCurrentStep = 0f;
+        }
+
+//        defalutStateMachine.changeState(SlimeStatus.IDEL);
         stateUpdate(delta);
     }
 
@@ -78,11 +71,12 @@ public class Slime extends VCharacter {
 
     @Override
     protected void becomeDying() {
+        this.defalutStateMachine.changeState(SlimeStatus.DYING);
     }
 
     @Override
     public boolean isDying() {
-        return false;
+        return this.defalutStateMachine.getCurrentState() == SlimeStatus.DYING;
     }
 
 }

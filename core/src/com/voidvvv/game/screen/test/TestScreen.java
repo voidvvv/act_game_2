@@ -19,7 +19,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.*;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.asset.AssetConstant;
+import com.voidvvv.game.base.Camp;
 import com.voidvvv.game.base.actors.Slime;
+import com.voidvvv.game.base.btree.BTManager;
 import com.voidvvv.game.base.test.VObstacle;
 import com.voidvvv.game.context.VActorSpawnHelper;
 import com.voidvvv.game.context.VWorld;
@@ -53,6 +55,7 @@ public class TestScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0.2f, 0.5f, 0.5f, 1);
+        ActGame.gameInstance().getBtManager().update(delta);
         // UPDATE
         systemNotifyMessageManager.update(delta);
         uiStage.act(delta);
@@ -74,17 +77,6 @@ public class TestScreen extends ScreenAdapter {
 
         orthographicCamera.zoom = 0.7f;
         orthographicCamera.update();
-//        v3.set(orthographicCamera.position);
-////        orthographicCamera.setToOrtho(false,width/3f,height/3f);
-//        orthographicCamera.setToOrtho(false,320,240);
-//
-//
-////        orthographicCamera.zoom = 0.2f;
-//        orthographicCamera.position.set(v3);
-//        v3.set(screenCamera.position);
-//        screenCamera.setToOrtho(false,width,height);
-//        screenCamera.position.set(v3);
-//        screenCamera.update();
 
     }
 
@@ -130,12 +122,16 @@ public class TestScreen extends ScreenAdapter {
         bob.setName("Bob");
         bob.getActualBattleAttr().attack = 1;
         bob.getActualBattleAttr().mp = 1000;
+        bob.camp.campBit = Camp.POSITIVE;
+        bob.taregtCamp.campBit = Camp.NEGATIVE;
         vWorld.setProtagonist(bob);
 
         // input
         CharacterInputListener characterInputListener = new CharacterInputListener();
         characterInputListener.setCharacter(bob);
         vWorld.addListener(characterInputListener);
+
+
         // obstacle
         helper = VActorSpawnHelper.builder()
                 .bodyType(BodyDef.BodyType.DynamicBody)
@@ -148,6 +144,8 @@ public class TestScreen extends ScreenAdapter {
         Bob bob1 = vWorld.spawnVActor(Bob.class, helper);
         bob1.setName("Bob enemy");
         bob1.getBattleComponent().actualBattleAttr.hp = 1300;
+        bob1.camp.campBit = Camp.NEGATIVE;
+        bob1.taregtCamp.campBit = Camp.POSITIVE;
         helper = VActorSpawnHelper.builder()
                 .bodyType(BodyDef.BodyType.StaticBody)
                 .category((short)(WorldContext.OBSTACLE)) // who am I
@@ -172,10 +170,14 @@ public class TestScreen extends ScreenAdapter {
                 .hx(vWorld.unit()/2 - 2f).hy(2)
                 .initX(100f).initY(100f)
                 .build();
-        Slime bob = vWorld.spawnVActor(Slime.class,helper);
-        bob.setName("Slime");
-        bob.getActualBattleAttr().moveSpeed = 30f;
-        bob.getActualBattleAttr().attack = 1;
+        Slime slime = vWorld.spawnVActor(Slime.class,helper);
+        slime.setName("Slime");
+        slime.getActualBattleAttr().moveSpeed = 30f;
+        slime.getActualBattleAttr().attack = 1;
+        slime.camp.campBit = Camp.NEGATIVE;
+        slime.taregtCamp.campBit = Camp.POSITIVE;
+
+        ActGame.gameInstance().getBtManager().addTree(slime, BTManager.SLIME_SIMPLE);
     }
 
     private void initParam() {
@@ -199,7 +201,7 @@ public class TestScreen extends ScreenAdapter {
 
     private void initUI() {
         uiStage = new Stage(new ScreenViewport(screenCamera), ActGame.gameInstance().getDrawManager().getSpriteBatch());
-        uiStage.addActor(new TextMessageBar() );
+//        uiStage.addActor(new TextMessageBar() );
         ActGame.gameInstance().addInputProcessor(uiStage);
     }
 }

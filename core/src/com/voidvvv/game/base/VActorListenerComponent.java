@@ -30,4 +30,20 @@ public class VActorListenerComponent {
     }
 
 
+    public void reset() {
+        for (VActorListener listener : listeners) {
+            Pools.free(listener);
+        }
+        this.listeners.clear();
+
+        for (VActorListener listener : trashBin) {
+            Pools.free(listener);
+        }
+        this.trashBin.clear();
+
+        for (VActorListener listener : initListeners) {
+            Pools.free(listener);
+        }
+        this.initListeners.clear();
+    }
 }

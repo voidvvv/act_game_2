@@ -7,6 +7,9 @@ import com.voidvvv.game.base.actors.Slime;
 import com.voidvvv.game.context.VWorld;
 
 public class Idle  extends LeafTask<Slime> {
+    float lastX=0;
+    float lastY=0;
+
     @Override
     public void start() {
         super.start();
@@ -17,6 +20,7 @@ public class Idle  extends LeafTask<Slime> {
         super.end();
     }
 
+
     @Override
     public Status execute() {
         Slime slime = getObject();
@@ -25,14 +29,28 @@ public class Idle  extends LeafTask<Slime> {
         float mx = protagonist.position.x;
         float my = protagonist.position.y;
 
-        slime.findPath(mx, my);
+        if (mx != lastX || my != lastY) {
+            slime.findPath(mx, my);
+            lastX = mx;
+            lastY = my;
+        }
         return Status.SUCCEEDED;
     }
 
     @Override
     protected Task<Slime> copyTo(Task<Slime> task) {
-        Task<Slime> result = new Idle();
 
-        return result;
+
+        return task;
     }
+
+    @Override
+    public void reset() {
+        this.lastX = 0f;
+        this.lastY = 0f;
+        super.reset();
+    }
+
+
+
 }
