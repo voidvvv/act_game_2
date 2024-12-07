@@ -1,5 +1,6 @@
 package com.voidvvv.game.base;
 
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Transform;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Pool;
 import com.voidvvv.game.ActGame;
+import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.base.buff.Buff;
 import com.voidvvv.game.manager.SystemNotifyMessageManager;
@@ -38,7 +40,10 @@ public abstract class VActor extends Actor implements Pool.Poolable {
 
     private Body body;
 
+    public boolean flip = false;
 
+    public final Camp camp = new Camp();
+    public final Camp taregtCamp = new Camp();
 
     boolean vActive = true;
 
@@ -137,6 +142,7 @@ public abstract class VActor extends Actor implements Pool.Poolable {
         this.setWorld(null);
         this.setParentVActor(null);
         liveTime = 0;
+        MessageManager.getInstance().dispatchMessage(ActorConstants.MSG_RESET_ACTOR, this);
     }
 
     public boolean shoulCollide(VActor actor) {

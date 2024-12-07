@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.voidvvv.game.ActGame;
+import com.voidvvv.game.base.Camp;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.shape.VCube;
@@ -14,7 +15,7 @@ import com.voidvvv.game.utils.ReflectUtil;
 
 public class TestBullet extends VCharacter {
 
-    public float maxLive = 10f;
+    public float maxLive = 0.5f;
     public float currentTime = 0f;
 
     public short targetGroup = 0;
@@ -31,6 +32,7 @@ public class TestBullet extends VCharacter {
     Class<? extends AttackEvent>  typeClazz = BasePhysicAttackEvent.class;
 
     static TestBulletRender testBulletRender;
+
 
     @Override
     public void vAct(float delta) {
@@ -102,8 +104,7 @@ public class TestBullet extends VCharacter {
         VCharacter character = ReflectUtil.cast(actor,VCharacter.class);
         Fixture fixture = actor.getFixture();
         short categoryBits = fixture.getFilterData().categoryBits;
-        boolean isTarget = (categoryBits&targetGroup) == targetGroup;
-        if (isTarget && character != null) {
+        if (character != null && this.taregtCamp.compatible(character.camp)) {
             // enemy target character
             target = character;
             staus = HIT;

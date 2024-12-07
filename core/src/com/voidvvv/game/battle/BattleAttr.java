@@ -13,8 +13,8 @@ public class BattleAttr {
     public float defense;
     public float magicStrength;
 
-    public float maxHp;
-    public float maxMp;
+    public float maxHp = 1;
+    public float maxMp = 1f;
 
     public float hp;
     public float mp;

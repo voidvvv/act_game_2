@@ -4,9 +4,18 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.ai.btree.BehaviorTree;
+import com.badlogic.gdx.ai.btree.utils.BehaviorTreeLibrary;
+import com.badlogic.gdx.ai.btree.utils.BehaviorTreeLibraryManager;
+import com.badlogic.gdx.ai.btree.utils.BehaviorTreeParser;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.voidvvv.game.base.actors.ActorConstants;
+import com.voidvvv.game.base.actors.Slime;
+import com.voidvvv.game.base.btree.BTManager;
+import com.voidvvv.game.base.btree.slime.Idle;
 import com.voidvvv.game.context.VWorld;
 import com.voidvvv.game.context.WorldContext;
 import com.voidvvv.game.manager.AudioManager;
@@ -37,7 +46,7 @@ public class ActGame extends Game {
     private SystemNotifyMessageManager systemNotifyMessageManager;
     private AssetManager assetManager;
     private AudioManager audioManager;
-
+    private BTManager btManager;
 
     // screen
     private TestScreen testScreen;
@@ -54,6 +63,7 @@ public class ActGame extends Game {
         systemNotifyMessageManager = new SystemNotifyMessageManager();
         assetManager = new AssetManager();
         audioManager = new AudioManager();
+        btManager = new BTManager();
     }
 
     public AudioManager getAudioManager() {
@@ -98,8 +108,18 @@ public class ActGame extends Game {
         vWorldEventManager.init();
         worldContext.init();
         systemNotifyMessageManager.init();
-
         assetManager.setLoader(TiledMap.class,new TmxMapLoader());
+
+        initBTManager();
+    }
+
+    private void initBTManager() {
+        btManager.init();
+        MessageManager.getInstance().addListener(btManager, ActorConstants.MSG_RESET_ACTOR);
+    }
+
+    public BTManager getBtManager() {
+        return btManager;
     }
 
     public long getFrameId() {

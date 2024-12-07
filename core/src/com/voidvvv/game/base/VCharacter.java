@@ -41,7 +41,6 @@ public class VCharacter extends VActor implements Attackable {
 
     public Vector3 baseMove = new Vector3();
 
-    public boolean flip = false;
 
     Vector3[] velAffect = new Vector3[10];
 
@@ -93,6 +92,20 @@ public class VCharacter extends VActor implements Attackable {
 
     protected void synchSpeedToBox2d() {
         this.getBody().setLinearVelocity(Box2dUnitConverter.worldToBox2d(this.velocity.x),Box2dUnitConverter.worldToBox2d(this.velocity.y));
+        if (this.velocity.len() > 0.1f) {
+            postMove(this.velocity);
+        }
+    }
+
+    public Vector2 lastMoveVel = new Vector2();
+
+    public void postMove(Vector3 velocity) {
+        lastMoveVel.set(velocity.x, velocity.y);
+        for (VActorListener listener : this.listenerComponent.listeners) {
+            listener.afterMove();
+        }
+        lastMoveVel.set(0f,0f);
+
     }
 
     private void refreshAttr(float delta) {
@@ -360,6 +373,7 @@ public class VCharacter extends VActor implements Attackable {
             value.clear();
         }
         behaviorMap.clear();
+        this.listenerComponent.reset();
         finder = null;
     }
 

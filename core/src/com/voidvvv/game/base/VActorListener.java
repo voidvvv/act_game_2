@@ -24,4 +24,6 @@ public interface VActorListener extends Pool.Poolable {
     void afterHitOnActor();
 
     void afterAddBuff();
+
+    void afterMove();
 }

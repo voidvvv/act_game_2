@@ -2,6 +2,7 @@ package com.voidvvv.game.plugin.sp;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.voidvvv.game.base.Camp;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.test.TestBullet;
@@ -19,6 +20,7 @@ public class LightBoomPlugin extends SkillPlugin {
 
     public Vector2 position = new Vector2();
     public Vector2 direction = new Vector2();
+
 
     @Override
     public int version() {
@@ -76,6 +78,9 @@ public class LightBoomPlugin extends SkillPlugin {
         testBullet.getActualBattleAttr().moveSpeed = 500;
         testBullet.setParentVActor(character);
         testBullet.baseMove.set(direction.x, direction.y, 0f);
+        testBullet.taregtCamp.set(character.taregtCamp);
+        testBullet.camp.set(character.camp);
+
     }
 
     private void updateProgress(float delta) {
