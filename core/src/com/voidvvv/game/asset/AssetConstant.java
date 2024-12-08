@@ -8,6 +8,7 @@ public class AssetConstant {
     // image
     public static final String BOB_IMAGE = "image/actor/bob/wizard spritesheet calciumtrice.png";
     public static final String STONE_MAN = "image/actor/stone/stone_man.png";
+    public static final String SLIME_IMAGE = "image/actor/slime/Slime1_Attack_full.png";
 
     //audio
     public static final String GRASS_STEP_LEFT_SOUND = "sound/step/grass/sfx_step_grass_l.flac";

@@ -10,6 +10,7 @@ import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.btree.BTManager;
 import com.voidvvv.game.base.shape.VCube;
 import com.voidvvv.game.base.state.slime.SlimeStatus;
+import com.voidvvv.game.render.actor.VActorRender;
 
 public class Slime extends VCharacter {
 
@@ -17,14 +18,11 @@ public class Slime extends VCharacter {
     float btUpdateStep = 0.1f;
     float btrCurrentStep = 0f;
 
+    public VActorRender<Slime> render ;
+
     @Override
     public void init() {
         super.init();
-        VCube cube = new VCube();
-        cube.xLength = this.physicAttr.box2dHx * 2f;
-        cube.yLength = this.physicAttr.box2dHy * 2f;
-        cube.zLength = getWorld().unit() *2;
-        physicAttr.setBaseShape(cube);
 
         if (defalutStateMachine == null) {
             defalutStateMachine = new DefaultStateMachine<>(this);
@@ -54,7 +52,11 @@ public class Slime extends VCharacter {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
+        if (render == null) {
+            super.draw(batch, parentAlpha);
+        } else {
+            render.render(this, batch, parentAlpha);
+        }
     }
 
     @Override

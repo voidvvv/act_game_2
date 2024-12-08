@@ -31,6 +31,7 @@ import com.voidvvv.game.base.debug.VDebugShapeRender;
 import com.voidvvv.game.base.test.Bob;
 import com.voidvvv.game.context.WorldContext;
 import com.voidvvv.game.manager.SystemNotifyMessageManager;
+import com.voidvvv.game.render.actor.slime.SlimeSimpleRender;
 import com.voidvvv.game.screen.test.ui.TextMessageBar;
 import com.voidvvv.game.utils.ReflectUtil;
 
@@ -111,14 +112,8 @@ public class TestScreen extends ScreenAdapter {
 
             }
         }
-        VActorSpawnHelper helper = VActorSpawnHelper.builder()
-                .bodyType(BodyDef.BodyType.DynamicBody)
-                .category((short)(WorldContext.ROLE|WorldContext.WHITE)) // who am I
-                .mask((short)(WorldContext.OBSTACLE|WorldContext.BLACK|WorldContext.ROLE)) // who do I want to collision
-                .hx(vWorld.unit()/2 - 2f).hy(2)
-                .initX(birthPlaceX).initY(birthPlaceY)
-                .build();
-        Bob bob = vWorld.spawnVActor(Bob.class,helper);
+
+        Bob bob = spawnBob(birthPlaceX, birthPlaceY);
         bob.setName("Bob");
         bob.getActualBattleAttr().attack = 1;
         bob.getActualBattleAttr().mp = 1000;
@@ -131,52 +126,68 @@ public class TestScreen extends ScreenAdapter {
         characterInputListener.setCharacter(bob);
         vWorld.addListener(characterInputListener);
 
-
-        // obstacle
-        helper = VActorSpawnHelper.builder()
-                .bodyType(BodyDef.BodyType.DynamicBody)
-                .category((short)(WorldContext.ROLE|WorldContext.BLACK)) // who am I
-                .mask((short)(WorldContext.OBSTACLE|WorldContext.WHITE)) // who do I want to collision
-                .hx(4).hy(4)
-                .sensor(true)
-                .initX(200).initY(100)
-                .build();
-        Bob bob1 = vWorld.spawnVActor(Bob.class, helper);
+        Bob bob1 = spawnBob(200f,100f);
         bob1.setName("Bob enemy");
         bob1.getBattleComponent().actualBattleAttr.hp = 1300;
         bob1.camp.campBit = Camp.NEGATIVE;
         bob1.taregtCamp.campBit = Camp.POSITIVE;
-        helper = VActorSpawnHelper.builder()
-                .bodyType(BodyDef.BodyType.StaticBody)
-                .category((short)(WorldContext.OBSTACLE)) // who am I
-                .mask((short)(WorldContext.ROLE)) // who do I want to collision
-                .hx(40).hy(40)
-                .occupy(true)
-//                .setSensor(true)
-                .initX(50).initY(50)
-                .build();
-        VObstacle vObstacle = vWorld.spawnVActor(VObstacle.class, helper);
+
+        VObstacle vObstacle = spawnObstacle(50f,50f);
         vObstacle.setName("Rocky!");
 
         addSlime();
 
     }
 
-    private void addSlime() {
+    private VObstacle spawnObstacle(float x, float y) {
+        VActorSpawnHelper helper = VActorSpawnHelper.builder()
+                .bodyType(BodyDef.BodyType.StaticBody)
+                .category((short)(WorldContext.OBSTACLE)) // who am I
+                .mask((short)(WorldContext.ROLE)) // who do I want to collision
+                .hx(40).hy(40)
+                .occupy(true)
+//                .setSensor(true)
+                .initX(x).initY(y)
+                .build();
+        return vWorld.spawnVActor(VObstacle.class, helper);
+    }
+
+    public Bob spawnBob(float birthPlaceX, float birthPlaceY) {
         VActorSpawnHelper helper = VActorSpawnHelper.builder()
                 .bodyType(BodyDef.BodyType.DynamicBody)
                 .category((short)(WorldContext.ROLE|WorldContext.WHITE)) // who am I
                 .mask((short)(WorldContext.OBSTACLE|WorldContext.BLACK|WorldContext.ROLE)) // who do I want to collision
                 .hx(vWorld.unit()/2 - 2f).hy(2)
+                .hz(vWorld.unit())
+                .initX(birthPlaceX).initY(birthPlaceY)
+                .build();
+        return vWorld.spawnVActor(Bob.class,helper);
+
+    }
+
+    SlimeSimpleRender slimeSimpleRender;
+    private void addSlime() {
+        if (slimeSimpleRender == null) {
+            slimeSimpleRender = new SlimeSimpleRender();
+            slimeSimpleRender.init();
+        }
+        VActorSpawnHelper helper = VActorSpawnHelper.builder()
+                .bodyType(BodyDef.BodyType.DynamicBody)
+                .category((short)(WorldContext.ROLE|WorldContext.WHITE)) // who am I
+                .mask((short)(WorldContext.OBSTACLE|WorldContext.BLACK|WorldContext.ROLE)) // who do I want to collision
+                .hx(vWorld.unit()/2 - 2f).hy(20)
+                .hz(vWorld.unit())
                 .initX(100f).initY(100f)
                 .build();
         Slime slime = vWorld.spawnVActor(Slime.class,helper);
         slime.setName("Slime");
         slime.getActualBattleAttr().moveSpeed = 30f;
         slime.getActualBattleAttr().attack = 1;
+        slime.getActualBattleAttr().maxHp = 10;
+        slime.getActualBattleAttr().hp = 10;
         slime.camp.campBit = Camp.NEGATIVE;
         slime.taregtCamp.campBit = Camp.POSITIVE;
-
+        slime.render = slimeSimpleRender;
         ActGame.gameInstance().getBtManager().addTree(slime, BTManager.SLIME_SIMPLE);
     }
 

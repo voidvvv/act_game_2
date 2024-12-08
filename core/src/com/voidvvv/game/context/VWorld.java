@@ -28,6 +28,7 @@ import com.voidvvv.game.asset.AssetConstant;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VPhysicAttr;
 import com.voidvvv.game.base.b2d.UserData;
+import com.voidvvv.game.base.shape.VCube;
 import com.voidvvv.game.base.wall.Wall;
 import com.voidvvv.game.context.input.Pinpoint;
 import com.voidvvv.game.context.input.PinpointData;
@@ -330,6 +331,16 @@ public class VWorld {
             VPhysicAttr physicAttr = new VPhysicAttr();
             physicAttr.box2dHx = helper.hx;
             physicAttr.box2dHy = helper.hy;
+            VCube cube = new VCube();
+            cube.xLength = physicAttr.box2dHx * 2f;
+            cube.yLength = physicAttr.box2dHy * 2f;
+            if (helper.hz > 0f) {
+                cube.zLength = helper.hz;
+            } else {
+                cube.zLength = this.unit();
+            }
+            physicAttr.setBaseShape(cube);
+
             t.setPhysicAttr(physicAttr);
             Fixture roleFixture = createFixture(helper);
             if (helper.occupy) {

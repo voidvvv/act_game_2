@@ -15,6 +15,7 @@ public class VActorSpawnHelper {
     float initY;
     float hx;
     float hy;
+    float hz;
     short category;
     short mask;
     float friction = 0f;
