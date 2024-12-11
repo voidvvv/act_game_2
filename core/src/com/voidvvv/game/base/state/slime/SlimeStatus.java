@@ -1,5 +1,6 @@
 package com.voidvvv.game.base.state.slime;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.voidvvv.game.base.actors.Slime;
@@ -24,6 +25,8 @@ public enum SlimeStatus implements State<Slime> {
 
         @Override
         public void update(Slime entity) {
+            entity.statusProgress += Gdx.graphics.getDeltaTime();
+
             if (entity.baseMove.len() > 0f) {
                 // have velocity
                 entity.getDefalutStateMachine().changeState(SlimeStatus.WALKING);
@@ -56,6 +59,7 @@ public enum SlimeStatus implements State<Slime> {
             } else if (entity.baseMove.x < 0) {
                 entity.flip = true;
             }
+            entity.statusProgress += Gdx.graphics.getDeltaTime();
         }
     },
     DYING{

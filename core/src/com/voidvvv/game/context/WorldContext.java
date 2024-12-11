@@ -13,6 +13,9 @@ public class WorldContext {
 
     public static final short BLACK = 1<<3;
 
+    public static final short GROUND_COLLIDE = 1<<4;
+    public static final short FACE_COLLIDE = 1<<5;
+
     public static final float DEFAULT_MAGIC_COEFFICIENT = 100;
 
 

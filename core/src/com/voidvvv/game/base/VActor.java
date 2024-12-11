@@ -120,7 +120,7 @@ public abstract class VActor extends Actor implements Pool.Poolable {
         Vector2 position1 = transform.getPosition();
         Box2dUnitConverter.box2dToWorld(position1);
         this.position.x = position1.x;
-        this.position.y = position1.y;
+        this.position.y = position1.y - getPhysicAttr().box2dHy;
         this.position.z += this.velocity.z * delta;
 
     }

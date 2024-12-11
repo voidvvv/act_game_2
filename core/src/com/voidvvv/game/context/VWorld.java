@@ -300,6 +300,11 @@ public class VWorld {
             VPhysicAttr physicAttr = new VPhysicAttr();
             physicAttr.box2dHx = hx;
             physicAttr.box2dHy = hy;
+            VCube cube = new VCube();
+            cube.xLength = physicAttr.box2dHx * 2f;
+            cube.yLength = physicAttr.box2dHy * 2f;
+            cube.zLength = this.unit() *2;
+            physicAttr.setBaseShape(cube);
             t.setPhysicAttr(physicAttr);
             Fixture roleFixture = createObstacle(BodyDef.BodyType.StaticBody, Box2dUnitConverter.worldToBox2d(initX), Box2dUnitConverter.worldToBox2d(initY),
                     Box2dUnitConverter.worldToBox2d(hx), Box2dUnitConverter.worldToBox2d(hy));
@@ -335,14 +340,14 @@ public class VWorld {
             cube.xLength = physicAttr.box2dHx * 2f;
             cube.yLength = physicAttr.box2dHy * 2f;
             if (helper.hz > 0f) {
-                cube.zLength = helper.hz;
+                cube.zLength = helper.hz *2 ;
             } else {
-                cube.zLength = this.unit();
+                cube.zLength = this.unit() *2;
             }
             physicAttr.setBaseShape(cube);
 
             t.setPhysicAttr(physicAttr);
-            Fixture roleFixture = createFixture(helper);
+            Fixture roleFixture = createFixture(helper, t );
             if (helper.occupy) {
                 // fill map graph
                 VMap currentMap = getMap();
@@ -402,7 +407,9 @@ public class VWorld {
         return fixture;
     }
 
-    public Fixture createFixture(VActorSpawnHelper helper) {
+    float[] verticesTmp = new float[600];
+    int i = 0;
+    public Fixture createFixture(VActorSpawnHelper helper, VActor actor) {
         World box2dWorld = this.getBox2dWorld();
         BodyDef bd = new BodyDef();
         bd.type = helper.bodyType;
@@ -410,26 +417,60 @@ public class VWorld {
         Body body = box2dWorld.createBody(bd);
         body.setFixedRotation(true);
 
+
         FixtureDef fd = new FixtureDef();
         PolygonShape polygonShape = new PolygonShape();
         polygonShape.setAsBox(Box2dUnitConverter.worldToBox2d(helper.hx), Box2dUnitConverter.worldToBox2d(helper.hy));
         fd.friction = helper.friction;
         fd.density = helper.density;
-        fd.filter.categoryBits = helper.category;
-        fd.filter.maskBits = helper.mask;
+        fd.filter.categoryBits = WorldContext.GROUND_COLLIDE;
+        fd.filter.maskBits = WorldContext.GROUND_COLLIDE;
         fd.shape = polygonShape;
         fd.isSensor = helper.isSensor();
         Fixture fixture = body.createFixture(fd);
         body.setActive(false);
-        if (helper.userData == null) {
-            UserData userData = new UserData();
-            userData.setSubShifting(-helper.hy);
-            userData.setCategory(helper.category);
-            fixture.setUserData(userData);
-        } else {
-            fixture.setUserData(helper.userData);
-        }
+        UserData userData = new UserData();
+        userData.setSubShifting(-helper.hy);
+        userData.setCategory(helper.category);
+        userData.setType(UserData.B2DType.GROUND);
+        userData.setActor(actor);
+        fixture.setUserData(userData);
         polygonShape.dispose();
+
+        // face
+        polygonShape = new PolygonShape();
+        float x1 = -Box2dUnitConverter.worldToBox2d(helper.hx);
+        float x2 = Box2dUnitConverter.worldToBox2d(helper.hx);
+        float y1 = -Box2dUnitConverter.worldToBox2d(helper.hy);
+        float y2 = -Box2dUnitConverter.worldToBox2d(helper.hy) + 2 * Box2dUnitConverter.worldToBox2d(helper.hz);
+        int offset = i;
+        verticesTmp[i++] = x1;
+        verticesTmp[i++] = y1;
+        verticesTmp[i++] = x1;
+        verticesTmp[i++] = y2;
+        verticesTmp[i++] = x2;
+        verticesTmp[i++] = y2;
+        verticesTmp[i++] = x2;
+        verticesTmp[i++] = y1;
+        polygonShape.set(verticesTmp,offset, i - offset);
+        i = 0;
+        fd = new FixtureDef();
+        fd.friction = helper.friction;
+        fd.density = helper.density;
+        fd.filter.categoryBits = WorldContext.FACE_COLLIDE;
+        fd.filter.maskBits = WorldContext.FACE_COLLIDE;
+        fd.shape = polygonShape;
+        fd.isSensor = true;
+        fixture = body.createFixture(fd);
+        userData = new UserData();
+        userData.setSubShifting(-helper.hy);
+        userData.setCategory(helper.category);
+        userData.setMask(helper.mask);
+        userData.setType(UserData.B2DType.FACE);
+        userData.setActor(actor);
+        fixture.setUserData(userData);
+        polygonShape.dispose();
+        // face
         return fixture;
     }
 

@@ -1,5 +1,6 @@
 package com.voidvvv.game.render.actor.test.stone;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -29,7 +30,11 @@ public class StoneRender implements VActorRender<VObstacle> {
         ShapeRenderer shapeRenderer = ActGame.gameInstance().getDrawManager().getShapeRenderer();
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.begin();
-        shapeRenderer.rect(actor.getX(), actor.getY() - actor.physicAttr.box2dHy, actor.getWidth(), actor.getHeight());
+        shapeRenderer.setColor(Color.YELLOW);
+        shapeRenderer.rect(actor.getX(), actor.getY(), actor.physicAttr.box2dHx *2 , actor.physicAttr.box2dHy *2 );
+        shapeRenderer.setColor(Color.BLUE);
+        shapeRenderer.rect(actor.getX(), actor.getY(), actor.getWidth(), actor.getHeight());
+
         shapeRenderer.end();
         batch.begin();
     }

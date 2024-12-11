@@ -145,6 +145,7 @@ public class TestScreen extends ScreenAdapter {
                 .category((short)(WorldContext.OBSTACLE)) // who am I
                 .mask((short)(WorldContext.ROLE)) // who do I want to collision
                 .hx(40).hy(40)
+                .hz(vWorld.unit())
                 .occupy(true)
 //                .setSensor(true)
                 .initX(x).initY(y)
@@ -175,7 +176,7 @@ public class TestScreen extends ScreenAdapter {
                 .bodyType(BodyDef.BodyType.DynamicBody)
                 .category((short)(WorldContext.ROLE|WorldContext.WHITE)) // who am I
                 .mask((short)(WorldContext.OBSTACLE|WorldContext.BLACK|WorldContext.ROLE)) // who do I want to collision
-                .hx(vWorld.unit()/2 - 2f).hy(20)
+                .hx(vWorld.unit()/2).hy(8f)
                 .hz(vWorld.unit())
                 .initX(100f).initY(100f)
                 .build();

@@ -70,11 +70,6 @@ public class TestBullet extends VCharacter {
     @Override
     public void init() {
         super.init();
-        VCube cube = new VCube();
-        cube.xLength = this.physicAttr.box2dHx * 2f;
-        cube.yLength = this.physicAttr.box2dHy * 2f;
-        cube.zLength = 10f;
-        physicAttr.setBaseShape(cube);
         currentTime = maxLive;
         setName("闪光炸弹");
 

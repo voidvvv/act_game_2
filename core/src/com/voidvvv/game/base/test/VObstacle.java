@@ -27,15 +27,8 @@ public class VObstacle extends VActor {
         initFlag = true;
         super.init();
 
-        // physics
-        VCube cube = new VCube();
-        this.hx = this.physicAttr.box2dHx;
-        this.hy = this.physicAttr.box2dHy;
-        cube.xLength = hx * 2;
-        cube.yLength = hy * 2;
-        cube.zLength = 18f;
 
-        physicAttr.setBaseShape(cube);
+//        physicAttr.setBaseShape(cube);
 
         if (render == null) {
             render = new StoneRender();

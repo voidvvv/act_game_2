@@ -68,7 +68,8 @@ public class LightBoomPlugin extends SkillPlugin {
                 .bodyType(BodyDef.BodyType.DynamicBody)
                 .category((short) (WorldContext.ROLE | WorldContext.WHITE)) // who am I
                 .mask((short) (WorldContext.OBSTACLE | WorldContext.BLACK | WorldContext.ROLE)) // who do I want to collision
-                .hx(5).hy(5)
+                .hx(5).hy(1f)
+                .hz(5f)
                 .initX(this.position.x).initY(this.position.y)
                 .sensor(true)
                 .build();

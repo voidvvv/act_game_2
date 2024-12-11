@@ -25,7 +25,7 @@ public class Slime extends VCharacter {
         super.init();
 
         if (defalutStateMachine == null) {
-            defalutStateMachine = new DefaultStateMachine<>(this);
+            defalutStateMachine = new DefaultStateMachine<>(this, SlimeStatus.IDEL);
         }
 
     }
@@ -41,7 +41,7 @@ public class Slime extends VCharacter {
         if (btrCurrentStep > btUpdateStep) {
             btrCurrentStep = 0f;
         }
-
+//        System.out.println(defalutStateMachine.getCurrentState().toString());
 //        defalutStateMachine.changeState(SlimeStatus.IDEL);
         stateUpdate(delta);
     }
