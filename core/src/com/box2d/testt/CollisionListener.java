@@ -20,8 +20,8 @@ public class CollisionListener implements ContactListener {
         UserData dataB = ReflectUtil.cast(contact.getFixtureB().getUserData(), UserData.class);
 
         if (dataA !=null && dataB != null) {
-            dataA.getActor().onHit(dataB.getActor());
-            dataB.getActor().onHit(dataA.getActor());
+            dataA.getActor().onHit(dataB.getActor(), contact.getFixtureA(), contact.getFixtureB());
+            dataB.getActor().onHit(dataA.getActor(), contact.getFixtureB(), contact.getFixtureA());
         }
 
     }

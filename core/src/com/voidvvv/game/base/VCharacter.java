@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.actors.ActorConstants;
@@ -440,9 +441,9 @@ public class VCharacter extends VActor implements Attackable {
 
     public VActor lastHitActor;
     @Override
-    public void onHit(VActor actor) {
+    public void onHit(VActor actor, Fixture thisFixture, Fixture otherFixture) {
         lastHitActor = actor;
-        super.onHit(actor);
+        super.onHit(actor, thisFixture, otherFixture);
         for (VActorListener listener : listenerComponent.listeners) {
             listener.afterHitOnActor();
         }

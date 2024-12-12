@@ -394,8 +394,8 @@ public class VWorld {
         polygonShape.setAsBox(hx, hy);
         fd.friction = 0;
         fd.density = 0.5f;
-        fd.filter.categoryBits = category;
-        fd.filter.maskBits = mask;
+        fd.filter.categoryBits = (short)(category | WorldContext.GROUND_COLLIDE);
+        fd.filter.maskBits = (short)(mask| WorldContext.GROUND_COLLIDE);
         fd.shape = polygonShape;
         Fixture fixture = body.createFixture(fd);
         UserData userData = new UserData();

@@ -53,19 +53,8 @@ public class SlimeSimpleRender implements VActorRender<Slime> {
 
     @Override
     public void render(Slime actor, Batch batch, float parentAlpha) {
-        TextureRegion keyFrame = walk.getKeyFrame(actor.statusProgress, true);
+        TextureRegion keyFrame = attack.getKeyFrame(actor.statusProgress, true);
         batch.draw(keyFrame, actor.position.x - keyFrame.getRegionWidth()/2f, actor.position.y - 16f - 8f);
-        batch.end();
-        ShapeRenderer shapeRenderer = ActGame.gameInstance().getDrawManager().getShapeRenderer();
-        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-        shapeRenderer.begin();
-        shapeRenderer.setColor(Color.YELLOW);
-        shapeRenderer.rect(actor.getX(), actor.getY(), actor.physicAttr.box2dHx *2 , actor.physicAttr.box2dHy *2 );
-//        shapeRenderer.setColor(Color.BLUE);
-//
-//        shapeRenderer.rect(actor.getX(), actor.getY() - actor.physicAttr.box2dHy, actor.getWidth(), actor.getHeight());
 
-        shapeRenderer.end();
-        batch.begin();
     }
 }

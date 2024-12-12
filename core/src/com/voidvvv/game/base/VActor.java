@@ -200,7 +200,7 @@ public abstract class VActor extends Actor implements Pool.Poolable {
     }
 
 
-    public void onHit(VActor actor) {
+    public void onHit(VActor actor, Fixture thisFixture, Fixture otherFixture) {
     }
 
     public boolean isDying() {
