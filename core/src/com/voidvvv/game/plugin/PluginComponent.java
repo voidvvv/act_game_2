@@ -42,4 +42,19 @@ public class PluginComponent {
         }
     }
 
+    public void reset () {
+        for (Plugin plugin : plugins) {
+            Pools.free(plugin);
+        }
+        plugins.clear();
+        for (Plugin plugin : initList) {
+            Pools.free(plugin);
+        }
+        initList.clear();
+        for (Plugin plugin : trashBin) {
+            Pools.free(plugin);
+        }
+        trashBin.clear();
+    }
+
 }

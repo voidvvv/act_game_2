@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.actors.ActorConstants;
@@ -364,7 +365,6 @@ public class VCharacter extends VActor implements Attackable {
 
     @Override
     public void reset() {
-        super.reset();
         for (Map.Entry<Integer, Deque<Behavior>> entry :behaviorMap.entrySet()) {
             Deque<Behavior> value = entry.getValue();
             for (Behavior b: value) {
@@ -372,9 +372,11 @@ public class VCharacter extends VActor implements Attackable {
             }
             value.clear();
         }
+        getPluginComponent().reset();
         behaviorMap.clear();
         this.listenerComponent.reset();
         finder = null;
+        super.reset();
     }
 
     public void interruptPathFinding() {
@@ -439,13 +441,19 @@ public class VCharacter extends VActor implements Attackable {
     }
 
     public VActor lastHitActor;
+    public Fixture lastThisFixture;
+    public Fixture lastOtherFixture;
     @Override
-    public void onHit(VActor actor) {
+    public void onHit(VActor actor, Fixture thisFixture, Fixture otherFixture) {
         lastHitActor = actor;
-        super.onHit(actor);
+        lastThisFixture = thisFixture;
+        lastOtherFixture = otherFixture;
+        super.onHit(actor, thisFixture, otherFixture);
         for (VActorListener listener : listenerComponent.listeners) {
             listener.afterHitOnActor();
         }
+        lastThisFixture = null;
+        lastOtherFixture = null;
         lastHitActor = null;
     }
 

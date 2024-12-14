@@ -49,13 +49,8 @@ public class Bob extends VCharacter {
     @Override
     public void init() {
         super.init();
+        this.actorType = ActorConstants.ACTOR_TYPE_CHARACTER;
         // physics
-        VCube cube = new VCube();
-        cube.xLength = this.physicAttr.box2dHx * 2f;
-        cube.yLength = this.physicAttr.box2dHy * 2f;
-        cube.zLength = getWorld().unit() *2;
-        physicAttr.setBaseShape(cube);
-        this.setPhysicAttr(physicAttr);
         this.getActualBattleAttr().maxHp = 1500;
         this.getActualBattleAttr().hp = 1500;
         this.getActualBattleAttr().mp = 0f;
@@ -92,7 +87,7 @@ public class Bob extends VCharacter {
     Skill skill;
     @Override
     public void useSkill(int skillCode) {
-        if (skillCode >= 0) {
+        if (skillCode == InputActionMapping.SKILL_Q) {
             skill.use();
         }
     }

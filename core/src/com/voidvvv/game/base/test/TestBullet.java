@@ -7,6 +7,7 @@ import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.Camp;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VCharacter;
+import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.shape.VCube;
 import com.voidvvv.game.manager.event.attack.AttackEvent;
 import com.voidvvv.game.manager.event.attack.BasePhysicAttackEvent;
@@ -37,6 +38,8 @@ public class TestBullet extends VCharacter {
     @Override
     public void vAct(float delta) {
         super.vAct(delta);
+        this.actorType = ActorConstants.ACTOR_TYPE_BULLET;
+
         currentTime -= delta;
         if (currentTime <= 0) {
             this.staus = DYING;
@@ -70,11 +73,6 @@ public class TestBullet extends VCharacter {
     @Override
     public void init() {
         super.init();
-        VCube cube = new VCube();
-        cube.xLength = this.physicAttr.box2dHx * 2f;
-        cube.yLength = this.physicAttr.box2dHy * 2f;
-        cube.zLength = 10f;
-        physicAttr.setBaseShape(cube);
         currentTime = maxLive;
         setName("闪光炸弹");
 
@@ -92,8 +90,8 @@ public class TestBullet extends VCharacter {
     }
 
     @Override
-    public void onHit(VActor actor) {
-        super.onHit(actor);
+    public void onHit(VActor actor, Fixture thisFixture, Fixture otherFixture) {
+        super.onHit(actor, thisFixture, otherFixture);
         if (actor == null || !this.couldContact(actor)) {
             return;
         }

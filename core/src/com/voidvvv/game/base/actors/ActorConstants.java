@@ -18,4 +18,11 @@ public class ActorConstants {
 
     public static final int MSG_RESET_ACTOR = 11;
 
+    public static final int STATUS_SPELLING_02 = 12;
+
+    public static final int ACTOR_TYPE_CHARACTER = 13;
+    public static final int ACTOR_TYPE_BULLET = 14;
+    public static final int ACTOR_TYPE_OBSTACLE = 15;
+
+
 }

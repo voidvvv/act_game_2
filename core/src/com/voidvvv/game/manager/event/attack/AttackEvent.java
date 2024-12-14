@@ -7,13 +7,13 @@ import com.voidvvv.game.manager.event.WorldEvent;
 
 public abstract class AttackEvent extends WorldEvent{
 
-    protected VActor triggerObj;
+    protected Object triggerObj;
 
-    public VActor getTriggerObj() {
+    public Object getTriggerObj() {
         return triggerObj;
     }
 
-    public void setTriggerObj(VActor triggerObj) {
+    public void setTriggerObj(Object triggerObj) {
         this.triggerObj = triggerObj;
     }
 

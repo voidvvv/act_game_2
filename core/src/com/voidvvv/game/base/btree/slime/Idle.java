@@ -46,9 +46,10 @@ public class Idle  extends LeafTask<Slime> {
 
     @Override
     public void reset() {
+        super.reset();
         this.lastX = 0f;
         this.lastY = 0f;
-        super.reset();
+
     }
 
 

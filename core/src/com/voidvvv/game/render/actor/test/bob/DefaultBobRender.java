@@ -34,6 +34,6 @@ public class DefaultBobRender implements VActorRender<Bob> {
         float y = actor.position.y;
         int regionWidth = texture.getRegionWidth() * 1;
         int regionHeight = texture.getRegionHeight() * 1;
-        batch.draw(texture, x - regionWidth/2, y + actor.position.z, regionWidth, regionHeight);
+        batch.draw(texture, x - regionWidth/2f, y + actor.position.z, regionWidth, regionHeight);
     }
 }

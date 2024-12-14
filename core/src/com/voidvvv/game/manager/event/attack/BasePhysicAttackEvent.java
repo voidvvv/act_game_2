@@ -25,7 +25,7 @@ public class BasePhysicAttackEvent extends AttackEvent  implements AttackCalcula
             DamageBehavior behavior = Pools.obtain(DamageBehavior.class);
             behavior.setFrom(from);
             behavior.setTo(to);
-            behavior.setTrigger(getTriggerObj().getName());
+            behavior.setTrigger(getTriggerObj().toString());
             behavior.setAttackType(BattleContext.AttackType.ATTACK_PHYSIC);
             behavior.setDamage(fromBattle.attack);
             behavior.setWorld(to.getWorld());

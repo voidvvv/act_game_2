@@ -3,11 +3,35 @@ package com.voidvvv.game.base.b2d;
 import com.voidvvv.game.base.VActor;
 
 public class UserData {
-    private float subShifting;
+    public static enum B2DType {
+        FACE, GROUND;
+    }
 
-    private short category;
+    private long category;
+
+    private long mask;
 
     VActor actor;
+
+    B2DType type;
+
+    boolean derivative = false;
+
+    public boolean isDerivative() {
+        return derivative;
+    }
+
+    public void setDerivative(boolean derivative) {
+        this.derivative = derivative;
+    }
+
+    public B2DType getType() {
+        return type;
+    }
+
+    public void setType(B2DType type) {
+        this.type = type;
+    }
 
     public VActor getActor() {
         return actor;
@@ -17,19 +41,20 @@ public class UserData {
         this.actor = actor;
     }
 
-    public short getCategory() {
+    public long getCategory() {
         return category;
     }
 
-    public void setCategory(short category) {
+    public void setCategory(long category) {
         this.category = category;
     }
 
-    public float getSubShifting() {
-        return subShifting;
+    public long getMask() {
+        return mask;
     }
 
-    public void setSubShifting(float subShifting) {
-        this.subShifting = subShifting;
+    public void setMask(long mask) {
+        this.mask = mask;
     }
+
 }

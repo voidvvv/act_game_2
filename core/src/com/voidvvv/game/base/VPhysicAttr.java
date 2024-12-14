@@ -7,6 +7,7 @@ public class VPhysicAttr {
 
     public float box2dHx;
     public float box2dHy;
+    public float box2dHz;
 
     private VBaseShape baseShape;
 

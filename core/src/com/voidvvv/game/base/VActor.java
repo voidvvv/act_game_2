@@ -36,6 +36,8 @@ public abstract class VActor extends Actor implements Pool.Poolable {
 
     public VPhysicAttr physicAttr;
 
+    public int actorType;
+
     private Fixture fixture;
 
     private Body body;
@@ -120,7 +122,7 @@ public abstract class VActor extends Actor implements Pool.Poolable {
         Vector2 position1 = transform.getPosition();
         Box2dUnitConverter.box2dToWorld(position1);
         this.position.x = position1.x;
-        this.position.y = position1.y;
+        this.position.y = position1.y - getPhysicAttr().box2dHy;
         this.position.z += this.velocity.z * delta;
 
     }
@@ -200,7 +202,7 @@ public abstract class VActor extends Actor implements Pool.Poolable {
     }
 
 
-    public void onHit(VActor actor) {
+    public void onHit(VActor actor, Fixture thisFixture, Fixture otherFixture) {
     }
 
     public boolean isDying() {

@@ -2,6 +2,7 @@ package com.voidvvv.game.base.test;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.voidvvv.game.base.VActor;
+import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.buff.Buff;
 import com.voidvvv.game.base.shape.VCube;
 import com.voidvvv.game.render.actor.VActorRender;
@@ -26,16 +27,9 @@ public class VObstacle extends VActor {
         }
         initFlag = true;
         super.init();
+        this.actorType = ActorConstants.ACTOR_TYPE_OBSTACLE;
 
-        // physics
-        VCube cube = new VCube();
-        this.hx = this.physicAttr.box2dHx;
-        this.hy = this.physicAttr.box2dHy;
-        cube.xLength = hx * 2;
-        cube.yLength = hy * 2;
-        cube.zLength = 18f;
-
-        physicAttr.setBaseShape(cube);
+//        physicAttr.setBaseShape(cube);
 
         if (render == null) {
             render = new StoneRender();
