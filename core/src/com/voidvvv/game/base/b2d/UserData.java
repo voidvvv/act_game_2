@@ -6,7 +6,6 @@ public class UserData {
     public static enum B2DType {
         FACE, GROUND;
     }
-    private float subShifting;
 
     private long category;
 
@@ -15,6 +14,16 @@ public class UserData {
     VActor actor;
 
     B2DType type;
+
+    boolean derivative = false;
+
+    public boolean isDerivative() {
+        return derivative;
+    }
+
+    public void setDerivative(boolean derivative) {
+        this.derivative = derivative;
+    }
 
     public B2DType getType() {
         return type;
@@ -48,11 +57,4 @@ public class UserData {
         this.mask = mask;
     }
 
-    public float getSubShifting() {
-        return subShifting;
-    }
-
-    public void setSubShifting(float subShifting) {
-        this.subShifting = subShifting;
-    }
 }

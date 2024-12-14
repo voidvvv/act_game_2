@@ -7,6 +7,7 @@ import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.Camp;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VCharacter;
+import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.shape.VCube;
 import com.voidvvv.game.manager.event.attack.AttackEvent;
 import com.voidvvv.game.manager.event.attack.BasePhysicAttackEvent;
@@ -37,6 +38,8 @@ public class TestBullet extends VCharacter {
     @Override
     public void vAct(float delta) {
         super.vAct(delta);
+        this.actorType = ActorConstants.ACTOR_TYPE_BULLET;
+
         currentTime -= delta;
         if (currentTime <= 0) {
             this.staus = DYING;

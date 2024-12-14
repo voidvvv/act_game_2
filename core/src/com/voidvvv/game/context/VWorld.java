@@ -26,6 +26,7 @@ import com.box2d.testt.CollisionListener;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.asset.AssetConstant;
 import com.voidvvv.game.base.VActor;
+import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.VPhysicAttr;
 import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.base.shape.VCube;
@@ -232,6 +233,38 @@ public class VWorld {
         clean();
     }
 
+    public Fixture addRectFixture(VCharacter owner, FixtureHelper helper) {
+        Body body = owner.getBody();
+        PolygonShape polygonShape = new PolygonShape();
+        int offset = i;
+        verticesTmp[i++] = Box2dUnitConverter.worldToBox2d(helper.x1);
+        verticesTmp[i++] = Box2dUnitConverter.worldToBox2d(helper.y1);
+        verticesTmp[i++] = Box2dUnitConverter.worldToBox2d(helper.x1);
+        verticesTmp[i++] = Box2dUnitConverter.worldToBox2d(helper.y2);
+        verticesTmp[i++] = Box2dUnitConverter.worldToBox2d(helper.x2);
+        verticesTmp[i++] = Box2dUnitConverter.worldToBox2d(helper.y2);
+        verticesTmp[i++] = Box2dUnitConverter.worldToBox2d(helper.x2);
+        verticesTmp[i++] = Box2dUnitConverter.worldToBox2d(helper.y1);
+        polygonShape.set(verticesTmp,offset, i - offset);
+        i = 0;
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = polygonShape;
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.0f;
+        fixtureDef.restitution = 0.0f;
+        fixtureDef.isSensor = helper.sensor;
+        fixtureDef.filter.maskBits = helper.box2dMask;
+        fixtureDef.filter.categoryBits = helper.box2dCategory;
+        UserData ud = new UserData();
+        ud.setActor(owner);
+        ud.setDerivative(helper.derivative);
+        ud.setType(helper.type);
+        Fixture fixture = body.createFixture(fixtureDef);
+        polygonShape.dispose();
+        fixture.setUserData(ud);
+        return fixture;
+    }
+
     class VActorCompare implements Comparator<Actor> {
 
         @Override
@@ -336,6 +369,7 @@ public class VWorld {
             VPhysicAttr physicAttr = new VPhysicAttr();
             physicAttr.box2dHx = helper.hx;
             physicAttr.box2dHy = helper.hy;
+            physicAttr.box2dHz = helper.hz;
             VCube cube = new VCube();
             cube.xLength = physicAttr.box2dHx * 2f;
             cube.yLength = physicAttr.box2dHy * 2f;
@@ -399,7 +433,6 @@ public class VWorld {
         fd.shape = polygonShape;
         Fixture fixture = body.createFixture(fd);
         UserData userData = new UserData();
-        userData.setSubShifting(-hy);
         userData.setCategory(category);
         fixture.setUserData(userData);
         polygonShape.dispose();
@@ -430,7 +463,6 @@ public class VWorld {
         Fixture fixture = body.createFixture(fd);
         body.setActive(false);
         UserData userData = new UserData();
-        userData.setSubShifting(-helper.hy);
         userData.setCategory(helper.category);
         userData.setType(UserData.B2DType.GROUND);
         userData.setActor(actor);
@@ -463,7 +495,6 @@ public class VWorld {
         fd.isSensor = true;
         fixture = body.createFixture(fd);
         userData = new UserData();
-        userData.setSubShifting(-helper.hy);
         userData.setCategory(helper.category);
         userData.setMask(helper.mask);
         userData.setType(UserData.B2DType.FACE);

@@ -7,11 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -34,6 +31,11 @@ import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.render.actor.slime.SlimeSimpleRender;
 import com.voidvvv.game.screen.test.ui.TextMessageBar;
 import com.voidvvv.game.utils.ReflectUtil;
+
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class TestScreen extends ScreenAdapter {
 
@@ -137,6 +139,7 @@ public class TestScreen extends ScreenAdapter {
 
         addSlime();
 
+
     }
 
     private VObstacle spawnObstacle(float x, float y) {
@@ -200,6 +203,7 @@ public class TestScreen extends ScreenAdapter {
         debugShapeRender = new VDebugShapeRender();
         orthographicCamera = ActGame.gameInstance().getCameraManager().getMainCamera();
         vWorld = ActGame.gameInstance().currentWorld();
+
     }
 
     private void loadAsset() {

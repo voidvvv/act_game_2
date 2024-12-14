@@ -365,7 +365,6 @@ public class VCharacter extends VActor implements Attackable {
 
     @Override
     public void reset() {
-        super.reset();
         for (Map.Entry<Integer, Deque<Behavior>> entry :behaviorMap.entrySet()) {
             Deque<Behavior> value = entry.getValue();
             for (Behavior b: value) {
@@ -373,9 +372,11 @@ public class VCharacter extends VActor implements Attackable {
             }
             value.clear();
         }
+        getPluginComponent().reset();
         behaviorMap.clear();
         this.listenerComponent.reset();
         finder = null;
+        super.reset();
     }
 
     public void interruptPathFinding() {
@@ -440,13 +441,19 @@ public class VCharacter extends VActor implements Attackable {
     }
 
     public VActor lastHitActor;
+    public Fixture lastThisFixture;
+    public Fixture lastOtherFixture;
     @Override
     public void onHit(VActor actor, Fixture thisFixture, Fixture otherFixture) {
         lastHitActor = actor;
+        lastThisFixture = thisFixture;
+        lastOtherFixture = otherFixture;
         super.onHit(actor, thisFixture, otherFixture);
         for (VActorListener listener : listenerComponent.listeners) {
             listener.afterHitOnActor();
         }
+        lastThisFixture = null;
+        lastOtherFixture = null;
         lastHitActor = null;
     }
 

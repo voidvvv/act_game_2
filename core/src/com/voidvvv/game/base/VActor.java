@@ -36,6 +36,8 @@ public abstract class VActor extends Actor implements Pool.Poolable {
 
     public VPhysicAttr physicAttr;
 
+    public int actorType;
+
     private Fixture fixture;
 
     private Body body;

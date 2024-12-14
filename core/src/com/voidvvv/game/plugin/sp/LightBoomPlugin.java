@@ -91,8 +91,9 @@ public class LightBoomPlugin extends SkillPlugin {
 
     @Override
     public void reset() {
-        send = false;
         super.reset();
+        send = false;
+
     }
 
     @Override
