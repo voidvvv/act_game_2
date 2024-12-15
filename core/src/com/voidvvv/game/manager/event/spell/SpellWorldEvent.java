@@ -20,6 +20,8 @@ public class SpellWorldEvent extends WorldEvent {
     @Override
     public void apply() {
         if (skill != null) {
+            VCharacter from = ReflectUtil.cast(this.fromActor, VCharacter.class);
+            from.preUseSkil(skill);
             this.shouldDoPost = skill.shouldDoPost;
             skill.does();
         }

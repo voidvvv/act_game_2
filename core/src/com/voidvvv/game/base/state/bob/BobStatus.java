@@ -128,13 +128,6 @@ public enum BobStatus implements State<Bob> {
         @Override
         public void update(Bob entity) {
             super.update(entity);
-            if (entity.statusTime >= entity.q_standup_time) {
-                entity.getSelfStatusStateMachine().changeState(IDLE);
-                return;
-            }
-
-            entity.baseMove.x = 0f;
-            entity.baseMove.y = 0f;
         }
 
         @Override

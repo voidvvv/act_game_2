@@ -64,9 +64,9 @@ public class BobAssetConstant {
             walk_animation_mirror.setPlayMode(Animation.PlayMode.LOOP);
 
             attack_animation = AssetConstant.makeCommonAnimation(base_pic[3]);
-            attack_animation.setPlayMode(Animation.PlayMode.LOOP);
+            attack_animation.setPlayMode(Animation.PlayMode.NORMAL);
             attack_animation_mirror = AssetConstant.makeCommonAnimation(base_pic_mirror[3]);
-            attack_animation_mirror.setPlayMode(Animation.PlayMode.LOOP);
+            attack_animation_mirror.setPlayMode(Animation.PlayMode.NORMAL);
 
             dying_animation = AssetConstant.makeCommonAnimation(base_pic[4]);
 //            dying_animation.setPlayMode(Animation.PlayMode.LOOP);
@@ -88,8 +88,8 @@ public class BobAssetConstant {
             return flip ? walk_animation_mirror.getKeyFrame(time) : walk_animation.getKeyFrame(time);
         }
         if (status == BobStatus.ATTACKING_0 ) {
-            return flip ? attack_animation_mirror.getKeyFrame(time) : attack_animation.getKeyFrame(time);
-
+            return flip ? attack_animation_mirror.getKeyFrame(time, false) : attack_animation.getKeyFrame(time, false);
+//            return null;
         }
 
         if (status == BobStatus.SPELL_0) {

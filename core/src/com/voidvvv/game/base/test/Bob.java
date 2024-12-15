@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.shape.VCube;
+import com.voidvvv.game.base.skill.v2.HitSkill;
 import com.voidvvv.game.base.skill.v2.LightBoomSkill;
 import com.voidvvv.game.base.skill.v2.Skill;
 import com.voidvvv.game.base.state.bob.BobStatus;
@@ -67,6 +68,11 @@ public class Bob extends VCharacter {
             skill = new LightBoomSkill();
             skill.setOwner(this);
         }
+
+        if (skill2 == null) {
+            skill2 = new HitSkill();
+            skill2.setOwner(this);
+        }
     }
 
 
@@ -85,10 +91,14 @@ public class Bob extends VCharacter {
     }
 
     Skill skill;
+    Skill skill2;
     @Override
     public void useSkill(int skillCode) {
         if (skillCode == InputActionMapping.SKILL_Q) {
             skill.use();
+        }
+        if (skillCode == InputActionMapping.SKILL_W) {
+            skill2.use();
         }
     }
 
@@ -105,6 +115,9 @@ public class Bob extends VCharacter {
             this.selfStatusStateMachine.changeState(BobStatus.IDLE);
         } else if (status == ActorConstants.STATUS_SPELLING_01) {
             this.selfStatusStateMachine.changeState(BobStatus.SPELL_0);
+        } else if (status == ActorConstants.STATUS_ATTACK_01) {
+            this.selfStatusStateMachine.changeState(BobStatus.ATTACKING_0);
+
         }
     }
 

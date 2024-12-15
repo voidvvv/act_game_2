@@ -16,6 +16,7 @@ public class HitSkillPlugin extends SkillPlugin {
 
     float speed = 1f;
     float totalProgress = 1f;
+    float currentProgress = 0f;
 
     Fixture generatedFix = null;
 
@@ -34,15 +35,19 @@ public class HitSkillPlugin extends SkillPlugin {
         listener = Pools.obtain(HitSkillListener.class);
         listener.hitSkill = this.skill;
         listener.owner = owner;
+        listener.hsp = this;
         owner.getListenerComponent().add(listener);
+        owner.changeStatus(ActorConstants.STATUS_ATTACK_01);
+
     }
 
     @Override
     public void update(float delta) {
         VCharacter owner = skill.getOwner();
         updateProgress(delta);
-
-        float statusProgress = owner.statusProgress;
+        owner.baseMove.x = 0f;
+        owner.baseMove.y = 0f;
+        float statusProgress = currentProgress;
 
         if (statusProgress >= 0.5f && hitStatus == INIT) {
             hitStatus = GENERATE_HIT;
@@ -69,25 +74,36 @@ public class HitSkillPlugin extends SkillPlugin {
         VCharacter owner = skill.getOwner();
 
         speed = owner.getBattleComponent().actualBattleAttr.attackSpeed / WorldContext.DEFAULT_ATTACK_SPEED_COEFFICIENT;
-        speed /= totalProgress;
-        owner.statusProgress += speed * delta;
+        currentProgress += (speed * delta);
+        float increase = (speed * delta) / totalProgress;
+        owner.statusProgress += increase;
     }
 
     @Override
     public void reset() {
+        System.out.println(getClass().getName() + " reset");
         hitStatus = INIT;
+        currentProgress = 0f;
         VCharacter owner = skill.getOwner();
-        owner.getBody().destroyFixture(generatedFix);
+        if (generatedFix != null) {
+            owner.getBody().destroyFixture(generatedFix);
+            generatedFix = null;
+        }
         owner.getListenerComponent().remove(listener);
+
         super.reset();
     }
 
     @Override
     public void stop() {
         // will call reset
-        VCharacter owner = skill.getOwner();
-        owner.getPluginComponent().removePlugin(this);
-        owner.changeStatus(ActorConstants.STATUS_IDLE);
+        if (skill != null) {
+            VCharacter owner = skill.getOwner();
+            if (owner != null) {
+                owner.getPluginComponent().removePlugin(this);
+                owner.changeStatus(ActorConstants.STATUS_IDLE);
+            }
+        }
 
     }
 }
