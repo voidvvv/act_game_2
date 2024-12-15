@@ -31,6 +31,7 @@ public abstract class Skill {
             applyCost();
             SpellWorldEvent spellWorldEvent = ActGame.gameInstance().getvWorldEventManager().newEvent(currentEventClass());
             spellWorldEvent.setSkill(this);
+            spellWorldEvent.setFromActor(owner);
             afterConfigEvent(spellWorldEvent);
             return true;
         } catch (Exception e) {

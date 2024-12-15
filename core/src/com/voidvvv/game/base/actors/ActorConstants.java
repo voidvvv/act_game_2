@@ -1,28 +1,48 @@
 package com.voidvvv.game.base.actors;
 
 public class ActorConstants {
-    public static final int DEFENCE_FIELD = 1;
-    public static final int ATTACK_FIELD = 2;
+    public static final int DEFENCE_FIELD;
+    public static final int ATTACK_FIELD;
 
-    public static final int HP_FIELD = 3;
-    public static final int MP_FIELD = 4;
-    public static final int MOVE_SPEED_FIELD = 5;
-    public static final int ATTACK_SPEED_FIELD = 6;
-    public static final int SPELL_SPEED_FIELD = 7;
+    public static final int HP_FIELD;
+    public static final int MP_FIELD;
+    public static final int MOVE_SPEED_FIELD;
+    public static final int ATTACK_SPEED_FIELD;
+    public static final int SPELL_SPEED_FIELD;
 
 
-    public static final int STATUS_IDLE = 8;
-    public static final int STATUS_WALKING = 9;
+    public static final int STATUS_IDLE;
+    public static final int STATUS_WALKING;
+    public static final int STATUS_SPELLING_01;
+    public static final int STATUS_SPELLING_02;
+    public static final int STATUS_ATTACK_01;
 
-    public static final int STATUS_SPELLING_01 = 10;
+    public static final int MSG_RESET_ACTOR;
 
-    public static final int MSG_RESET_ACTOR = 11;
 
-    public static final int STATUS_SPELLING_02 = 12;
+    public static final int ACTOR_TYPE_CHARACTER;
+    public static final int ACTOR_TYPE_BULLET;
+    public static final int ACTOR_TYPE_OBSTACLE;
 
-    public static final int ACTOR_TYPE_CHARACTER = 13;
-    public static final int ACTOR_TYPE_BULLET = 14;
-    public static final int ACTOR_TYPE_OBSTACLE = 15;
+    static {
+        int s = 1;
+        DEFENCE_FIELD = s++;
+        ATTACK_FIELD = s++;
+        HP_FIELD = s++;
+        MP_FIELD = s++;
+        MOVE_SPEED_FIELD = s++;
+        ATTACK_SPEED_FIELD = s++;
+        SPELL_SPEED_FIELD = s++;
+        STATUS_IDLE = s++;
+        STATUS_WALKING = s++;
+        STATUS_SPELLING_01 = s++;
+        STATUS_SPELLING_02 = s++;
+        STATUS_ATTACK_01 = s++;
+        MSG_RESET_ACTOR = s++;
+        ACTOR_TYPE_CHARACTER = s++;
+        ACTOR_TYPE_BULLET = s++;
+        ACTOR_TYPE_OBSTACLE = s++;
+    }
 
 
 }

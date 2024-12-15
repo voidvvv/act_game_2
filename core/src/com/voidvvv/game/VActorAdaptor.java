@@ -35,6 +35,11 @@ public class VActorAdaptor implements VActorListener {
     }
 
     @Override
+    public void preUserSkill() {
+
+    }
+
+    @Override
     public void afterUseSkill() {
 
     }

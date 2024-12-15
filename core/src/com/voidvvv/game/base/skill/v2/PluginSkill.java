@@ -12,6 +12,7 @@ public abstract class PluginSkill extends Skill {
 
     @Override
     public void does() {
+
         if (pluginClass!= null) {
             SkillPlugin sp = Pools.obtain(pluginClass);
             sp.skill = this;

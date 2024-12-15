@@ -2,7 +2,10 @@ package com.voidvvv.game.plugin.sp;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.utils.Pools;
+import com.voidvvv.game.VActorAdaptor;
 import com.voidvvv.game.base.Camp;
+import com.voidvvv.game.base.VActorListener;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.test.TestBullet;
@@ -21,6 +24,7 @@ public class LightBoomPlugin extends SkillPlugin {
     public Vector2 position = new Vector2();
     public Vector2 direction = new Vector2();
 
+    InterruptListener listener;
 
     @Override
     public int version() {
@@ -37,6 +41,9 @@ public class LightBoomPlugin extends SkillPlugin {
 
         speed = character.getBattleComponent().actualBattleAttr.magicSpeed / WorldContext.DEFAULT_MAGIC_COEFFICIENT;
         character.changeStatus(ActorConstants.STATUS_SPELLING_01);
+        listener = Pools.obtain(InterruptListener.class);
+        listener.plugin = this;
+        character.getListenerComponent().add(listener);
 
     }
 
@@ -93,11 +100,22 @@ public class LightBoomPlugin extends SkillPlugin {
     public void reset() {
         super.reset();
         send = false;
-
+        if (this.listener != null) {
+            character.getListenerComponent().remove(listener);
+            this.listener = null;
+        }
     }
 
     @Override
     public void stop() {
         character.getPluginComponent().removePlugin(this);
+    }
+
+    public static class InterruptListener extends VActorAdaptor {
+        public LightBoomPlugin plugin;
+        @Override
+        public void preUserSkill() {
+            plugin.stop();
+        }
     }
 }

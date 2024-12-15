@@ -22,6 +22,8 @@ public class HitSkillListener extends VActorAdaptor {
 
     public Skill hitSkill;
 
+    public HitSkillPlugin hsp;
+
     private Set<VActor> set = new HashSet<>();
 
     @Override
@@ -62,6 +64,17 @@ public class HitSkillListener extends VActorAdaptor {
     public void reset() {
         super.reset();
         set.clear();
+        this.hsp = null;
         this.owner = null;
+    }
+
+    @Override
+    public void preUserSkill() {
+        this.hsp.stop();
+    }
+
+    @Override
+    public void afterUseSkill() {
+        super.afterUseSkill();
     }
 }

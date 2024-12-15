@@ -23,7 +23,7 @@ public class Slime extends VCharacter {
     @Override
     public void init() {
         super.init();
-
+        this.actorType = ActorConstants.ACTOR_TYPE_CHARACTER;
         if (defalutStateMachine == null) {
             defalutStateMachine = new DefaultStateMachine<>(this, SlimeStatus.IDEL);
         }
