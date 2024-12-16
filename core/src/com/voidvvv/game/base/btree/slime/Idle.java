@@ -3,7 +3,7 @@ package com.voidvvv.game.base.btree.slime;
 import com.badlogic.gdx.ai.btree.LeafTask;
 import com.badlogic.gdx.ai.btree.Task;
 import com.voidvvv.game.base.VActor;
-import com.voidvvv.game.base.actors.Slime;
+import com.voidvvv.game.base.actors.slime.Slime;
 import com.voidvvv.game.context.VWorld;
 
 public class Idle  extends LeafTask<Slime> {
@@ -34,7 +34,7 @@ public class Idle  extends LeafTask<Slime> {
             lastX = mx;
             lastY = my;
         }
-        return Status.SUCCEEDED;
+        return Status.RUNNING;
     }
 
     @Override

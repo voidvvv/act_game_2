@@ -28,6 +28,13 @@ public class CollisionListener implements ContactListener {
 
     @Override
     public void endContact(Contact contact) {
+        UserData dataA = ReflectUtil.cast(contact.getFixtureA().getUserData(), UserData.class);
+        UserData dataB = ReflectUtil.cast(contact.getFixtureB().getUserData(), UserData.class);
+
+        if (dataA !=null && dataB != null) {
+            dataA.getActor().onHitOver(dataB.getActor(), contact.getFixtureA(), contact.getFixtureB());
+            dataB.getActor().onHitOver(dataA.getActor(), contact.getFixtureB(), contact.getFixtureA());
+        }
     }
 
     @Override

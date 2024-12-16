@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.actors.ActorConstants;
+import com.voidvvv.game.base.actors.NormalDetector;
 import com.voidvvv.game.base.buff.Buff;
 import com.voidvvv.game.base.buff.BuffComponent;
 import com.voidvvv.game.base.skill.Cost;
@@ -42,6 +43,8 @@ public class VCharacter extends VActor implements Attackable {
     public float statusProgress;
 
     public Vector3 baseMove = new Vector3();
+
+    private NormalDetector normalDetector;
 
 
     Vector3[] velAffect = new Vector3[10];
@@ -176,11 +179,18 @@ public class VCharacter extends VActor implements Attackable {
     @Override
     public void init() {
         super.init();
+
         this.battleComponent.setOwner(this);
         this.buffComponent.setOwner(this);
         finder = new VPathFinder(this,getWorld());
 
         behaviorMap.put(DamageBehavior.BASE_BE_ATTACK_BEHAVIOR,new LinkedList<>());
+    }
+
+    public void initAI (float radius) {
+        normalDetector = Pools.obtain(NormalDetector.class);
+        normalDetector.changeRadius(radius);
+        normalDetector.init(this);
     }
 
     public BuffComponent getBuffComponent() {
@@ -366,6 +376,11 @@ public class VCharacter extends VActor implements Attackable {
 
     @Override
     public void reset() {
+        if (normalDetector != null) {
+
+            Pools.free(normalDetector);
+            normalDetector = null;
+        }
         for (Map.Entry<Integer, Deque<Behavior>> entry :behaviorMap.entrySet()) {
             Deque<Behavior> value = entry.getValue();
             for (Behavior b: value) {
@@ -377,6 +392,7 @@ public class VCharacter extends VActor implements Attackable {
         behaviorMap.clear();
         this.listenerComponent.reset();
         finder = null;
+
         super.reset();
     }
 
@@ -458,6 +474,19 @@ public class VCharacter extends VActor implements Attackable {
         lastHitActor = null;
     }
 
+    public void onHitOver(VActor actor, Fixture thisFixture, Fixture otherFixture) {
+        lastHitActor = actor;
+        lastThisFixture = thisFixture;
+        lastOtherFixture = otherFixture;
+        super.onHit(actor, thisFixture, otherFixture);
+        for (VActorListener listener : listenerComponent.listeners) {
+            listener.afterHitOver();
+        }
+        lastThisFixture = null;
+        lastOtherFixture = null;
+        lastHitActor = null;
+    }
+
     public Buff lastAddedAbuff;
     @Override
     public void postAddBuff(Buff buff) {
@@ -479,5 +508,9 @@ public class VCharacter extends VActor implements Attackable {
             listener.preUserSkill();
         }
         lastAddedAbuff = null;
+    }
+
+    public NormalDetector getNormalDetector() {
+        return normalDetector;
     }
 }

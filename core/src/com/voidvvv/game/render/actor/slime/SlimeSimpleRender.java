@@ -1,15 +1,12 @@
 package com.voidvvv.game.render.actor.slime;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.asset.AssetConstant;
-import com.voidvvv.game.base.actors.ActorConstants;
-import com.voidvvv.game.base.actors.Slime;
+import com.voidvvv.game.base.actors.slime.Slime;
 import com.voidvvv.game.render.actor.VActorRender;
 
 public class SlimeSimpleRender implements VActorRender<Slime> {

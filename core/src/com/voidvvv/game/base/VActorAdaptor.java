@@ -1,7 +1,4 @@
-package com.voidvvv.game;
-
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.voidvvv.game.base.VActorListener;
+package com.voidvvv.game.base;
 
 public class VActorAdaptor implements VActorListener {
     @Override
@@ -46,6 +43,11 @@ public class VActorAdaptor implements VActorListener {
 
     @Override
     public void afterHitOnActor() {
+
+    }
+
+    @Override
+    public void afterHitOver() {
 
     }
 

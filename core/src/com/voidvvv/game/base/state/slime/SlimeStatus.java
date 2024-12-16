@@ -3,8 +3,7 @@ package com.voidvvv.game.base.state.slime;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
-import com.voidvvv.game.base.actors.Slime;
-import com.voidvvv.game.base.state.bob.BobStatus;
+import com.voidvvv.game.base.actors.slime.Slime;
 
 public enum SlimeStatus implements State<Slime> {
     IDEL() {

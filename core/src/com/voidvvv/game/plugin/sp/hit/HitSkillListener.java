@@ -2,17 +2,15 @@ package com.voidvvv.game.plugin.sp.hit;
 
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.voidvvv.game.ActGame;
-import com.voidvvv.game.VActorAdaptor;
+import com.voidvvv.game.base.VActorAdaptor;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.b2d.UserData;
-import com.voidvvv.game.base.skill.v2.HitSkill;
 import com.voidvvv.game.base.skill.v2.Skill;
 import com.voidvvv.game.manager.event.attack.BasePhysicAttackEvent;
 import com.voidvvv.game.utils.ReflectUtil;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,6 +30,11 @@ public class HitSkillListener extends VActorAdaptor {
         Fixture lastOtherFixture = this.owner.lastOtherFixture;
         VActor lastHitActor = this.owner.lastHitActor;
 
+        UserData userData = ReflectUtil.cast(lastThisFixture.getUserData(), UserData.class);
+        if (userData == null || userData.isDerivative()) {
+            // this fixture should be skipped
+            return;
+        }
         boolean validTarget = checkTarget(lastHitActor, lastOtherFixture);
         if (!validTarget) {
             return;

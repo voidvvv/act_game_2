@@ -1,14 +1,11 @@
-package com.voidvvv.game.base.actors;
+package com.voidvvv.game.base.actors.slime;
 
-import com.badlogic.gdx.ai.btree.BehaviorTree;
-import com.badlogic.gdx.ai.btree.utils.BehaviorTreeLibraryManager;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.voidvvv.game.base.VCharacter;
-import com.voidvvv.game.base.btree.BTManager;
-import com.voidvvv.game.base.shape.VCube;
+import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.state.slime.SlimeStatus;
 import com.voidvvv.game.render.actor.VActorRender;
 
@@ -41,8 +38,6 @@ public class Slime extends VCharacter {
         if (btrCurrentStep > btUpdateStep) {
             btrCurrentStep = 0f;
         }
-//        System.out.println(defalutStateMachine.getCurrentState().toString());
-//        defalutStateMachine.changeState(SlimeStatus.IDEL);
         stateUpdate(delta);
     }
 
