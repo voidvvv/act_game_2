@@ -29,7 +29,8 @@ public class SeekEnemy extends LeafTask<Slime> {
         if (characters.isEmpty()) {
             return Status.FAILED;
         }
-        return Status.FAILED;
+        normalDetector.setTarget(characters.iterator().next());
+        return Status.SUCCEEDED;
     }
 
     @Override

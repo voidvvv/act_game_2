@@ -8,6 +8,7 @@ import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.math.MathUtils;
 import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.btree.BTManager;
 import com.voidvvv.game.context.VWorld;
@@ -20,7 +21,11 @@ import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.manager.event.VWorldEventManager;
 import com.voidvvv.game.screen.test.TestScreen;
 
+import java.security.SecureRandom;
+import java.util.Random;
+
 public class ActGame extends Game {
+    public long seed;
     public float totalGameTime = 0f;
     private long frameId = 0;
     private static ActGame gameInstance;
@@ -78,6 +83,7 @@ public class ActGame extends Game {
     @Override
     public void create() {
         // manager
+        initRandom();
         initManagers();
         // init opt
         initOpt();
@@ -88,6 +94,11 @@ public class ActGame extends Game {
 
     }
 
+    private void initRandom() {
+        Random rd = new SecureRandom();
+        seed = rd.nextLong();
+        MathUtils.random.setSeed(seed);
+    }
 
 
     private void initOpt() {
