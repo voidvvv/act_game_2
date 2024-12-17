@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.*;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.asset.AssetConstant;
 import com.voidvvv.game.base.Camp;
-import com.voidvvv.game.base.actors.Slime;
+import com.voidvvv.game.base.actors.slime.Slime;
 import com.voidvvv.game.base.btree.BTManager;
 import com.voidvvv.game.base.test.VObstacle;
 import com.voidvvv.game.context.VActorSpawnHelper;
@@ -29,13 +29,7 @@ import com.voidvvv.game.base.test.Bob;
 import com.voidvvv.game.context.WorldContext;
 import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.render.actor.slime.SlimeSimpleRender;
-import com.voidvvv.game.screen.test.ui.TextMessageBar;
 import com.voidvvv.game.utils.ReflectUtil;
-
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 public class TestScreen extends ScreenAdapter {
 
@@ -186,7 +180,7 @@ public class TestScreen extends ScreenAdapter {
         Slime slime = vWorld.spawnVActor(Slime.class,helper);
         slime.setName("Slime");
         slime.getActualBattleAttr().moveSpeed = 30f;
-        slime.getActualBattleAttr().attack = 1;
+        slime.getActualBattleAttr().attack = 20;
         slime.getActualBattleAttr().maxHp = 10;
         slime.getActualBattleAttr().hp = 10;
         slime.camp.campBit = Camp.NEGATIVE;

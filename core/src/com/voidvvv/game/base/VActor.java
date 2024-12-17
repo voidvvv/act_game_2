@@ -24,6 +24,8 @@ import com.voidvvv.game.utils.ReflectUtil;
 import java.util.Comparator;
 
 public abstract class VActor extends Actor implements Pool.Poolable {
+    protected int version = 0;
+
     private VWorld world;
 
     public long currentFrame = 0;
@@ -140,6 +142,7 @@ public abstract class VActor extends Actor implements Pool.Poolable {
 
     @Override
     public void reset() {
+        this.version++;
         this.getWorld().getBox2dWorld().destroyBody(body);
         this.setWorld(null);
         this.setParentVActor(null);
@@ -170,6 +173,10 @@ public abstract class VActor extends Actor implements Pool.Poolable {
 
     public int currentStateId() {
         return 0;
+    }
+
+    public void onHitOver(VActor actor, Fixture fixtureA, Fixture fixtureB) {
+
     }
 
 
@@ -215,4 +222,7 @@ public abstract class VActor extends Actor implements Pool.Poolable {
         return true;
     }
 
+    public int getVersion() {
+        return version;
+    }
 }

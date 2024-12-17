@@ -1,7 +1,7 @@
 //package com.voidvvv.game.base.skill.base;
 //
 //import com.voidvvv.game.ActGame;
-//import com.voidvvv.game.VActorAdaptor;
+//import com.voidvvv.game.base.VActorAdaptor;
 //import com.voidvvv.game.base.VActor;
 //import com.voidvvv.game.base.VCharacter;
 //import com.voidvvv.game.base.skill.Cost;

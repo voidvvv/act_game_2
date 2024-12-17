@@ -4,7 +4,7 @@ import com.voidvvv.game.base.VActor;
 
 public class UserData {
     public static enum B2DType {
-        FACE, GROUND;
+        FACE, GROUND, SENSOR;
     }
 
     private long category;
