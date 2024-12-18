@@ -19,6 +19,9 @@ public class ActorConstants {
 
     public static final int MSG_RESET_ACTOR;
     public static final int MSG_ACTOR_BASE_VELOCITY_CHANGE;
+    public static final int MSG_ACTOR_AFTER_BE_HIT;
+    public static final int MSG_ACTOR_ATTEMPT_TO_SPELL;
+
 
     public static final int ACTOR_TYPE_CHARACTER;
     public static final int ACTOR_TYPE_BULLET;
@@ -40,6 +43,8 @@ public class ActorConstants {
         STATUS_ATTACK_01 = s++;
         MSG_RESET_ACTOR = s++;
         MSG_ACTOR_BASE_VELOCITY_CHANGE = s++;
+        MSG_ACTOR_AFTER_BE_HIT = s++;
+        MSG_ACTOR_ATTEMPT_TO_SPELL = s++;
         ACTOR_TYPE_CHARACTER = s++;
         ACTOR_TYPE_BULLET = s++;
         ACTOR_TYPE_OBSTACLE = s++;

@@ -65,7 +65,6 @@ public class VCharacter extends VActor implements Attackable {
 
     protected boolean dying = false;
 
-    public float justUsedMp = 0f;
 
     public VCharacter() {
         for (int x = 0; x < velAffect.length; x++) {
