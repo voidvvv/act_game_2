@@ -1,6 +1,8 @@
 package com.voidvvv.game.base.skill.v2;
 
-import com.voidvvv.game.base.actors.ActorConstants;
+import com.voidvvv.game.base.state.VCharactorStatus;
+import com.voidvvv.game.base.state.normal.Idle;
+import com.voidvvv.game.base.state.normal.Walking;
 import com.voidvvv.game.plugin.sp.LightBoomPlugin;
 
 public class LightBoomSkill extends PluginSkill{
@@ -12,8 +14,14 @@ public class LightBoomSkill extends PluginSkill{
 
     @Override
     protected void applyCost() {
-        this.cooldown = maxCooldown;
-        owner.getBattleComponent().useMp(20f);
+        boolean b = owner.preUseSkill(this);
+        if (b) {
+            this.cooldown = maxCooldown;
+            owner.getBattleComponent().useMp(20f);
+        } else {
+            System.out.println("当前状态不允许释放");
+            throw  new RuntimeException("当前状态不允许释放");
+        }
     }
 
     @Override
@@ -26,9 +34,9 @@ public class LightBoomSkill extends PluginSkill{
             System.out.println("蓝不够");
             return false;
         }
-        int id = owner.currentStateId();
-        if (id != ActorConstants.STATUS_IDLE && id !=  ActorConstants.STATUS_WALKING) {
-            System.out.println("非空闲状态");
+        VCharactorStatus currentState = owner.getStateMachine().getCurrentState();
+        if ((currentState != Idle.INSTANCE && currentState != Walking.INSTANCE)) {
+            System.out.println("非可使用状态");
             return false;
         }
         System.out.println(owner.getBattleComponent().actualBattleAttr.mp);

@@ -4,11 +4,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.voidvvv.game.ActGame;
-import com.voidvvv.game.base.state.bob.BobStatus;
+import com.voidvvv.game.base.state.VCharactorStatus;
+import com.voidvvv.game.base.state.normal.Idle;
+import com.voidvvv.game.base.state.normal.Spelling;
+import com.voidvvv.game.base.state.normal.Walking;
 import com.voidvvv.game.base.test.Bob;
+import com.voidvvv.game.utils.ReflectUtil;
+
+import java.sql.Ref;
 
 public class BobAssetConstant {
-    public static final int IDLE = 0;
 
 
     public static TextureRegion[][] base_pic;
@@ -78,29 +83,29 @@ public class BobAssetConstant {
 
 
     public TextureRegion currentAnim(Bob actor) {
-        BobStatus status = actor.getSelfStatusStateMachine().getCurrentState();
-        boolean flip = actor.flip;
+        VCharactorStatus status = actor.getStateMachine().getCurrentState();
+        boolean flip = actor.flipX;
         float time = actor.statusProgress;
-        if (status == BobStatus.IDLE) {
+        if (ReflectUtil.cast(status, Idle.class) != null) {
             return flip ? idle_animation_mirror.getKeyFrame(time) : idle_animation.getKeyFrame(time);
         }
-        if (status == BobStatus.WALKING) {
+        if (ReflectUtil.cast(status, Walking.class) != null) {
             return flip ? walk_animation_mirror.getKeyFrame(time) : walk_animation.getKeyFrame(time);
         }
-        if (status == BobStatus.ATTACKING_0 ) {
-            return flip ? attack_animation_mirror.getKeyFrame(time, false) : attack_animation.getKeyFrame(time, false);
-//            return null;
-        }
-
-        if (status == BobStatus.SPELL_0) {
+//        if (status == BobStatus.ATTACKING_0 ) {
+//            return flip ? attack_animation_mirror.getKeyFrame(time, false) : attack_animation.getKeyFrame(time, false);
+////            return null;
+//        }
+//
+        if (ReflectUtil.cast(status, Spelling.class) != null) {
             Animation<TextureRegion> tr = flip ? spell_animation_mirror : spell_animation;
-
-            return tr.getKeyFrame(tr.getAnimationDuration() * actor.statusProgress);
+            float percent = actor.statusProgress;
+            return tr.getKeyFrame(tr.getAnimationDuration() * percent);
         }
-
-        if (status == BobStatus.DYING) {
-            return flip? dying_animation_mirror.getKeyFrame(time) : dying_animation.getKeyFrame(time);
-        }
+//
+//        if (status == BobStatus.DYING) {
+//            return flip? dying_animation_mirror.getKeyFrame(time) : dying_animation.getKeyFrame(time);
+//        }
         return null;
     }
 }

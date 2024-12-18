@@ -17,6 +17,7 @@ import com.voidvvv.game.base.actors.NormalDetector;
 import com.voidvvv.game.base.buff.Buff;
 import com.voidvvv.game.base.buff.BuffComponent;
 import com.voidvvv.game.base.skill.v2.Skill;
+import com.voidvvv.game.base.state.StatusData;
 import com.voidvvv.game.base.state.VCharactorStatus;
 import com.voidvvv.game.battle.Attackable;
 import com.voidvvv.game.battle.BattleAttr;
@@ -520,14 +521,7 @@ public class VCharacter extends VActor implements Attackable {
     }
 
     public Skill lastPreSkill;
-
-    public void preUseSkil(Skill skill) {
-        lastPreSkill = skill;
-        for (VActorListener listener : listenerComponent.listeners) {
-            listener.preUserSkill();
-        }
-        lastAddedAbuff = null;
-    }
+    public float currentSkillSpellingTime;
 
     public NormalDetector getNormalDetector() {
         return normalDetector;
@@ -539,8 +533,13 @@ public class VCharacter extends VActor implements Attackable {
 
     public Vector3 preVelocity = new Vector3();
 
+    public StatusData sd = new StatusData();
     public void setHorizonVelocity(float x, float y) {
         this.baseMove.nor();
+        tmp.set(x,y).nor();
+        preVelocity.nor();
+        float preX = preVelocity.x;
+        float preY = preVelocity.y;
         preVelocity.x = this.baseMove.x;
         preVelocity.y = this.baseMove.y;
         tmp.set(x,y).nor();
@@ -549,7 +548,17 @@ public class VCharacter extends VActor implements Attackable {
         if (MathUtils.isEqual(preVelocity.x, baseMove.x) && MathUtils.isEqual(preVelocity.y, baseMove.y)) {
             return;
         }
-        MessageManager.getInstance().dispatchMessage(this, getStateMachine(), ActorConstants.MSG_ACTOR_BASE_VELOCITY_CHANGE);
+
+        sd.setSuccess(true); // expect true!
+        MessageManager.getInstance().dispatchMessage(this, getStateMachine(), ActorConstants.MSG_ACTOR_BASE_VELOCITY_CHANGE, sd, true);
+        if (!sd.isSuccess()) {
+
+            this.baseMove.x = preVelocity.x;
+            this.baseMove.y = preVelocity.y;
+            this.preVelocity.x = preX;
+            this.preVelocity.y = preY;
+        }
+        System.out.println("speed: " + sd.isSuccess());
     }
 
     @Override
@@ -557,7 +566,25 @@ public class VCharacter extends VActor implements Attackable {
         return false;
     }
 
-    public StateMachine getStateMachine() {
+    public StateMachine<VCharacter, VCharactorStatus> getStateMachine() {
         return null;
+    }
+
+    // change status or not
+    public boolean preUseSkill(Skill lightBoomSkill) {
+        lastPreSkill = lightBoomSkill;
+        currentSkillSpellingTime = lightBoomSkill.spellingTime;
+        sd.setSuccess(true); // expect true!
+        MessageManager.getInstance().dispatchMessage(this, this.getStateMachine(), ActorConstants.MSG_ACTOR_PRE_ATTEMPT_TO_SPELL, sd, true);
+
+        if (sd.isSuccess()){
+            for (VActorListener listener : listenerComponent.listeners) {
+                listener.preUserSkill();
+            }
+        }
+
+        lastPreSkill = null;
+        currentSkillSpellingTime = 0f;
+        return sd.isSuccess();
     }
 }

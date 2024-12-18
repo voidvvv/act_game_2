@@ -23,6 +23,5 @@ public class HitSkill extends PluginSkill{
     @Override
     public void does() {
         super.does();
-        System.out.println(this.getClass().getName() + " 开始!");
     }
 }

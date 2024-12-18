@@ -2,7 +2,6 @@ package com.voidvvv.game.base;
 
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegraph;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -12,15 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Pool;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.actors.ActorConstants;
-import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.base.buff.Buff;
-import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.manager.behaviors.Behavior;
 import com.voidvvv.game.context.VWorld;
 import com.voidvvv.game.manager.event.attack.AttackEvent;
-import com.voidvvv.game.render.actor.VActorRender;
 import com.voidvvv.game.screen.test.ui.Box2dUnitConverter;
-import com.voidvvv.game.utils.ReflectUtil;
 
 import java.util.Comparator;
 
@@ -45,7 +40,8 @@ public abstract class VActor extends Actor implements Pool.Poolable, Telegraph {
 
     private Body body;
 
-    public boolean flip = false;
+    public boolean flipX = false;
+    public boolean flipY = false;
 
     public final Camp camp = new Camp();
     public final Camp taregtCamp = new Camp();

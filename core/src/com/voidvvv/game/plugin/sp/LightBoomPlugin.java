@@ -18,6 +18,7 @@ public class LightBoomPlugin extends SkillPlugin {
     boolean send = false;
 
     public float speed = 1f;
+    public float maxProcess = 1f;
 
     public Vector2 position = new Vector2();
     public Vector2 direction = new Vector2();
@@ -38,7 +39,7 @@ public class LightBoomPlugin extends SkillPlugin {
         this.direction.y = character.getWorld().currentPointerPose.y - character.position.y;
 
         speed = character.getBattleComponent().actualBattleAttr.magicSpeed / WorldContext.DEFAULT_MAGIC_COEFFICIENT;
-        character.changeStatus(ActorConstants.STATUS_SPELLING_01);
+//        character.changeStatus(ActorConstants.STATUS_SPELLING_01);
         listener = Pools.obtain(InterruptListener.class);
         listener.plugin = this;
         character.getListenerComponent().add(listener);
@@ -48,9 +49,8 @@ public class LightBoomPlugin extends SkillPlugin {
     @Override
     public void update(float delta) {
         updateProgress(delta);
-        character.baseMove.x = 0;
-        character.baseMove.y = 0;
-//        character.interruptPathFinding();
+        character.setHorizonVelocity(0f, 0f);
+        character.interruptPathFinding();
         if (character.statusProgress >= triggerTime && !send) {
             launch();
         }
@@ -61,7 +61,7 @@ public class LightBoomPlugin extends SkillPlugin {
     }
 
     private boolean isEnding() {
-        return character.statusProgress >= 1f && send;
+        return character.statusProgress >= maxProcess && send;
     }
 
     private void launch() {
@@ -89,9 +89,15 @@ public class LightBoomPlugin extends SkillPlugin {
 
     }
 
+
     private void updateProgress(float delta) {
         speed = character.getBattleComponent().actualBattleAttr.magicSpeed / WorldContext.DEFAULT_MAGIC_COEFFICIENT;
-        character.statusProgress += (delta * speed);
+        character.statusProgress += ((delta * speed) / maxProcess);
+    }
+
+    @Override
+    public float progress() {
+        return character.statusProgress;
     }
 
     @Override

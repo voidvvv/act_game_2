@@ -54,9 +54,9 @@ public enum SlimeStatus implements State<Slime> {
                 entity.getDefalutStateMachine().changeState(IDEL);
             }
             if (entity.baseMove.x > 0) {
-                entity.flip = false;
+                entity.flipX = false;
             } else if (entity.baseMove.x < 0) {
-                entity.flip = true;
+                entity.flipX = true;
             }
             entity.statusProgress += Gdx.graphics.getDeltaTime();
         }

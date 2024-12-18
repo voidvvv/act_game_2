@@ -112,20 +112,23 @@ public class VPathFinder {
                     currentTarget.set(currentPath.get(2*currentIndex), currentPath.get(2*currentIndex+1));
                     ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("切换为下一寻路点: " + currentTarget.x + " - " + currentTarget.y);
                     tmp1.set(currentTarget.x - character.position.x, currentTarget.y - character.position.y).nor();
-                    character.baseMove.x = tmp1.x;
-                    character.baseMove.y = tmp1.y;
+//                    character.baseMove.x = tmp1.x;
+//                    character.baseMove.y = tmp1.y;
+                    character.setHorizonVelocity(tmp1.x, tmp1.y);
                 } else {
                     // end finding
                     ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("停止寻路");
 
-                    character.baseMove.x = character.baseMove.y = 0f;
+                    character.setHorizonVelocity(0f,0f);
                     currentIndex = 0;
                     pathing = false;
                 }
 
             } else {
-                character.baseMove.x = tmp1.x;
-                character.baseMove.y = tmp1.y;
+//                character.baseMove.x = tmp1.x;
+//                character.baseMove.y = tmp1.y;
+                character.setHorizonVelocity(tmp1.x, tmp1.y);
+
             }
 
 
