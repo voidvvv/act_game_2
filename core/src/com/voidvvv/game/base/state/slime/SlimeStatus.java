@@ -61,9 +61,31 @@ public enum SlimeStatus implements State<Slime> {
             entity.statusProgress += Gdx.graphics.getDeltaTime();
         }
     },
+    ATTACKING() {
+        @Override
+        public void enter(Slime entity) {
+            super.enter(entity);
+        }
+
+        @Override
+        public void exit(Slime entity) {
+            super.exit(entity);
+        }
+
+        @Override
+        public void update(Slime entity) {
+
+        }
+
+        @Override
+        public boolean onMessage(Slime entity, Telegram telegram) {
+            return false;
+        }
+    },
     DYING{
         @Override
         public void enter(Slime entity) {
+            System.out.println("slime die!");
             super.enter(entity);
         }
 
