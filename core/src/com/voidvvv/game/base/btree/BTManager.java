@@ -9,7 +9,7 @@ import com.badlogic.gdx.ai.msg.Telegraph;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.actors.slime.Slime;
-import com.voidvvv.game.base.btree.slime.Idle;
+import com.voidvvv.game.base.btree.slime.Jog;
 import com.voidvvv.game.utils.ReflectUtil;
 
 import java.util.HashMap;
@@ -28,7 +28,7 @@ public class BTManager implements Telegraph {
 
     public void init () {
         BehaviorTreeLibrary library = new BehaviorTreeLibrary(BehaviorTreeParser.DEBUG_HIGH);
-        library.registerArchetypeTree(BTManager.SLIME_SIMPLE, new BehaviorTree<Slime>(new Idle()));
+        library.registerArchetypeTree(BTManager.SLIME_SIMPLE, new BehaviorTree<Slime>(new Jog()));
         libraryManager.setLibrary(library);
     }
 
@@ -38,8 +38,8 @@ public class BTManager implements Telegraph {
         map.put(actor, behaviorTree);
     }
 
-    float stepInterval = 0.5f;
-    float interval = 0f;
+    public float stepInterval = 0.5f;
+    public float interval = 0f;
 
     public void update(float delta) {
         interval += delta;
@@ -47,7 +47,7 @@ public class BTManager implements Telegraph {
             for (BehaviorTree tree: behaviorTrees) {
                 tree.step();
             }
-            interval = 0f;
+            interval -= stepInterval;
         }
     }
 
