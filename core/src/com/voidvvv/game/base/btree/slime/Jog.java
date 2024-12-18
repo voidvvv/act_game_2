@@ -45,8 +45,7 @@ public class Jog extends LeafTask<Slime> {
     @Override
     public Status execute() {
 
-        getObject().baseMove.x = dir.x;
-        getObject().baseMove.y = dir.y;
+        getObject().setHorizonVelocity(dir.x, dir.y);
         currentWalkingTime += (ActGame.gameInstance().getBtManager().stepInterval);
         if (currentWalkingTime > maxWalkingTime) {
             return Status.SUCCEEDED;

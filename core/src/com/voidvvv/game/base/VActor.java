@@ -1,6 +1,7 @@
 package com.voidvvv.game.base;
 
 import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -23,7 +24,7 @@ import com.voidvvv.game.utils.ReflectUtil;
 
 import java.util.Comparator;
 
-public abstract class VActor extends Actor implements Pool.Poolable {
+public abstract class VActor extends Actor implements Pool.Poolable, Telegraph {
     protected int version = 0;
 
     private VWorld world;

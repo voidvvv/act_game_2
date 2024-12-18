@@ -31,9 +31,10 @@ public class Bob extends VCharacter {
     @Override
     public void vCAct(float delta) {
         super.vCAct(delta);
+        stateUpdate(delta);
         // skill update
         skillUpdate();
-        stateUpdate(delta);
+
     }
 
     protected void skillUpdate() {

@@ -1,6 +1,7 @@
 package com.voidvvv.game.base.btree;
 
 import com.badlogic.gdx.ai.btree.BehaviorTree;
+import com.badlogic.gdx.ai.btree.branch.RandomSequence;
 import com.badlogic.gdx.ai.btree.utils.BehaviorTreeLibrary;
 import com.badlogic.gdx.ai.btree.utils.BehaviorTreeLibraryManager;
 import com.badlogic.gdx.ai.btree.utils.BehaviorTreeParser;
@@ -10,6 +11,7 @@ import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.actors.slime.Slime;
 import com.voidvvv.game.base.btree.slime.Jog;
+import com.voidvvv.game.base.btree.slime.Trance;
 import com.voidvvv.game.utils.ReflectUtil;
 
 import java.util.HashMap;
@@ -28,7 +30,7 @@ public class BTManager implements Telegraph {
 
     public void init () {
         BehaviorTreeLibrary library = new BehaviorTreeLibrary(BehaviorTreeParser.DEBUG_HIGH);
-        library.registerArchetypeTree(BTManager.SLIME_SIMPLE, new BehaviorTree<Slime>(new Jog()));
+        library.registerArchetypeTree(BTManager.SLIME_SIMPLE, new BehaviorTree<Slime>(new RandomSequence<>(new Jog(), new Trance())));
         libraryManager.setLibrary(library);
     }
 
@@ -47,7 +49,7 @@ public class BTManager implements Telegraph {
             for (BehaviorTree tree: behaviorTrees) {
                 tree.step();
             }
-            interval -= stepInterval;
+            interval = 0;
         }
     }
 

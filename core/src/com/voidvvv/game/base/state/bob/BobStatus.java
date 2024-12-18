@@ -28,8 +28,6 @@ public enum BobStatus implements State<Bob> {
                 entity.getSelfStatusStateMachine().changeState(BobStatus.WALKING);
             }
         }
-
-
         @Override
         public boolean onMessage(Bob entity, Telegram telegram) {
             return false;
@@ -180,7 +178,7 @@ public enum BobStatus implements State<Bob> {
         @Override
         public void update(Bob entity) {
             super.update(entity);
-            entity.baseMove.set(0,0,0);
+            entity.setHorizonVelocity(0f,0f);
             if (entity.statusTime >= 2f) {
                 entity.getWorld().destroyActor(entity);
             }
