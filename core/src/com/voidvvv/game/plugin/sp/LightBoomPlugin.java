@@ -43,6 +43,7 @@ public class LightBoomPlugin extends SkillPlugin {
         listener = Pools.obtain(InterruptListener.class);
         listener.plugin = this;
         character.getListenerComponent().add(listener);
+        currentProcess = 0f;
 
     }
 
@@ -55,7 +56,7 @@ public class LightBoomPlugin extends SkillPlugin {
             launch();
         }
         if (isEnding()) {
-            character.changeStatus(ActorConstants.STATUS_IDLE);
+
             this.stop();
         }
     }
@@ -89,21 +90,23 @@ public class LightBoomPlugin extends SkillPlugin {
 
     }
 
-
+    float currentProcess = 0f;
     private void updateProgress(float delta) {
         speed = character.getBattleComponent().actualBattleAttr.magicSpeed / WorldContext.DEFAULT_MAGIC_COEFFICIENT;
-        character.statusProgress += ((delta * speed) / maxProcess);
+        currentProcess += ((delta * speed) / maxProcess);
+        character.statusProgress = currentProcess;
     }
 
     @Override
     public float progress() {
-        return character.statusProgress;
+        return currentProcess;
     }
 
     @Override
     public void reset() {
         super.reset();
         send = false;
+        currentProcess = 0f;
         if (this.listener != null) {
             character.getListenerComponent().remove(listener);
             this.listener = null;
