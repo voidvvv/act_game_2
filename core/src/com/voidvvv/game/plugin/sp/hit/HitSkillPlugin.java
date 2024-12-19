@@ -81,7 +81,6 @@ public class HitSkillPlugin extends SkillPlugin {
             helper.y2 = (-box2dHy + 2f*box2dHz) * 1.5f;
             helper.box2dCategory = WorldContext.FACE_COLLIDE;
             helper.box2dMask = WorldContext.FACE_COLLIDE;
-            helper.type = UserData.B2DType.SENSOR;
             generatedFix = owner.getWorld().addRectFixture(owner, helper);
         }
 

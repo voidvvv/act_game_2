@@ -29,9 +29,21 @@ public abstract class VCharactorStatus implements State<VCharacter> {
             onAttemptSpell(entity, telegram);
         } else if (message == ActorConstants.MSG_ACTOR_PRE_ATTEMPT_TO_SPELL) {
             preAttemptSpell(entity, telegram);
+        } else if (message == ActorConstants.MSG_ACTOR_AFTER_BE_DAMAGED) {
+            afterBeDamage(entity,telegram);
+        } else if (message == ActorConstants.MSG_ACTOR_AFTER_BE_ATTACK) {
+            afterBeAttack(entity, telegram);
         }
 
         return false;
+    }
+
+    public void afterBeAttack(VCharacter entity, Telegram telegram) {
+
+    }
+
+    public void afterBeDamage(VCharacter entity, Telegram telegram) {
+
     }
 
     public void preAttemptSpell(VCharacter entity, Telegram telegram) {

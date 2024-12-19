@@ -8,6 +8,7 @@ import com.voidvvv.game.base.Camp;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.actors.ActorConstants;
+import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.base.shape.VCube;
 import com.voidvvv.game.manager.event.attack.AttackEvent;
 import com.voidvvv.game.manager.event.attack.BasePhysicAttackEvent;
@@ -93,11 +94,15 @@ public class TestBullet extends VCharacter {
     public void onHit(VActor actor, Fixture thisFixture, Fixture otherFixture) {
         super.onHit(actor, thisFixture, otherFixture);
 
-        if (actor == null || !this.couldContact(actor) || this.staus != NORMAL) {
+        if (actor == null || !this.couldContact(actor) || this.staus != NORMAL ) {
             return;
         }
         if (VObstacle.class.isAssignableFrom(actor.getClass())) {
             staus = DYING;
+            return;
+        }
+        UserData ud = ReflectUtil.cast(otherFixture.getUserData(), UserData.class);
+        if(ud == null || ud.isDerivative() || ud.getType() == UserData.B2DType.SENSOR) {
             return;
         }
         VCharacter character = ReflectUtil.cast(actor,VCharacter.class);

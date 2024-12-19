@@ -1,6 +1,7 @@
 package com.voidvvv.game.base;
 
 import com.badlogic.gdx.ai.fsm.StateMachine;
+import com.badlogic.gdx.ai.msg.MessageDispatcher;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -220,8 +221,9 @@ public class VCharacter extends VActor implements Attackable {
         if (!aiInit) {
             aiInit = true;
             normalDetector = Pools.obtain(NormalDetector.class);
-            normalDetector.changeRadius(radius);
             normalDetector.init(this);
+            normalDetector.changeRadius(radius);
+
         } else {
             normalDetector.changeRadius(radius);
         }
@@ -397,9 +399,7 @@ public class VCharacter extends VActor implements Attackable {
     public DamageBehavior lastBeDamagedBehavior;
 
     protected void afterBeDamaged(DamageBehavior damage) {
-//        SystemNotifyMessageManager systemNotifyMessageManager = ActGame.gameInstance().getSystemNotifyMessageManager();
-//        String msg = this.getName() + "受到了来自[" + damage.getFrom().getName() + "] 的 [" + (int)damage.getDamage() + "] 点伤害, 方式为: [" + damage.getTrigger() + "]  类型为: " + damage.getAttackType() + "  当前生命值: " + getBattleComponent().actualBattleAttr.hp;
-//        systemNotifyMessageManager.pushMessage(msg);
+        MessageManager.getInstance().dispatchMessage(this, getStateMachine(), ActorConstants.MSG_ACTOR_AFTER_BE_DAMAGED, sd);
         lastBeDamagedBehavior = damage;
         for (VActorListener initListener : listenerComponent.listeners) {
             initListener.afterBeDamage();
@@ -488,6 +488,8 @@ public class VCharacter extends VActor implements Attackable {
 
     @Override
     public void postBeAttacked(AttackEvent attackEvent) {
+        MessageManager.getInstance().dispatchMessage(this, getStateMachine(), ActorConstants.MSG_ACTOR_AFTER_BE_ATTACK, sd);
+
         lastBeAttackedEvent = attackEvent;
         for (VActorListener initListener : listenerComponent.listeners) {
             initListener.afterBeAttackEvent();

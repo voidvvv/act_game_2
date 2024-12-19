@@ -30,6 +30,7 @@ public class SeekEnemy extends LeafTask<Slime> {
         NormalDetector normalDetector = slime.getNormalDetector();
         Set<VCharacter> characters = normalDetector.getCharacters();
         if (characters.isEmpty()) {
+
             return Status.FAILED;
         }
         normalDetector.setTarget(characters.iterator().next());

@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.base.VActorAdaptor;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.actors.ActorConstants;
+import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.base.test.TestBullet;
 import com.voidvvv.game.context.VActorSpawnHelper;
 import com.voidvvv.game.context.WorldContext;
@@ -78,6 +79,8 @@ public class LightBoomPlugin extends SkillPlugin {
                 .hz(5f)
                 .initX(this.position.x).initY(this.position.y)
                 .sensor(true)
+                .bdType(UserData.B2DType.SENSOR)
+                .derivative(true)
                 .build();
 
         TestBullet testBullet = character.getWorld().spawnVActor(TestBullet.class, helper);

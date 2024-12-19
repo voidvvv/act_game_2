@@ -5,6 +5,7 @@ import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.state.VCharactorStatus;
 
 public class NormalAttack extends VCharactorStatus {
+    public static final NormalAttack INSTANCE = new NormalAttack();
     @Override
     public void exec(VCharacter entity) {
         entity.statusTime += Gdx.graphics.getDeltaTime();

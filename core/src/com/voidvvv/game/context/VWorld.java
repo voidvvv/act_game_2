@@ -392,6 +392,8 @@ public class VWorld {
             if (helper.userData == null) {
                 // default user data
                 ((UserData) roleFixture.getUserData()).setActor(t);
+                ((UserData) roleFixture.getUserData()).setType(helper.bdType);
+                ((UserData) roleFixture.getUserData()).setDerivative(helper.derivative);
             }
             t.init();
             initList.add(t);

@@ -1,7 +1,10 @@
 package com.voidvvv.game.base.btree;
 
 import com.badlogic.gdx.ai.btree.BehaviorTree;
+import com.badlogic.gdx.ai.btree.Task;
 import com.badlogic.gdx.ai.btree.branch.RandomSequence;
+import com.badlogic.gdx.ai.btree.branch.Selector;
+import com.badlogic.gdx.ai.btree.branch.Sequence;
 import com.badlogic.gdx.ai.btree.utils.BehaviorTreeLibrary;
 import com.badlogic.gdx.ai.btree.utils.BehaviorTreeLibraryManager;
 import com.badlogic.gdx.ai.btree.utils.BehaviorTreeParser;
@@ -11,7 +14,10 @@ import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.actors.slime.Slime;
+import com.voidvvv.game.base.btree.slime.HitTarget;
+import com.voidvvv.game.base.btree.slime.HuntTarget;
 import com.voidvvv.game.base.btree.slime.Jog;
+import com.voidvvv.game.base.btree.slime.SeekEnemy;
 import com.voidvvv.game.base.btree.slime.Trance;
 import com.voidvvv.game.utils.ReflectUtil;
 
@@ -31,8 +37,19 @@ public class BTManager implements Telegraph {
 
     public void init () {
         BehaviorTreeLibrary library = new BehaviorTreeLibrary(BehaviorTreeParser.DEBUG_HIGH);
-        library.registerArchetypeTree(BTManager.SLIME_SIMPLE, new BehaviorTree<Slime>(new RandomSequence<>(new Jog(), new Trance())));
+        library.registerArchetypeTree(BTManager.SLIME_SIMPLE, new BehaviorTree<Slime>(slimeRoot()));
         libraryManager.setLibrary(library);
+    }
+
+    private Task<Slime> slimeRoot() {
+        RandomSequence<Slime> idle = new RandomSequence<>(new Jog(), new Trance());
+        Selector<Slime> root = new Selector<>();
+        HuntTarget hunt = new HuntTarget();
+        HitTarget hit = new HitTarget();
+        Sequence<Slime> attack = new Sequence<>(hunt,hit);
+        root.addChild(attack);
+        root.addChild(idle);
+        return root;
     }
 
     public void addTree(VActor actor, String treeName) {
@@ -41,11 +58,11 @@ public class BTManager implements Telegraph {
         map.put(actor, behaviorTree);
         VCharacter character = ReflectUtil.cast(actor, VCharacter.class);
         if (character != null) {
-            character.initAI(50f);
+            character.initAI(100f);
         }
     }
 
-    public float stepInterval = 0.5f;
+    public float stepInterval = 0.02f;
     public float interval = 0f;
 
     public void update(float delta) {

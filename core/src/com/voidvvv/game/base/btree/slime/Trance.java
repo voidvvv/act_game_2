@@ -4,6 +4,7 @@ import com.badlogic.gdx.ai.btree.LeafTask;
 import com.badlogic.gdx.ai.btree.Task;
 import com.badlogic.gdx.math.MathUtils;
 import com.voidvvv.game.ActGame;
+import com.voidvvv.game.base.actors.NormalDetector;
 import com.voidvvv.game.base.actors.slime.Slime;
 
 public class Trance extends LeafTask<Slime> {
@@ -24,7 +25,10 @@ public class Trance extends LeafTask<Slime> {
 
     @Override
     public Status execute() {
-
+        NormalDetector normalDetector = getObject().getNormalDetector();
+        if (normalDetector != null && !normalDetector.getCharacters().isEmpty()) {
+            return Status.FAILED;
+        }
         if (taskTime >= tranceTime) {
             return Status.SUCCEEDED;
         }

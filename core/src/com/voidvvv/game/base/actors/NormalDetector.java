@@ -16,11 +16,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class NormalDetector implements Pool.Poolable {
-    Fixture detectFixture;
+    public Fixture detectFixture;
     DetectorListener listener;
     int recordActorVersion;
     VCharacter character;
-    private Set<VCharacter> characters = new HashSet<>();
+    public Set<VCharacter> characters = new HashSet<>();
 
     public float radius;
 
@@ -49,9 +49,10 @@ public class NormalDetector implements Pool.Poolable {
         if (detectFixture != null) {
             character.getBody().destroyFixture(detectFixture);
 
-            generateCircleRange();
+
 
         }
+        generateCircleRange();
     }
 
     private void generateCircleRange() {
@@ -70,13 +71,11 @@ public class NormalDetector implements Pool.Poolable {
 
         detectFixture = character.getBody().createFixture(fd);
         circleShape.dispose();
-
         UserData ud = new UserData();
         ud.setDerivative(true);
         ud.setType(UserData.B2DType.SENSOR);
         ud.setActor(character);
         detectFixture.setUserData(ud);
-        listener.fixture = detectFixture;
 
     }
 
@@ -89,13 +88,12 @@ public class NormalDetector implements Pool.Poolable {
             radius = Vector2.len(character.physicAttr.box2dHx, character.physicAttr.box2dHz);
         }
         DetectorListener dl = Pools.obtain(DetectorListener.class);
+        dl.detector = this;
         listener = dl;
         generateCircleRange();
 
 
         dl.character = character;
-        dl.fixture = detectFixture;
-        dl.characters = characters;
         character.getListenerComponent().add(dl);
 
     }
@@ -112,5 +110,12 @@ public class NormalDetector implements Pool.Poolable {
         target = null;
         listener = null;
         characters.clear();
+    }
+
+    public void removeActor(VCharacter cast) {
+        boolean remove = characters.remove(cast);
+        if (cast == target) {
+            target = null;
+        }
     }
 }

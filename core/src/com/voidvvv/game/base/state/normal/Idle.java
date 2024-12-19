@@ -8,7 +8,7 @@ import com.voidvvv.game.base.state.VCharactorStatus;
 
 public class Idle extends VCharactorStatus {
     public static final Idle INSTANCE = new Idle();
-    private Idle(){}
+    protected Idle(){}
 
     @Override
     public void exec(VCharacter entity) {
@@ -40,7 +40,8 @@ public class Idle extends VCharactorStatus {
 
     @Override
     public void onPhysicSpell(VCharacter entity, Telegram telegram) {
-        super.onPhysicSpell(entity, telegram);
+        // NormalAttack
+        entity.getStateMachine().changeState(NormalAttack.INSTANCE);
     }
 
     @Override

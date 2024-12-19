@@ -9,6 +9,10 @@ public class HitSkill extends PluginSkill{
         this.maxCooldown = 2.f;
     }
 
+    public SkillType skillType() {
+        return SkillType.PHYSIC_SPELL;
+    }
+
     @Override
     protected void applyCost() {
         boolean b = owner.preUseSkill(this);

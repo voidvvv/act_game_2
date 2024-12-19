@@ -1,13 +1,17 @@
 package com.voidvvv.game.base.actors.slime;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.actors.ActorConstants;
+import com.voidvvv.game.base.skill.v2.HitSkill;
+import com.voidvvv.game.base.skill.v2.Skill;
 import com.voidvvv.game.base.state.VCharactorStatus;
 import com.voidvvv.game.base.state.normal.Idle;
+import com.voidvvv.game.context.input.InputActionMapping;
 import com.voidvvv.game.render.actor.VActorRender;
 
 public class Slime extends VCharacter {
@@ -27,7 +31,14 @@ public class Slime extends VCharacter {
         } else {
             defalutStateMachine.setInitialState(Idle.INSTANCE);
         }
+        skill = new HitSkill();
+        skill.setOwner(this);
+    }
 
+    public int skillCode = -1;
+    @Override
+    public void setFrameSkill(int keycode) {
+        skillCode = keycode;
     }
 
     @Override
@@ -38,11 +49,19 @@ public class Slime extends VCharacter {
             btrCurrentStep = 0f;
         }
         stateUpdate(delta);
+        skillUpdate();
     }
 
     private void stateUpdate(float delta) {
         defalutStateMachine.update();
     }
+
+    protected void skillUpdate() {
+        useSkill(this.skillCode);
+        skill.update(Gdx.graphics.getDeltaTime());
+        this.skillCode = -1;
+    }
+
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
@@ -52,10 +71,12 @@ public class Slime extends VCharacter {
             render.render(this, batch, parentAlpha);
         }
     }
-
+    Skill skill;
     @Override
     public void useSkill(int skillCode) {
-
+        if (skillCode == InputActionMapping.SKILL_Q) {
+            skill.use();
+        }
     }
 
     @Override

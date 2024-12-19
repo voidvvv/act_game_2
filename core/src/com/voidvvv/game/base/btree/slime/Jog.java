@@ -5,6 +5,7 @@ import com.badlogic.gdx.ai.btree.Task;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.voidvvv.game.ActGame;
+import com.voidvvv.game.base.actors.NormalDetector;
 import com.voidvvv.game.base.actors.slime.Slime;
 
 public class Jog extends LeafTask<Slime> {
@@ -44,6 +45,11 @@ public class Jog extends LeafTask<Slime> {
 
     @Override
     public Status execute() {
+
+        NormalDetector normalDetector = getObject().getNormalDetector();
+        if (normalDetector != null && !normalDetector.getCharacters().isEmpty()) {
+            return Status.FAILED;
+        }
 
         getObject().setHorizonVelocity(dir.x, dir.y);
         currentWalkingTime += (ActGame.gameInstance().getBtManager().stepInterval);

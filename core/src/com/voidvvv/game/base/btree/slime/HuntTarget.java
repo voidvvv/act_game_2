@@ -9,8 +9,12 @@ import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.actors.NormalDetector;
 import com.voidvvv.game.base.actors.slime.Slime;
 
+import java.util.Set;
+
 public class HuntTarget extends LeafTask<Slime> {
     float maxHuntDistance;
+
+
 
     @Override
     public void end() {
@@ -25,12 +29,21 @@ public class HuntTarget extends LeafTask<Slime> {
 
     @Override
     public void start() {
-        maxHuntDistance = MathUtils.random(50f, 150f);
-        NormalDetector normalDetector = getObject().getNormalDetector();
-        VCharacter target = normalDetector.getTarget();
-        if (normalDetector == null || target == null) {
-            return ;
+        Slime slime = getObject();
+        if (slime.getNormalDetector() == null) {
+            return;
         }
+        // find all current character contact with this actor
+        NormalDetector normalDetector = slime.getNormalDetector();
+        Set<VCharacter> characters = normalDetector.getCharacters();
+        if (characters.isEmpty()) {
+
+            return;
+        }
+        normalDetector.setTarget(characters.iterator().next());
+        maxHuntDistance = MathUtils.random(150f, 200f);
+        VCharacter target = normalDetector.getTarget();
+
         lastTargetX = target.position.x;
         lastTargetY = target.position.y;
         getObject().findPath(lastTargetX,lastTargetY);
@@ -63,8 +76,10 @@ public class HuntTarget extends LeafTask<Slime> {
             return Status.SUCCEEDED;
         }
         if (MathUtils.isEqual(target.position.x, lastTargetX) && MathUtils.isEqual(target.position.y, lastTargetY)) {
-            return Status.SUCCEEDED;
+            return Status.RUNNING;
         }
+        lastTargetX = target.position.x;
+        lastTargetY = target.position.y;
         slime.findPath(target.position.x, target.position.y);
         return Status.RUNNING;
     }

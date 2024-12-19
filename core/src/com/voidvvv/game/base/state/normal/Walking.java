@@ -64,4 +64,9 @@ public class Walking extends VCharactorStatus {
     public void onMagicSpell(VCharacter entity, Telegram telegram) {
         entity.getStateMachine().changeState(Spelling.INSTANCE);
     }
+
+    @Override
+    public void onPhysicSpell(VCharacter entity, Telegram telegram) {
+        entity.getStateMachine().changeState(NormalAttack.INSTANCE);
+    }
 }
