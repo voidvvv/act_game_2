@@ -282,8 +282,8 @@ public class VWorld {
 
     protected void mainThread(float delta) {
         vWorldEventManager.update(delta);
-        box2dWorld.step(delta, 20
-                , 20);
+        box2dWorld.step(delta, 6
+                , 6);
         stage.act(delta);
         stage.getRoot().getChildren().sort(compare);
     }
