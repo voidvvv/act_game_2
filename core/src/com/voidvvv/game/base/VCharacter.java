@@ -123,10 +123,29 @@ public class VCharacter extends VActor implements Attackable {
 
     private void refreshAttr(float delta) {
         battleComponent.settlement();
+        refreshVelocity(delta);
         if (toDying()) {
             becomeDying();
             afterBecomeDying();
         }
+    }
+
+    private void refreshVelocity(float delta) {
+        // update velocity
+        baseMove(delta);
+        this.velocity.set(vJump.vel).add(baseMove);
+        for (int x = 0; x < velAffectCap; x++) {
+            this.velocity.add(velAffect[x]);
+        }
+
+        // update position (apply velocity)
+        vJump.update(delta);
+        if (this.position.z <= 0.f) {
+            this.position.z = 0.f;
+            vJump.reset();
+        }
+        finder.update(delta);
+        moveFix = false;
     }
 
     protected void afterBecomeDying() {
@@ -206,40 +225,46 @@ public class VCharacter extends VActor implements Attackable {
         return buffComponent;
     }
 
-    @Override
-    protected void updatePosition(float delta) {
-        super.updatePosition(delta);
-        // update velocity
-        baseMove(delta);
-        this.velocity.set(vJump.vel).add(baseMove);
-        for (int x = 0; x < velAffectCap; x++) {
-            this.velocity.add(velAffect[x]);
-        }
-
-        // update position (apply velocity)
-        vJump.update(delta);
-        if (this.position.z <= 0.f) {
-            this.position.z = 0.f;
-            vJump.reset();
-        }
-        finder.update(delta);
-        moveFix = false;
-    }
 
     public Vector2 tmp = new Vector2();
     boolean moveFix = false;
 
-    public Vector2 baseMove(float delta) {
+    public void baseMove(float delta) {
+        this.baseMove.nor();
+        preVelocity.nor();
+        tmp.nor();
+        float preX = preVelocity.x;
+        float preY = preVelocity.y;
+        preVelocity.x = this.baseMove.x;
+        preVelocity.y = this.baseMove.y;
+
+        baseMove.x = tmp.x;
+        baseMove.y = tmp.y;
+        if (MathUtils.isEqual(preVelocity.x, baseMove.x) && MathUtils.isEqual(preVelocity.y, baseMove.y)) {
+            if (!moveFix) {
+                moveFix = true;
+                baseMove.nor().scl(battleComponent.actualBattleAttr.moveSpeed);
+            }
+            return;
+        }
+
+        sd.setSuccess(true); // expect true!
+        MessageManager.getInstance().dispatchMessage(this, getStateMachine(), ActorConstants.MSG_ACTOR_BASE_VELOCITY_CHANGE, sd, true);
+        if (!sd.isSuccess()) {
+
+            this.baseMove.x = preVelocity.x;
+            this.baseMove.y = preVelocity.y;
+            this.preVelocity.x = preX;
+            this.preVelocity.y = preY;
+        }
         if (!moveFix) {
             moveFix = true;
             baseMove.nor().scl(battleComponent.actualBattleAttr.moveSpeed);
-            tmp.set(baseMove.x, baseMove.y);
         }
-        return tmp;
     }
 
     public Vector2 testVelocity(float delta, Vector2 dir) {
-        return tmp.set(dir).scl(battleComponent.actualBattleAttr.moveSpeed * delta);
+        return dir.nor().scl(battleComponent.actualBattleAttr.moveSpeed * delta);
     }
 
     public boolean findPath(float x, float y) {
@@ -535,30 +560,17 @@ public class VCharacter extends VActor implements Attackable {
 
     public StatusData sd = new StatusData();
     public void setHorizonVelocity(float x, float y) {
-        this.baseMove.nor();
         tmp.set(x,y).nor();
-        preVelocity.nor();
-        float preX = preVelocity.x;
-        float preY = preVelocity.y;
-        preVelocity.x = this.baseMove.x;
-        preVelocity.y = this.baseMove.y;
-        tmp.set(x,y).nor();
-        baseMove.x = tmp.x;
-        baseMove.y = tmp.y;
-        if (MathUtils.isEqual(preVelocity.x, baseMove.x) && MathUtils.isEqual(preVelocity.y, baseMove.y)) {
-            return;
-        }
 
-        sd.setSuccess(true); // expect true!
-        MessageManager.getInstance().dispatchMessage(this, getStateMachine(), ActorConstants.MSG_ACTOR_BASE_VELOCITY_CHANGE, sd, true);
-        if (!sd.isSuccess()) {
+    }
 
-            this.baseMove.x = preVelocity.x;
-            this.baseMove.y = preVelocity.y;
-            this.preVelocity.x = preX;
-            this.preVelocity.y = preY;
-        }
-        System.out.println("speed: " + sd.isSuccess());
+    public void setHorizontalX (float x) {
+        setHorizonVelocity(x, this.tmp.y);
+
+    }
+
+    public void setHorizontalY (float y) {
+        setHorizonVelocity(this.tmp.x, y);
     }
 
     @Override

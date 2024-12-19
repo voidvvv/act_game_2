@@ -4,7 +4,6 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.box2d.testt.Box2DExample;
 import com.box2d.testt.BoxTest;
-import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.test.imgui.ImGuiRender;
 import com.voidvvv.game.ActGame;
 

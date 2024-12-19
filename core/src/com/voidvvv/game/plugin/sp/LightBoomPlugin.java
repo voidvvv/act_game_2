@@ -84,7 +84,8 @@ public class LightBoomPlugin extends SkillPlugin {
         testBullet.targetGroup = WorldContext.BLACK;
         testBullet.getActualBattleAttr().moveSpeed = 500;
         testBullet.setParentVActor(character);
-        testBullet.baseMove.set(direction.x, direction.y, 0f);
+//        testBullet.baseMove.set(direction.x, direction.y, 0f);
+        testBullet.setHorizonVelocity(direction.x, direction.y);
         testBullet.taregtCamp.set(character.taregtCamp);
         testBullet.camp.set(character.camp);
 

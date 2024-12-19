@@ -40,13 +40,6 @@ public class CharacterInputListener extends InputListener {
         if (keycode == InputActionMapping.SKILL_Q) {
             result = true;
         }
-        if (keycode == InputActionMapping.SKILL_R) {
-            result = true;
-        }
-        if (keycode == InputActionMapping.SKILL_W) {
-            result = true;
-
-        }
         if (keycode == InputActionMapping.SKILL_E) {
             result = true;
         }
@@ -71,11 +64,25 @@ public class CharacterInputListener extends InputListener {
     }
 
     private boolean tryMove(int keycode) {
-        if (keycode == InputActionMapping.MOVE_JUMP) {
-            this.character.jump();
-            return true;
+        if (character == null) {
+            return false;
         }
-        return false;
+        boolean result = false;
+        if (keycode == InputActionMapping.MOVE_UP) {
+            character.setHorizontalY(1f);
+            result = true;
+        } else if (keycode == InputActionMapping.MOVE_DOWN) {
+            character.setHorizontalY(-1f);
+            result = true;
+        }
+        if (keycode == InputActionMapping.MOVE_RIGHT ) {
+            character.setHorizontalX(1f);
+            result = true;
+        } else if (keycode == InputActionMapping.MOVE_LEFT) {
+            character.setHorizontalX(-1f);
+            result = true;
+        }
+        return result;
     }
 
     @Override
@@ -85,17 +92,17 @@ public class CharacterInputListener extends InputListener {
         }
         boolean result = false;
         if (keycode == InputActionMapping.MOVE_UP && character.baseMove.y > 0) {
-            character.baseMove.y = 0;
+            character.setHorizontalY(0f);
             result = true;
         } else if (keycode == InputActionMapping.MOVE_DOWN && character.baseMove.y < 0) {
-            character.baseMove.y = 0;
+            character.setHorizontalY(0f);
             result = true;
         }
         if (keycode == InputActionMapping.MOVE_RIGHT && character.baseMove.x > 0) {
-            character.baseMove.x = 0;
+            character.setHorizontalX(0f);
             result = true;
         } else if (keycode == InputActionMapping.MOVE_LEFT && character.baseMove.x < 0) {
-            character.baseMove.x = 0;
+            character.setHorizontalX(0f);
             result = true;
         }
         return result;
@@ -109,10 +116,10 @@ public class CharacterInputListener extends InputListener {
     }
 
     private void leftEvent(InputEvent event, float x, float y, int pointer) {
-        float stageX = event.getStageX();
-        float stageY = event.getStageY();
-        PinpointData pinpoint = character.getWorld().getPinpointData();
-        pinpoint.begin(stageX, stageY);
-        character.findPath(stageX, stageY);
+//        float stageX = event.getStageX();
+//        float stageY = event.getStageY();
+//        PinpointData pinpoint = character.getWorld().getPinpointData();
+//        pinpoint.begin(stageX, stageY);
+//        character.findPath(stageX, stageY);
     }
 }

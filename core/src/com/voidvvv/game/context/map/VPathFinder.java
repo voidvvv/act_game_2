@@ -118,7 +118,7 @@ public class VPathFinder {
                 } else {
                     // end finding
                     ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("停止寻路");
-
+                    System.out.println("停止寻路");
                     character.setHorizonVelocity(0f,0f);
                     currentIndex = 0;
                     pathing = false;
