@@ -6,12 +6,13 @@ import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.actors.ActorConstants;
-import com.voidvvv.game.base.state.slime.SlimeStatus;
+import com.voidvvv.game.base.state.VCharactorStatus;
+import com.voidvvv.game.base.state.normal.Idle;
 import com.voidvvv.game.render.actor.VActorRender;
 
 public class Slime extends VCharacter {
 
-    StateMachine<Slime, State<Slime>> defalutStateMachine;
+    StateMachine<VCharacter, VCharactorStatus> defalutStateMachine;
     float btUpdateStep = 0.1f;
     float btrCurrentStep = 0f;
 
@@ -22,13 +23,11 @@ public class Slime extends VCharacter {
         super.init();
         this.actorType = ActorConstants.ACTOR_TYPE_CHARACTER;
         if (defalutStateMachine == null) {
-            defalutStateMachine = new DefaultStateMachine<>(this, SlimeStatus.IDEL);
+            defalutStateMachine = new DefaultStateMachine<>(this, Idle.INSTANCE);
+        } else {
+            defalutStateMachine.setInitialState(Idle.INSTANCE);
         }
 
-    }
-
-    public StateMachine<Slime, State<Slime>> getDefalutStateMachine() {
-        return defalutStateMachine;
     }
 
     @Override
@@ -65,15 +64,8 @@ public class Slime extends VCharacter {
     }
 
 
-
     @Override
-    protected void becomeDying() {
-        this.defalutStateMachine.changeState(SlimeStatus.DYING);
+    public StateMachine<VCharacter, VCharactorStatus> getStateMachine() {
+        return this.defalutStateMachine;
     }
-
-    @Override
-    public boolean isDying() {
-        return this.defalutStateMachine.getCurrentState() == SlimeStatus.DYING;
-    }
-
 }

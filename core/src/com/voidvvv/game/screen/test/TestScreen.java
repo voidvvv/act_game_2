@@ -11,13 +11,16 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.*;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.asset.AssetConstant;
 import com.voidvvv.game.base.Camp;
+import com.voidvvv.game.base.VActorAdaptor;
 import com.voidvvv.game.base.actors.slime.Slime;
+import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.base.btree.BTManager;
 import com.voidvvv.game.base.test.VObstacle;
 import com.voidvvv.game.context.VActorSpawnHelper;
@@ -29,6 +32,7 @@ import com.voidvvv.game.base.test.Bob;
 import com.voidvvv.game.context.WorldContext;
 import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.render.actor.slime.SlimeSimpleRender;
+import com.voidvvv.game.screen.test.ui.TextMessageBar;
 import com.voidvvv.game.utils.ReflectUtil;
 
 public class TestScreen extends ScreenAdapter {
@@ -211,7 +215,7 @@ public class TestScreen extends ScreenAdapter {
 
     private void initUI() {
         uiStage = new Stage(new ScreenViewport(screenCamera), ActGame.gameInstance().getDrawManager().getSpriteBatch());
-//        uiStage.addActor(new TextMessageBar() );
+        uiStage.addActor(new TextMessageBar() );
         ActGame.gameInstance().addInputProcessor(uiStage);
     }
 }

@@ -92,7 +92,8 @@ public class TestBullet extends VCharacter {
     @Override
     public void onHit(VActor actor, Fixture thisFixture, Fixture otherFixture) {
         super.onHit(actor, thisFixture, otherFixture);
-        if (actor == null || !this.couldContact(actor)) {
+
+        if (actor == null || !this.couldContact(actor) || this.staus != NORMAL) {
             return;
         }
         if (VObstacle.class.isAssignableFrom(actor.getClass())) {

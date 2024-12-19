@@ -6,7 +6,6 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
-import com.voidvvv.game.base.VActorListener;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.base.btree.DetectorListener;
@@ -18,7 +17,7 @@ import java.util.Set;
 
 public class NormalDetector implements Pool.Poolable {
     Fixture detectFixture;
-    VActorListener listener;
+    DetectorListener listener;
     int recordActorVersion;
     VCharacter character;
     private Set<VCharacter> characters = new HashSet<>();
@@ -27,18 +26,23 @@ public class NormalDetector implements Pool.Poolable {
 
     int targetVersion;
     VCharacter target;
+
     public Set<VCharacter> getCharacters() {
         return characters;
     }
 
-    public void setTarget (VCharacter vc) {
+    public void setTarget(VCharacter vc) {
         this.target = vc;
         this.targetVersion = vc.getVersion();
     }
 
-    public void changeRadius (float radius) {
+    public VCharacter getTarget() {
+        return target;
+    }
+
+    public void changeRadius(float radius) {
         float oldRadius = this.radius;
-        if (oldRadius == radius || oldRadius<=0) {
+        if (oldRadius == radius || oldRadius <= 0) {
             return;
         }
         this.radius = radius;
@@ -72,38 +76,41 @@ public class NormalDetector implements Pool.Poolable {
         ud.setType(UserData.B2DType.SENSOR);
         ud.setActor(character);
         detectFixture.setUserData(ud);
+        listener.fixture = detectFixture;
+
     }
 
     Vector2 tmp = new Vector2();
-    public void init (VCharacter character) {
+
+    public void init(VCharacter character) {
         this.recordActorVersion = character.getVersion();
         this.character = character;
         if (radius <= 0) {
             radius = Vector2.len(character.physicAttr.box2dHx, character.physicAttr.box2dHz);
         }
+        DetectorListener dl = Pools.obtain(DetectorListener.class);
+        listener = dl;
         generateCircleRange();
 
-        DetectorListener dl = Pools.obtain(DetectorListener.class);
+
         dl.character = character;
         dl.fixture = detectFixture;
         dl.characters = characters;
         character.getListenerComponent().add(dl);
+
     }
 
     @Override
     public void reset() {
-       if (character != null && character.getVersion() == recordActorVersion) {
-           if (detectFixture != null) {
-               character.getBody().destroyFixture(detectFixture);
-               detectFixture = null;
-           }
-           if (listener != null) {
-               character.getListenerComponent().remove(listener);
-               listener = null;
-           }
-           character = null;
-       }
+        if (character != null && character.getVersion() == recordActorVersion) {
+            if (detectFixture != null) {
+                character.getBody().destroyFixture(detectFixture);
+                detectFixture = null;
+            }
+            character = null;
+        }
         target = null;
+        listener = null;
         characters.clear();
     }
 }

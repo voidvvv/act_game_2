@@ -215,10 +215,16 @@ public class VCharacter extends VActor implements Attackable {
         behaviorMap.put(DamageBehavior.BASE_BE_ATTACK_BEHAVIOR, new LinkedList<>());
     }
 
+    boolean aiInit = false;
     public void initAI(float radius) {
-        normalDetector = Pools.obtain(NormalDetector.class);
-        normalDetector.changeRadius(radius);
-        normalDetector.init(this);
+        if (!aiInit) {
+            aiInit = true;
+            normalDetector = Pools.obtain(NormalDetector.class);
+            normalDetector.changeRadius(radius);
+            normalDetector.init(this);
+        } else {
+            normalDetector.changeRadius(radius);
+        }
     }
 
     public BuffComponent getBuffComponent() {
@@ -413,6 +419,7 @@ public class VCharacter extends VActor implements Attackable {
 
     @Override
     public void reset() {
+        aiInit = false;
         if (normalDetector != null) {
 
             Pools.free(normalDetector);

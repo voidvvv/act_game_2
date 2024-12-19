@@ -3,12 +3,14 @@ package com.voidvvv.game.plugin;
 import com.badlogic.gdx.utils.Pools;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class PluginComponent {
-    private List<Plugin> initList = new ArrayList<Plugin>();
-    private List<Plugin> plugins = new ArrayList<Plugin>();
-    private List<Plugin> trashBin = new ArrayList<Plugin>();
+    private Set<Plugin> initList = new HashSet<Plugin>();
+    private Set<Plugin> plugins = new HashSet<Plugin>();
+    private Set<Plugin> trashBin = new HashSet<>();
 
     public void addPlugin(Plugin plugin) {
         if (plugin != null) {

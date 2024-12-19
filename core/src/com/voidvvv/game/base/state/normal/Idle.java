@@ -2,6 +2,7 @@ package com.voidvvv.game.base.state.normal;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.math.MathUtils;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.state.VCharactorStatus;
 
@@ -11,6 +12,10 @@ public class Idle extends VCharactorStatus {
 
     @Override
     public void exec(VCharacter entity) {
+        if (entity.baseMove.len2() > 0f) {
+            entity.getStateMachine().changeState(Walking.INSTANCE);
+            return;
+        }
         entity.statusTime += Gdx.graphics.getDeltaTime();
         entity.statusProgress += Gdx.graphics.getDeltaTime();
     }

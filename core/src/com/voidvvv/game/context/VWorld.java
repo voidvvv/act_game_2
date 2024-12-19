@@ -214,7 +214,7 @@ public class VWorld {
     }
 
     protected void initWorld() {
-        box2dWorld = new World(new Vector2(0, 0), true);
+        box2dWorld = new World(new Vector2(0, 0), false);
         if (helper.collisionListener != null) {
             box2dWorld.setContactListener(helper.collisionListener);
         } else

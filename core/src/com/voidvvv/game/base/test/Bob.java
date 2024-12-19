@@ -94,7 +94,7 @@ public class Bob extends VCharacter {
         if (skillCode == InputActionMapping.SKILL_Q) {
             skill.use();
         }
-        if (skillCode == InputActionMapping.SKILL_W) {
+        if (skillCode == InputActionMapping.SKILL_E) {
             skill2.use();
         }
     }

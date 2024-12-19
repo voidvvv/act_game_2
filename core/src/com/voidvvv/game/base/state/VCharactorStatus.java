@@ -89,4 +89,8 @@ public abstract class VCharactorStatus implements State<VCharacter> {
     protected void onHit(VCharacter entity, Telegram telegram) {
 
     }
+
+    public void onNoopSkill(VCharacter character, Telegram gram) {
+
+    }
 }

@@ -37,7 +37,13 @@ public abstract class Skill {
         RANGE () {
             @Override
             public void applySkillType(VCharactorStatus status, VCharacter character, Telegram gram) {
-                status.onRangeSpell(character, gram);
+                status.onNoopSkill(character, gram);
+            }
+        },
+        NOOP () {
+            @Override
+            public void applySkillType(VCharactorStatus status, VCharacter character, Telegram gram) {
+                super.applySkillType(status, character, gram);
             }
         }
         ;

@@ -8,6 +8,7 @@ import com.badlogic.gdx.ai.btree.utils.BehaviorTreeParser;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.voidvvv.game.base.VActor;
+import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.actors.slime.Slime;
 import com.voidvvv.game.base.btree.slime.Jog;
@@ -38,6 +39,10 @@ public class BTManager implements Telegraph {
         BehaviorTree<VActor> behaviorTree = libraryManager.createBehaviorTree(treeName, actor);
         behaviorTrees.add(behaviorTree);
         map.put(actor, behaviorTree);
+        VCharacter character = ReflectUtil.cast(actor, VCharacter.class);
+        if (character != null) {
+            character.initAI(50f);
+        }
     }
 
     public float stepInterval = 0.5f;

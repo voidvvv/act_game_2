@@ -1,5 +1,6 @@
 package com.voidvvv.game.manager.behaviors;
 
+import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.battle.BattleComponent;
@@ -82,6 +83,7 @@ public class DamageBehavior implements Behavior {
 
         VCharacter vch = (VCharacter) owner;
         BattleComponent battleComponent = vch.getBattleComponent();
+
         battleComponent.addDamage(this);
         vch.postBehavior(this);
         VCharacter from = ReflectUtil.cast(this.from, VCharacter.class);
@@ -90,6 +92,12 @@ public class DamageBehavior implements Behavior {
         }
         world.postBehavior(this);
         this.did = true;
+        printLog();
+    }
+
+    private void printLog() {
+        String log = from.getName() + " use " + trigger + " to damage : " + to.getName() + " damage: " + this.damage;
+        ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage(log);
     }
 
     @Override

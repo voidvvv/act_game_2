@@ -11,8 +11,14 @@ public class HitSkill extends PluginSkill{
 
     @Override
     protected void applyCost() {
-        this.cooldown = maxCooldown;
-        owner.getBattleComponent().useMp(20f);
+        boolean b = owner.preUseSkill(this);
+        if (b) {
+            this.cooldown = maxCooldown;
+            owner.getBattleComponent().useMp(20f);
+        } else {
+            System.out.println("当前状态不允许释放");
+            throw  new RuntimeException("当前状态不允许释放");
+        }
     }
 
     @Override
