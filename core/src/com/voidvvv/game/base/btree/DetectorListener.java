@@ -5,6 +5,7 @@ import com.voidvvv.game.base.Camp;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VActorAdaptor;
 import com.voidvvv.game.base.VCharacter;
+import com.voidvvv.game.base.actors.NormalDetector;
 import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.utils.ReflectUtil;
 
@@ -12,14 +13,12 @@ import java.util.Set;
 
 public class DetectorListener extends VActorAdaptor {
     public VCharacter character;
-    public Fixture fixture;
-    public Set<VCharacter> characters;
+    public NormalDetector detector;
     @Override
     public void reset() {
         super.reset();
-        fixture = null;
         character = null;
-        characters = null;
+        detector = null;
     }
 
     @Override
@@ -27,7 +26,7 @@ public class DetectorListener extends VActorAdaptor {
         VActor lastHitActor = character.lastHitActor;
         Fixture lastThisFixture = character.lastThisFixture;
         Fixture lastOtherFixture = character.lastOtherFixture;
-        if (lastThisFixture != fixture) {
+        if (lastThisFixture != detector.detectFixture) {
             return;
         }
         UserData ud = ReflectUtil.cast(lastOtherFixture.getUserData(), UserData.class);
@@ -35,11 +34,25 @@ public class DetectorListener extends VActorAdaptor {
             return;
         }
         Camp camp = lastHitActor.camp;
-        if (!character.camp.compatible(camp)) {
+        if (!character.taregtCamp.compatible(camp)) {
             return;
         }
-        if (characters != null && ReflectUtil.cast(lastHitActor, VCharacter.class) != null) {
-            characters.add(ReflectUtil.cast(lastHitActor, VCharacter.class));
+        if (detector.characters != null && ReflectUtil.cast(lastHitActor, VCharacter.class) != null) {
+            detector.characters.add(ReflectUtil.cast(lastHitActor, VCharacter.class));
         }
+    }
+
+    @Override
+    public void afterHitOver() {
+        VActor lastHitActor = character.lastHitActor;
+        Fixture lastThisFixture = character.lastThisFixture;
+        Fixture lastOtherFixture = character.lastOtherFixture;
+
+        if (lastThisFixture != detector.detectFixture) {
+            return;
+        }
+
+        Camp camp = lastHitActor.camp;
+        detector.removeActor(ReflectUtil.cast(lastHitActor, VCharacter.class));
     }
 }

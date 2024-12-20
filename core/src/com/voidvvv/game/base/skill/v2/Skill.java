@@ -1,17 +1,67 @@
 package com.voidvvv.game.base.skill.v2;
 
+import com.badlogic.gdx.ai.msg.Telegram;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.VCharacter;
+import com.voidvvv.game.base.state.VCharactorStatus;
 import com.voidvvv.game.manager.event.spell.SpellWorldEvent;
 import lombok.Getter;
 import lombok.Setter;
 
 public abstract class Skill {
+    public static enum SkillType {
+        A() {
+            @Override
+            public void applySkillType(VCharactorStatus status, VCharacter character, Telegram gram) {
+                status.onA_Attack(character, gram);
+            }
+        },
+        MAGIC_SPELL() {
+            @Override
+            public void applySkillType(VCharactorStatus status, VCharacter character, Telegram gram) {
+                status.onMagicSpell(character, gram);
+            }
+        },
+        PHYSIC_SPELL() {
+            @Override
+            public void applySkillType(VCharactorStatus status, VCharacter character, Telegram gram) {
+                status.onPhysicSpell(character, gram);
+            }
+        },
+        ROTATE () {
+            @Override
+            public void applySkillType(VCharactorStatus status, VCharacter character, Telegram gram) {
+                status.onRotateSpell(character, gram);
+            }
+        },
+        RANGE () {
+            @Override
+            public void applySkillType(VCharactorStatus status, VCharacter character, Telegram gram) {
+                status.onNoopSkill(character, gram);
+            }
+        },
+        NOOP () {
+            @Override
+            public void applySkillType(VCharactorStatus status, VCharacter character, Telegram gram) {
+                super.applySkillType(status, character, gram);
+            }
+        }
+        ;
 
+        public void applySkillType(VCharactorStatus status, VCharacter character, Telegram gram) {
+
+        }
+    }
     public float cooldown;
     public float maxCooldown;
 
     public boolean shouldDoPost = false;
+
+    public float spellingTime = 1f;
+
+    public SkillType skillType() {
+        return SkillType.MAGIC_SPELL;
+    }
 
     @Getter
     @Setter
@@ -23,7 +73,6 @@ public abstract class Skill {
 
     public boolean use() {
         try {
-            System.out.println("use");
             boolean checkPrerequisites = checkPrerequisites();
             if (!checkPrerequisites) {
                 return false;
@@ -59,4 +108,6 @@ public abstract class Skill {
     protected abstract boolean checkPrerequisites();
 
     public abstract void does();
+
+
 }

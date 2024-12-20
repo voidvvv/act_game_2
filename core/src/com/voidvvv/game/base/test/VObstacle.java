@@ -1,5 +1,6 @@
 package com.voidvvv.game.base.test;
 
+import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.actors.ActorConstants;
@@ -51,5 +52,10 @@ public class VObstacle extends VActor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         render.render(this, batch, parentAlpha);
+    }
+
+    @Override
+    public boolean handleMessage(Telegram msg) {
+        return false;
     }
 }

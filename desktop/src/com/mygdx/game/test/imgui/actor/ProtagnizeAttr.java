@@ -38,6 +38,7 @@ public class ProtagnizeAttr implements UIRender {
                 ImGui.text("当前速度:  " + character.velocity.x + " - " + character.velocity.y);
                 float totalGameTime = ActGame.gameInstance().totalGameTime;
                 ImGui.text("时间: " + (int)totalGameTime);
+                ImGui.text("状态: " + character.getStateMachine().getCurrentState().getClass().getSimpleName());
             }
             flag = ImGui.button("施加移速buff 10秒钟");
             if (flag) {

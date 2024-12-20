@@ -23,10 +23,14 @@ public class SeekEnemy extends LeafTask<Slime> {
     @Override
     public Status execute() {
         Slime slime = getObject();
+        if (slime.getNormalDetector() == null) {
+            return Status.FAILED;
+        }
         // find all current character contact with this actor
         NormalDetector normalDetector = slime.getNormalDetector();
         Set<VCharacter> characters = normalDetector.getCharacters();
         if (characters.isEmpty()) {
+
             return Status.FAILED;
         }
         normalDetector.setTarget(characters.iterator().next());

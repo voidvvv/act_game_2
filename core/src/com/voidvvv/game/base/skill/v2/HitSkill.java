@@ -9,10 +9,20 @@ public class HitSkill extends PluginSkill{
         this.maxCooldown = 2.f;
     }
 
+    public SkillType skillType() {
+        return SkillType.PHYSIC_SPELL;
+    }
+
     @Override
     protected void applyCost() {
-        this.cooldown = maxCooldown;
-        owner.getBattleComponent().useMp(20f);
+        boolean b = owner.preUseSkill(this);
+        if (b) {
+            this.cooldown = maxCooldown;
+            owner.getBattleComponent().useMp(20f);
+        } else {
+            System.out.println("当前状态不允许释放");
+            throw  new RuntimeException("当前状态不允许释放");
+        }
     }
 
     @Override
@@ -23,6 +33,5 @@ public class HitSkill extends PluginSkill{
     @Override
     public void does() {
         super.does();
-        System.out.println(this.getClass().getName() + " 开始!");
     }
 }

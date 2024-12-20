@@ -12,18 +12,16 @@ import com.voidvvv.game.base.shape.VCube;
 import com.voidvvv.game.base.skill.v2.HitSkill;
 import com.voidvvv.game.base.skill.v2.LightBoomSkill;
 import com.voidvvv.game.base.skill.v2.Skill;
-import com.voidvvv.game.base.state.bob.BobStatus;
+import com.voidvvv.game.base.state.VCharactorStatus;
+import com.voidvvv.game.base.state.normal.Idle;
 import com.voidvvv.game.context.input.InputActionMapping;
 import com.voidvvv.game.render.actor.test.bob.DefaultBobRender;
-import lombok.Getter;
-import lombok.Setter;
 
 public class Bob extends VCharacter {
-    @Getter
-    @Setter
-    StateMachine<Bob, BobStatus> selfStatusStateMachine;
+    StateMachine<VCharacter, VCharactorStatus> statusStateMachine;
 
     private DefaultBobRender defaultBobRender;
+
 
 
 
@@ -31,9 +29,10 @@ public class Bob extends VCharacter {
     @Override
     public void vCAct(float delta) {
         super.vCAct(delta);
+        stateUpdate(delta);
         // skill update
         skillUpdate();
-        stateUpdate(delta);
+
     }
 
     protected void skillUpdate() {
@@ -43,8 +42,8 @@ public class Bob extends VCharacter {
     }
 
     private void stateUpdate(float delta) {
-        selfStatusStateMachine.update();
 
+        statusStateMachine.update();
     }
 
     @Override
@@ -57,10 +56,8 @@ public class Bob extends VCharacter {
         this.getActualBattleAttr().mp = 0f;
 
         setName("Bob" + MathUtils.random(10));
-
-        selfStatusStateMachine = new DefaultStateMachine<>(this);
-        selfStatusStateMachine.setInitialState(BobStatus.IDLE);
-
+        statusStateMachine = new DefaultStateMachine<>(this);
+        statusStateMachine.setInitialState(Idle.INSTANCE);
         if (this.defaultBobRender == null) {
             defaultBobRender = new DefaultBobRender();
         }
@@ -97,7 +94,7 @@ public class Bob extends VCharacter {
         if (skillCode == InputActionMapping.SKILL_Q) {
             skill.use();
         }
-        if (skillCode == InputActionMapping.SKILL_W) {
+        if (skillCode == InputActionMapping.SKILL_E) {
             skill2.use();
         }
     }
@@ -111,30 +108,26 @@ public class Bob extends VCharacter {
 
     @Override
     public void changeStatus(int status) {
-        if (status == ActorConstants.STATUS_IDLE) {
-            this.selfStatusStateMachine.changeState(BobStatus.IDLE);
-        } else if (status == ActorConstants.STATUS_SPELLING_01) {
-            this.selfStatusStateMachine.changeState(BobStatus.SPELL_0);
-        } else if (status == ActorConstants.STATUS_ATTACK_01) {
-            this.selfStatusStateMachine.changeState(BobStatus.ATTACKING_0);
 
-        }
     }
 
     @Override
     protected void becomeDying() {
-        if (this.selfStatusStateMachine.getCurrentState() != BobStatus.DYING) {
-            this.selfStatusStateMachine.changeState(BobStatus.DYING);
-        }
+
     }
 
     @Override
     public boolean isDying() {
-        return this.selfStatusStateMachine.getCurrentState() == BobStatus.DYING;
+        return false;
     }
 
     @Override
     public int currentStateId() {
-        return this.selfStatusStateMachine.getCurrentState().getId();
+        return 0;
+    }
+
+    @Override
+    public StateMachine<VCharacter, VCharactorStatus> getStateMachine() {
+        return statusStateMachine;
     }
 }

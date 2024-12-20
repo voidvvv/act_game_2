@@ -214,7 +214,7 @@ public class VWorld {
     }
 
     protected void initWorld() {
-        box2dWorld = new World(new Vector2(0, 0), true);
+        box2dWorld = new World(new Vector2(0, 0), false);
         if (helper.collisionListener != null) {
             box2dWorld.setContactListener(helper.collisionListener);
         } else
@@ -282,8 +282,8 @@ public class VWorld {
 
     protected void mainThread(float delta) {
         vWorldEventManager.update(delta);
-        box2dWorld.step(delta, 20
-                , 20);
+        box2dWorld.step(delta, 6
+                , 6);
         stage.act(delta);
         stage.getRoot().getChildren().sort(compare);
     }
@@ -392,6 +392,8 @@ public class VWorld {
             if (helper.userData == null) {
                 // default user data
                 ((UserData) roleFixture.getUserData()).setActor(t);
+                ((UserData) roleFixture.getUserData()).setType(helper.bdType);
+                ((UserData) roleFixture.getUserData()).setDerivative(helper.derivative);
             }
             t.init();
             initList.add(t);

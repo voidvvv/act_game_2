@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.base.VActorAdaptor;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.actors.ActorConstants;
+import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.base.test.TestBullet;
 import com.voidvvv.game.context.VActorSpawnHelper;
 import com.voidvvv.game.context.WorldContext;
@@ -18,6 +19,7 @@ public class LightBoomPlugin extends SkillPlugin {
     boolean send = false;
 
     public float speed = 1f;
+    public float maxProcess = 1f;
 
     public Vector2 position = new Vector2();
     public Vector2 direction = new Vector2();
@@ -38,30 +40,30 @@ public class LightBoomPlugin extends SkillPlugin {
         this.direction.y = character.getWorld().currentPointerPose.y - character.position.y;
 
         speed = character.getBattleComponent().actualBattleAttr.magicSpeed / WorldContext.DEFAULT_MAGIC_COEFFICIENT;
-        character.changeStatus(ActorConstants.STATUS_SPELLING_01);
+//        character.changeStatus(ActorConstants.STATUS_SPELLING_01);
         listener = Pools.obtain(InterruptListener.class);
         listener.plugin = this;
         character.getListenerComponent().add(listener);
+        currentProcess = 0f;
 
     }
 
     @Override
     public void update(float delta) {
         updateProgress(delta);
-        character.baseMove.x = 0;
-        character.baseMove.y = 0;
-//        character.interruptPathFinding();
+        character.setHorizonVelocity(0f, 0f);
+        character.interruptPathFinding();
         if (character.statusProgress >= triggerTime && !send) {
             launch();
         }
         if (isEnding()) {
-            character.changeStatus(ActorConstants.STATUS_IDLE);
+
             this.stop();
         }
     }
 
     private boolean isEnding() {
-        return character.statusProgress >= 1f && send;
+        return character.statusProgress >= maxProcess && send;
     }
 
     private void launch() {
@@ -77,27 +79,38 @@ public class LightBoomPlugin extends SkillPlugin {
                 .hz(5f)
                 .initX(this.position.x).initY(this.position.y)
                 .sensor(true)
+                .bdType(UserData.B2DType.SENSOR)
+                .derivative(true)
                 .build();
 
         TestBullet testBullet = character.getWorld().spawnVActor(TestBullet.class, helper);
         testBullet.targetGroup = WorldContext.BLACK;
         testBullet.getActualBattleAttr().moveSpeed = 500;
         testBullet.setParentVActor(character);
-        testBullet.baseMove.set(direction.x, direction.y, 0f);
+//        testBullet.baseMove.set(direction.x, direction.y, 0f);
+        testBullet.setHorizonVelocity(direction.x, direction.y);
         testBullet.taregtCamp.set(character.taregtCamp);
         testBullet.camp.set(character.camp);
 
     }
 
+    float currentProcess = 0f;
     private void updateProgress(float delta) {
         speed = character.getBattleComponent().actualBattleAttr.magicSpeed / WorldContext.DEFAULT_MAGIC_COEFFICIENT;
-        character.statusProgress += (delta * speed);
+        currentProcess += ((delta * speed) / maxProcess);
+        character.statusProgress = currentProcess;
+    }
+
+    @Override
+    public float progress() {
+        return currentProcess;
     }
 
     @Override
     public void reset() {
         super.reset();
         send = false;
+        currentProcess = 0f;
         if (this.listener != null) {
             character.getListenerComponent().remove(listener);
             this.listener = null;

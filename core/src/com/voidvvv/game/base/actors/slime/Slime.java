@@ -1,17 +1,22 @@
 package com.voidvvv.game.base.actors.slime;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.actors.ActorConstants;
-import com.voidvvv.game.base.state.slime.SlimeStatus;
+import com.voidvvv.game.base.skill.v2.HitSkill;
+import com.voidvvv.game.base.skill.v2.Skill;
+import com.voidvvv.game.base.state.VCharactorStatus;
+import com.voidvvv.game.base.state.normal.Idle;
+import com.voidvvv.game.context.input.InputActionMapping;
 import com.voidvvv.game.render.actor.VActorRender;
 
 public class Slime extends VCharacter {
 
-    StateMachine<Slime, State<Slime>> defalutStateMachine;
+    StateMachine<VCharacter, VCharactorStatus> defalutStateMachine;
     float btUpdateStep = 0.1f;
     float btrCurrentStep = 0f;
 
@@ -22,13 +27,18 @@ public class Slime extends VCharacter {
         super.init();
         this.actorType = ActorConstants.ACTOR_TYPE_CHARACTER;
         if (defalutStateMachine == null) {
-            defalutStateMachine = new DefaultStateMachine<>(this, SlimeStatus.IDEL);
+            defalutStateMachine = new DefaultStateMachine<>(this, Idle.INSTANCE);
+        } else {
+            defalutStateMachine.setInitialState(Idle.INSTANCE);
         }
-
+        skill = new HitSkill();
+        skill.setOwner(this);
     }
 
-    public StateMachine<Slime, State<Slime>> getDefalutStateMachine() {
-        return defalutStateMachine;
+    public int skillCode = -1;
+    @Override
+    public void setFrameSkill(int keycode) {
+        skillCode = keycode;
     }
 
     @Override
@@ -39,11 +49,19 @@ public class Slime extends VCharacter {
             btrCurrentStep = 0f;
         }
         stateUpdate(delta);
+        skillUpdate();
     }
 
     private void stateUpdate(float delta) {
         defalutStateMachine.update();
     }
+
+    protected void skillUpdate() {
+        useSkill(this.skillCode);
+        skill.update(Gdx.graphics.getDeltaTime());
+        this.skillCode = -1;
+    }
+
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
@@ -53,10 +71,12 @@ public class Slime extends VCharacter {
             render.render(this, batch, parentAlpha);
         }
     }
-
+    Skill skill;
     @Override
     public void useSkill(int skillCode) {
-
+        if (skillCode == InputActionMapping.SKILL_Q) {
+            skill.use();
+        }
     }
 
     @Override
@@ -65,15 +85,8 @@ public class Slime extends VCharacter {
     }
 
 
-
     @Override
-    protected void becomeDying() {
-        this.defalutStateMachine.changeState(SlimeStatus.DYING);
+    public StateMachine<VCharacter, VCharactorStatus> getStateMachine() {
+        return this.defalutStateMachine;
     }
-
-    @Override
-    public boolean isDying() {
-        return this.defalutStateMachine.getCurrentState() == SlimeStatus.DYING;
-    }
-
 }

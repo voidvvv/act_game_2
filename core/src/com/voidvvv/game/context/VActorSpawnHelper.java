@@ -1,6 +1,7 @@
 package com.voidvvv.game.context;
 
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.voidvvv.game.base.b2d.UserData;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,5 +26,7 @@ public class VActorSpawnHelper {
 
     boolean occupy = false;
     Object userData;
+    UserData.B2DType bdType;
+    boolean derivative;
 
 }

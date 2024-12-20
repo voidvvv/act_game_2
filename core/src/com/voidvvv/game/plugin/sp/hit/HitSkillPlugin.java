@@ -5,10 +5,12 @@ import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.VPhysicAttr;
 import com.voidvvv.game.base.actors.ActorConstants;
+import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.base.skill.v2.HitSkill;
 import com.voidvvv.game.context.FixtureHelper;
 import com.voidvvv.game.context.WorldContext;
 import com.voidvvv.game.plugin.SkillPlugin;
+import com.voidvvv.game.utils.ReflectUtil;
 
 public class HitSkillPlugin extends SkillPlugin {
     public final static int INIT = 0;
@@ -18,6 +20,7 @@ public class HitSkillPlugin extends SkillPlugin {
     float totalProgress = 1f;
     float currentProgress = 0f;
 
+    Fixture init = null;
     Fixture generatedFix = null;
 
     int hitStatus = INIT;
@@ -48,6 +51,21 @@ public class HitSkillPlugin extends SkillPlugin {
         owner.baseMove.x = 0f;
         owner.baseMove.y = 0f;
         float statusProgress = currentProgress;
+        if (hitStatus == INIT && init == null) {
+            VPhysicAttr physicAttr = owner.getPhysicAttr();
+            float box2dHy = physicAttr.box2dHy;
+            float box2dHx = physicAttr.box2dHx;
+            float box2dHz = physicAttr.box2dHz;
+            FixtureHelper helper = new FixtureHelper();
+            helper.x1 = -box2dHx;
+            helper.x2 = box2dHx;
+            helper.y1 = -box2dHy;
+            helper.y2 = (-box2dHy + 2f*box2dHz);
+            helper.box2dCategory = WorldContext.FACE_COLLIDE;
+            helper.box2dMask = WorldContext.FACE_COLLIDE;
+            helper.type = UserData.B2DType.SENSOR;
+            init = owner.getWorld().addRectFixture(owner, helper);
+        }
 
         if (statusProgress >= 0.5f && hitStatus == INIT) {
             hitStatus = GENERATE_HIT;
@@ -61,11 +79,12 @@ public class HitSkillPlugin extends SkillPlugin {
             helper.x2 = box2dHx * 1.5f;
             helper.y1 = -box2dHy;
             helper.y2 = (-box2dHy + 2f*box2dHz) * 1.5f;
+            helper.box2dCategory = WorldContext.FACE_COLLIDE;
+            helper.box2dMask = WorldContext.FACE_COLLIDE;
             generatedFix = owner.getWorld().addRectFixture(owner, helper);
         }
 
         if (statusProgress >= 1f && hitStatus == GENERATE_HIT) {
-            owner.changeStatus(ActorConstants.STATUS_IDLE);
             stop();
         }
     }
@@ -76,18 +95,22 @@ public class HitSkillPlugin extends SkillPlugin {
         speed = owner.getBattleComponent().actualBattleAttr.attackSpeed / WorldContext.DEFAULT_ATTACK_SPEED_COEFFICIENT;
         currentProgress += (speed * delta);
         float increase = (speed * delta) / totalProgress;
-        owner.statusProgress += increase;
+        owner.statusProgress = currentProgress / totalProgress;
     }
+
 
     @Override
     public void reset() {
-        System.out.println(getClass().getName() + " reset");
         hitStatus = INIT;
         currentProgress = 0f;
         VCharacter owner = skill.getOwner();
         if (generatedFix != null) {
             owner.getBody().destroyFixture(generatedFix);
             generatedFix = null;
+        }
+        if (init != null) {
+            owner.getBody().destroyFixture(init);
+            init = null;
         }
         owner.getListenerComponent().remove(listener);
 
@@ -101,7 +124,7 @@ public class HitSkillPlugin extends SkillPlugin {
             VCharacter owner = skill.getOwner();
             if (owner != null) {
                 owner.getPluginComponent().removePlugin(this);
-                owner.changeStatus(ActorConstants.STATUS_IDLE);
+//                owner.changeStatus(ActorConstants.STATUS_IDLE);
             }
         }
 
