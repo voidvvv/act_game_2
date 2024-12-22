@@ -113,11 +113,6 @@ public class Bob extends VCharacter {
 
 
     @Override
-    public boolean isDying() {
-        return false;
-    }
-
-    @Override
     public int currentStateId() {
         return 0;
     }
