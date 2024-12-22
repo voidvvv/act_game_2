@@ -74,15 +74,19 @@ public class TestBullet extends VCharacter {
     @Override
     public void init() {
         super.init();
+        this.staus = NORMAL;
         currentTime = maxLive;
         setName("闪光炸弹");
-
+        getBattleComponent().actualBattleAttr.hp = 100;
         if (testBulletRender == null) {
             testBulletRender = new TestBulletRender();
             testBulletRender.init();
         }
 
     }
+
+
+
 
     @Override
     public void reset() {

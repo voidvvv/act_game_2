@@ -105,20 +105,20 @@ public class VPathFinder {
             float beforeDistance = tmp2.set(character.position.x, character.position.y).sub(currentTarget).len();
             float afterDistance = tmp2.add(vector2.scl(0.01f)).len();
             if (beforeDistance <= afterDistance) {
-                ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("beforeDistance: [RED]" + beforeDistance + "[] afterDistance: [RED]" + afterDistance);
+//                ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("beforeDistance: [RED]" + beforeDistance + "[] afterDistance: [RED]" + afterDistance);
                 currentIndex++;
                 if (2*currentIndex < currentPath.size()-1) {
                     // move to next point
                     currentTarget.set(currentPath.get(2*currentIndex), currentPath.get(2*currentIndex+1));
-                    ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("切换为下一寻路点: " + currentTarget.x + " - " + currentTarget.y);
+//                    ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("切换为下一寻路点: " + currentTarget.x + " - " + currentTarget.y);
                     tmp1.set(currentTarget.x - character.position.x, currentTarget.y - character.position.y).nor();
 //                    character.baseMove.x = tmp1.x;
 //                    character.baseMove.y = tmp1.y;
                     character.setHorizonVelocity(tmp1.x, tmp1.y);
                 } else {
                     // end finding
-                    ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("停止寻路");
-                    System.out.println("停止寻路");
+//                    ActGame.gameInstance().getSystemNotifyMessageManager().pushMessage("停止寻路");
+//                    System.out.println("停止寻路");
                     character.setHorizonVelocity(0f,0f);
                     currentIndex = 0;
                     pathing = false;

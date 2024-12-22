@@ -111,10 +111,6 @@ public class Bob extends VCharacter {
 
     }
 
-    @Override
-    protected void becomeDying() {
-
-    }
 
     @Override
     public boolean isDying() {

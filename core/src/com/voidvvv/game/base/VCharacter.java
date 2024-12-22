@@ -156,10 +156,12 @@ public class VCharacter extends VActor implements Attackable {
     }
 
     protected void becomeDying() {
+        this.setDying(true);
+        MessageManager.getInstance().dispatchMessage(this,getStateMachine(), ActorConstants.MSG_ACTOR_AFTER_DYING);
     }
 
     protected boolean toDying() {
-        return battleComponent.actualBattleAttr.hp <= 0;
+        return !isDying() && battleComponent.actualBattleAttr.hp <= 0;
     }
 
     protected void behaviorsApply(float delta) {
@@ -208,7 +210,7 @@ public class VCharacter extends VActor implements Attackable {
     @Override
     public void init() {
         super.init();
-
+        this.setDying( false);
         this.battleComponent.setOwner(this);
         this.buffComponent.setOwner(this);
         finder = new VPathFinder(this, getWorld());

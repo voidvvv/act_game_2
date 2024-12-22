@@ -35,13 +35,14 @@ public class HitSkillPlugin extends SkillPlugin {
         // add a listener to owner
         VCharacter owner = skill.getOwner();
         owner.changeStatus(ActorConstants.STATUS_SPELLING_02);
+
+
         listener = Pools.obtain(HitSkillListener.class);
         listener.hitSkill = this.skill;
         listener.owner = owner;
         listener.hsp = this;
         owner.getListenerComponent().add(listener);
         owner.changeStatus(ActorConstants.STATUS_ATTACK_01);
-
     }
 
     @Override
@@ -51,23 +52,25 @@ public class HitSkillPlugin extends SkillPlugin {
         owner.baseMove.x = 0f;
         owner.baseMove.y = 0f;
         float statusProgress = currentProgress;
-        if (hitStatus == INIT && init == null) {
-            VPhysicAttr physicAttr = owner.getPhysicAttr();
-            float box2dHy = physicAttr.box2dHy;
-            float box2dHx = physicAttr.box2dHx;
-            float box2dHz = physicAttr.box2dHz;
-            FixtureHelper helper = new FixtureHelper();
-            helper.x1 = -box2dHx;
-            helper.x2 = box2dHx;
-            helper.y1 = -box2dHy;
-            helper.y2 = (-box2dHy + 2f*box2dHz);
-            helper.box2dCategory = WorldContext.FACE_COLLIDE;
-            helper.box2dMask = WorldContext.FACE_COLLIDE;
-            helper.type = UserData.B2DType.SENSOR;
-            init = owner.getWorld().addRectFixture(owner, helper);
-        }
+//        if (hitStatus == INIT && init == null) {
+//            VPhysicAttr physicAttr = owner.getPhysicAttr();
+//            float box2dHy = physicAttr.box2dHy;
+//            float box2dHx = physicAttr.box2dHx;
+//            float box2dHz = physicAttr.box2dHz;
+//            FixtureHelper helper = new FixtureHelper();
+//            helper.x1 = -box2dHx;
+//            helper.x2 = box2dHx;
+//            helper.y1 = -box2dHy;
+//            helper.y2 = (-box2dHy + 2f*box2dHz);
+//            helper.box2dCategory = WorldContext.FACE_COLLIDE;
+//            helper.box2dMask = WorldContext.FACE_COLLIDE;
+//            helper.type = UserData.B2DType.SENSOR;
+//            init = owner.getWorld().addRectFixture(owner, helper);
+//        }
 
         if (statusProgress >= 0.5f && hitStatus == INIT) {
+
+
             hitStatus = GENERATE_HIT;
             // add an extra fixture to actor's body
             VPhysicAttr physicAttr = owner.getPhysicAttr();
@@ -112,7 +115,10 @@ public class HitSkillPlugin extends SkillPlugin {
             owner.getBody().destroyFixture(init);
             init = null;
         }
-        owner.getListenerComponent().remove(listener);
+        if (listener != null) {
+            owner.getListenerComponent().remove(listener);
+            listener = null;
+        }
 
         super.reset();
     }

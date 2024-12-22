@@ -11,6 +11,7 @@ public class AssetConstant {
     public static final String SLIME_IMAGE = "image/actor/slime/Slime1_Attack_full.png";
     public static final String SLIME_IDLE_IMAGE = "image/actor/slime/Slime1_Idle_full.png";
     public static final String SLIME_WALK_IMAGE = "image/actor/slime/Slime1_Walk_full.png";
+    public static final String SLIME_DYING_IMAGE = "image/actor/slime/Slime1_Death_body.png";
 
     //audio
     public static final String GRASS_STEP_LEFT_SOUND = "sound/step/grass/sfx_step_grass_l.flac";

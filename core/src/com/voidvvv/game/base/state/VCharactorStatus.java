@@ -5,6 +5,7 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.skill.v2.Skill;
+import com.voidvvv.game.base.state.normal.DyingStatus;
 import com.voidvvv.game.utils.ReflectUtil;
 
 public abstract class VCharactorStatus implements State<VCharacter> {
@@ -33,9 +34,21 @@ public abstract class VCharactorStatus implements State<VCharacter> {
             afterBeDamage(entity,telegram);
         } else if (message == ActorConstants.MSG_ACTOR_AFTER_BE_ATTACK) {
             afterBeAttack(entity, telegram);
+        } else if (message == ActorConstants.MSG_ACTOR_AFTER_DYING) {
+            beDying(entity, telegram);
+        } else {
+            otherMessage(entity, telegram);
         }
 
         return false;
+    }
+
+    public void beDying(VCharacter entity, Telegram telegram) {
+        entity.getStateMachine().changeState(DyingStatus.INSTANCE);
+    }
+
+    protected void otherMessage(VCharacter entity, Telegram telegram) {
+
     }
 
     public void afterBeAttack(VCharacter entity, Telegram telegram) {
