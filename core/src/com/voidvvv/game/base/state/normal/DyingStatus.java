@@ -7,7 +7,7 @@ import com.voidvvv.game.base.state.VCharactorStatus;
 public class DyingStatus extends VCharactorStatus {
     public static final DyingStatus INSTANCE = new DyingStatus();
 
-    private DyingStatus() {}
+    public DyingStatus() {}
     @Override
     public void exec(VCharacter entity) {
         if (entity.statusTime >= 1f) {
@@ -20,6 +20,7 @@ public class DyingStatus extends VCharactorStatus {
 
     @Override
     public void enter(VCharacter entity) {
+        Gdx.app.log("DyingStatus", entity.getName() + " dying!");
         entity.statusTime = 0f;
         entity.statusProgress = 0f;
     }

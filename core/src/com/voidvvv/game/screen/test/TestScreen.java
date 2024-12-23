@@ -1,6 +1,10 @@
 package com.voidvvv.game.screen.test;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -35,7 +40,7 @@ import com.voidvvv.game.render.actor.slime.SlimeSimpleRender;
 import com.voidvvv.game.screen.test.ui.TextMessageBar;
 import com.voidvvv.game.utils.ReflectUtil;
 
-public class TestScreen extends ScreenAdapter {
+public class TestScreen extends ScreenAdapter implements Telegraph {
 
     VDebugShapeRender debugShapeRender;
 
@@ -83,6 +88,7 @@ public class TestScreen extends ScreenAdapter {
 
     @Override
     public void show() {
+        MessageManager.getInstance().addListener(this, ADD_SLIME);
         initParam();
         // load asset
         loadAsset();
@@ -136,8 +142,10 @@ public class TestScreen extends ScreenAdapter {
         vObstacle.setName("Rocky!");
 
         addSlime();
+        AddSlimeTest addSlimeTest = new AddSlimeTest();
 
-
+        vWorld.getStage().addActor(addSlimeTest);
+        addSlimeTest.init();
     }
 
     private VObstacle spawnObstacle(float x, float y) {
@@ -168,7 +176,11 @@ public class TestScreen extends ScreenAdapter {
     }
 
     SlimeSimpleRender slimeSimpleRender;
-    private void addSlime() {
+    public void addSlime() {
+        addSlime(100f,100f);
+    }
+
+    public void addSlime(float x, float y) {
         if (slimeSimpleRender == null) {
             slimeSimpleRender = new SlimeSimpleRender();
             slimeSimpleRender.init();
@@ -179,7 +191,7 @@ public class TestScreen extends ScreenAdapter {
                 .mask((short)(WorldContext.OBSTACLE|WorldContext.BLACK|WorldContext.ROLE)) // who do I want to collision
                 .hx(vWorld.unit()/2).hy(8f)
                 .hz(vWorld.unit())
-                .initX(100f).initY(100f)
+                .initX(x).initY(y)
                 .build();
         Slime slime = vWorld.spawnVActor(Slime.class,helper);
         slime.setName("Slime");
@@ -192,6 +204,7 @@ public class TestScreen extends ScreenAdapter {
         slime.render = slimeSimpleRender;
         ActGame.gameInstance().getBtManager().addTree(slime, BTManager.SLIME_SIMPLE);
     }
+
 
     private void initParam() {
         screenCamera = ActGame.gameInstance().getCameraManager().getScreenCamera();
@@ -217,5 +230,19 @@ public class TestScreen extends ScreenAdapter {
         uiStage = new Stage(new ScreenViewport(screenCamera), ActGame.gameInstance().getDrawManager().getSpriteBatch());
         uiStage.addActor(new TextMessageBar() );
         ActGame.gameInstance().addInputProcessor(uiStage);
+    }
+
+    public final static int ADD_SLIME = 0xFFFF;
+    Vector2 tmpV2 = new Vector2();
+    @Override
+    public boolean handleMessage(Telegram msg) {
+        if (msg.message == ADD_SLIME) {
+            int x = Gdx.input.getX();
+            int y = Gdx.input.getY();
+            vWorld.getStage().screenToStageCoordinates(tmpV2.set(x,y));
+            addSlime(tmpV2.x, tmpV2.y);
+            return true;
+        }
+        return false;
     }
 }

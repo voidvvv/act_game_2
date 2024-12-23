@@ -19,7 +19,6 @@ public class LightBoomSkill extends PluginSkill{
             this.cooldown = maxCooldown;
             owner.getBattleComponent().useMp(20f);
         } else {
-            System.out.println("当前状态不允许释放");
             throw  new RuntimeException("当前状态不允许释放");
         }
     }

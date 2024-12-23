@@ -1,5 +1,6 @@
 package com.mygdx.game.test.imgui.actor;
 
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.utils.Pools;
 import com.mygdx.game.test.imgui.UIRender;
 import com.voidvvv.game.ActGame;
@@ -9,6 +10,7 @@ import com.voidvvv.game.base.buff.BasicAttrIncreaseBuff;
 import com.voidvvv.game.base.buff.BasicMoveSpeedIncreaseBuff;
 import com.voidvvv.game.base.buff.Buff;
 import com.voidvvv.game.battle.BattleAttr;
+import com.voidvvv.game.screen.test.AddSlimeTest;
 import com.voidvvv.game.utils.ReflectUtil;
 import imgui.ImGui;
 import imgui.type.ImFloat;
@@ -49,6 +51,11 @@ public class ProtagnizeAttr implements UIRender {
             if (flag) {
                 Buff buff = makeAttackUpBuff(10f, 1000);
                 character.getBuffComponent().add(buff);
+            }
+
+            boolean addSlime = ImGui.button("addSlime");
+            if(addSlime) {
+                MessageManager.getInstance().dispatchMessage(AddSlimeTest.PRE_ADD_SLIME);
             }
             ImGui.end();
         }
