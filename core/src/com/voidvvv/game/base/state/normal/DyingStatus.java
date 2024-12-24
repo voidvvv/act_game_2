@@ -20,13 +20,15 @@ public class DyingStatus extends VCharactorStatus {
 
     @Override
     public void enter(VCharacter entity) {
-        Gdx.app.log("DyingStatus", entity.getName() + " dying!");
+        System.out.println(entity.getName() + "Dying enter");
         entity.statusTime = 0f;
         entity.statusProgress = 0f;
     }
 
     @Override
     public void exit(VCharacter entity) {
+        System.out.println(entity.getName() + "Dying exit");
+
         entity.statusTime = 0f;
         entity.statusProgress = 0f;
     }

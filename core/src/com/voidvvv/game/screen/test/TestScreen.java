@@ -196,7 +196,7 @@ public class TestScreen extends ScreenAdapter implements Telegraph {
         Slime slime = vWorld.spawnVActor(Slime.class,helper);
         slime.setName("Slime");
         slime.getActualBattleAttr().moveSpeed = 30f;
-        slime.getActualBattleAttr().attack = 20;
+        slime.getActualBattleAttr().attack = 1;
         slime.getActualBattleAttr().maxHp = 10;
         slime.getActualBattleAttr().hp = 10;
         slime.camp.campBit = Camp.NEGATIVE;

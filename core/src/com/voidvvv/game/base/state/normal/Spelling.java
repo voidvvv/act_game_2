@@ -19,6 +19,7 @@ public class Spelling extends VCharactorStatus {
 
     @Override
     public void enter(VCharacter entity) {
+        Gdx.app.log("Spelling", entity.getName() + " dying!");
         entity.statusTime = 0f;
         entity.statusProgress = 0f;
 

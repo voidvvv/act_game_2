@@ -1,5 +1,6 @@
 package com.mygdx.game.test.imgui.actor;
 
+import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.utils.Pools;
 import com.mygdx.game.test.imgui.UIRender;
@@ -9,6 +10,7 @@ import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.buff.BasicAttrIncreaseBuff;
 import com.voidvvv.game.base.buff.BasicMoveSpeedIncreaseBuff;
 import com.voidvvv.game.base.buff.Buff;
+import com.voidvvv.game.base.state.VCharactorStatus;
 import com.voidvvv.game.battle.BattleAttr;
 import com.voidvvv.game.screen.test.AddSlimeTest;
 import com.voidvvv.game.utils.ReflectUtil;
@@ -16,6 +18,7 @@ import imgui.ImGui;
 import imgui.type.ImFloat;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ProtagnizeAttr implements UIRender {
@@ -57,6 +60,22 @@ public class ProtagnizeAttr implements UIRender {
             if(addSlime) {
                 MessageManager.getInstance().dispatchMessage(AddSlimeTest.PRE_ADD_SLIME);
             }
+
+            List<VActor> vActors = ActGame.gameInstance().currentWorld().allActors();
+            for (VActor a : vActors) {
+                VCharacter c = ReflectUtil.cast(a, VCharacter.class);
+                if (c != null) {
+                    StateMachine<VCharacter, VCharactorStatus> stateMachine = c.getStateMachine();
+                    String stateDes = "";
+                    if (stateMachine == null) {
+                        stateDes = "null !";
+                    } else {
+                        stateDes = c.getStateMachine().getCurrentState().getClass().getSimpleName();
+                    }
+                    ImGui.text(a.getName() + " _ " + stateDes +  " __ " + c.statusTime);
+                }
+            }
+
             ImGui.end();
         }
     }
