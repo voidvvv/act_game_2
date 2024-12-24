@@ -15,9 +15,7 @@ public class Walking extends VCharactorStatus {
         entity.statusTime += Gdx.graphics.getDeltaTime();
         entity.statusProgress += Gdx.graphics.getDeltaTime();
 
-        if (MathUtils.isEqual(entity.baseMove.len(), 0f)) {
-            entity.getStateMachine().changeState(Idle.INSTANCE);
-        }
+
     }
 
     @Override
@@ -56,6 +54,10 @@ public class Walking extends VCharactorStatus {
             entity.flipY = true;
         } else if (entity.baseMove.y < 0) {
             entity.flipY = false;
+        }
+
+        if (MathUtils.isEqual(entity.baseMove.len(), 0f)) {
+            entity.getStateMachine().changeState(Idle.INSTANCE);
         }
     }
 

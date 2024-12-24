@@ -1,5 +1,6 @@
 package com.voidvvv.game.plugin.sp;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.utils.Pools;
@@ -31,13 +32,15 @@ public class LightBoomPlugin extends SkillPlugin {
         return 0;
     }
 
+    Vector2 tmpV2 = new Vector2();
     @Override
     public void start() {
         this.character = skill.getOwner();
         this.position.x = character.position.x;
         this.position.y = character.getY();
-        this.direction.x = character.getWorld().currentPointerPose.x - character.position.x;
-        this.direction.y = character.getWorld().currentPointerPose.y - character.position.y;
+        character.getWorld().getStage().screenToStageCoordinates(tmpV2.set(Gdx.input.getX(), Gdx.input.getY()));
+        this.direction.x = tmpV2.x - character.position.x;
+        this.direction.y = tmpV2.y - character.position.y;
 
         speed = character.getBattleComponent().actualBattleAttr.magicSpeed / WorldContext.DEFAULT_MAGIC_COEFFICIENT;
 //        character.changeStatus(ActorConstants.STATUS_SPELLING_01);

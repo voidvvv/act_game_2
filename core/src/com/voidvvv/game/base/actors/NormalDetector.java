@@ -94,7 +94,7 @@ public class NormalDetector implements Pool.Poolable {
 
 
         dl.character = character;
-        character.getListenerComponent().add(dl);
+        character.getListenerComponent().addAndFlush(dl);
 
     }
 

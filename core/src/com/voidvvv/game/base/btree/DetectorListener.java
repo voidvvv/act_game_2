@@ -40,6 +40,7 @@ public class DetectorListener extends VActorAdaptor {
         if (detector.characters != null && ReflectUtil.cast(lastHitActor, VCharacter.class) != null) {
             detector.characters.add(ReflectUtil.cast(lastHitActor, VCharacter.class));
         }
+        System.out.println("detect intruder!");
     }
 
     @Override

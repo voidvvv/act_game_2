@@ -14,7 +14,6 @@ public class HitTarget extends LeafTask<Slime> {
 
     @Override
     public void start() {
-        getObject().statusTime = 0f;
         getObject().setFrameSkill(InputActionMapping.SKILL_Q);
         getObject().setHorizonVelocity(0f,0f);
         super.start();

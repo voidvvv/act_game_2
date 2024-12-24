@@ -1,5 +1,6 @@
 package com.voidvvv.game.plugin.sp.hit;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.VActorAdaptor;
@@ -29,7 +30,10 @@ public class HitSkillListener extends VActorAdaptor {
         Fixture lastThisFixture = this.owner.lastThisFixture;
         Fixture lastOtherFixture = this.owner.lastOtherFixture;
         VActor lastHitActor = this.owner.lastHitActor;
-
+        if (lastThisFixture == null || lastOtherFixture == null) {
+            return;
+        }
+        Gdx.app.log("HitSkillListener", this.owner.getName() + " use hit tro to detect: " + lastHitActor.getName());
         UserData userData = ReflectUtil.cast(lastThisFixture.getUserData(), UserData.class);
         if (userData == null || userData.isDerivative()) {
             // this fixture should be skipped
@@ -60,7 +64,7 @@ public class HitSkillListener extends VActorAdaptor {
             return false;
         }
 
-        return true;
+        return lastHitActor.taregtCamp.compatible(owner.camp);
     }
 
     @Override

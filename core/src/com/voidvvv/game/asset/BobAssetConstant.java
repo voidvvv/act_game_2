@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.state.VCharactorStatus;
+import com.voidvvv.game.base.state.normal.DyingStatus;
 import com.voidvvv.game.base.state.normal.Idle;
 import com.voidvvv.game.base.state.normal.Spelling;
 import com.voidvvv.game.base.state.normal.Walking;
@@ -103,9 +104,9 @@ public class BobAssetConstant {
             return tr.getKeyFrame(tr.getAnimationDuration() * percent);
         }
 //
-//        if (status == BobStatus.DYING) {
-//            return flip? dying_animation_mirror.getKeyFrame(time) : dying_animation.getKeyFrame(time);
-//        }
+        if (ReflectUtil.cast(status, DyingStatus.class) != null) {
+            return flip? dying_animation_mirror.getKeyFrame(time) : dying_animation.getKeyFrame(time);
+        }
         return null;
     }
 }
