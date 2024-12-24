@@ -15,6 +15,10 @@ public class VActorListenerComponent {
         initListeners.add(listener);
     }
 
+    public void addAndFlush(VActorListener listener) {
+        listeners.add(listener);
+    }
+
     public void remove(VActorListener listener) {
         trashBin.add(listener);
     }
