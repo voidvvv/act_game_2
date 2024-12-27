@@ -157,6 +157,7 @@ public class VCharacter extends VActor implements Attackable {
 
     protected void becomeDying() {
         this.setDying(true);
+        this.pluginComponent.reset();
         MessageManager.getInstance().dispatchMessage(this,getStateMachine(), ActorConstants.MSG_ACTOR_AFTER_DYING);
     }
 

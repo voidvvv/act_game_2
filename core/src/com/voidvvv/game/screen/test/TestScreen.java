@@ -142,10 +142,6 @@ public class TestScreen extends ScreenAdapter implements Telegraph {
         vObstacle.setName("Rocky!");
 
         addSlime();
-        AddSlimeTest addSlimeTest = new AddSlimeTest();
-
-        vWorld.getStage().addActor(addSlimeTest);
-        addSlimeTest.init();
     }
 
     private VObstacle spawnObstacle(float x, float y) {
@@ -230,6 +226,11 @@ public class TestScreen extends ScreenAdapter implements Telegraph {
         uiStage = new Stage(new ScreenViewport(screenCamera), ActGame.gameInstance().getDrawManager().getSpriteBatch());
         uiStage.addActor(new TextMessageBar() );
         ActGame.gameInstance().addInputProcessor(uiStage);
+        AddSlimeTest addSlimeTest = new AddSlimeTest();
+        addSlimeTest.world = vWorld;
+        uiStage.addActor(addSlimeTest);
+        addSlimeTest.init();
+
     }
 
     public final static int ADD_SLIME = 0xFFFF;
