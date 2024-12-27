@@ -42,7 +42,7 @@ public class HitSkillPlugin extends SkillPlugin {
         listener.owner = owner;
         listener.hsp = this;
         owner.getListenerComponent().add(listener);
-        owner.changeStatus(ActorConstants.STATUS_ATTACK_01);
+//        owner.changeStatus(ActorConstants.STATUS_ATTACK_01);
     }
 
     @Override
