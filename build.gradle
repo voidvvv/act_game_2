@@ -107,6 +107,9 @@ project(":core") {
 // https://mvnrepository.com/artifact/org.projectlombok/lombok
         api group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
 
+// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter
+        api group: 'org.springframework.boot', name: 'spring-boot-starter', version: '3.3.3'
+
 
     }
 }

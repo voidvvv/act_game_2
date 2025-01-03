@@ -1,8 +1,6 @@
 package com.voidvvv.game.battle;
 
 
-import jdk.internal.reflect.Reflection;
-
 public class BattleAttr {
     public float moveSpeed = 75f;
     public float attackSpeed = 100f;

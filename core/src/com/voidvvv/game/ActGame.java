@@ -20,10 +20,12 @@ import com.voidvvv.game.manager.FontManager;
 import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.manager.event.VWorldEventManager;
 import com.voidvvv.game.screen.test.TestScreen;
+import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
 import java.util.Random;
 
+@Component
 public class ActGame extends Game {
     public long seed;
     public float totalGameTime = 0f;
@@ -52,7 +54,7 @@ public class ActGame extends Game {
 
     // delta time
 
-    private ActGame() {
+    public ActGame() {
         drawManager = new DrawManager();
         fontManager = new FontManager();
         cameraManager = new CameraManager();
@@ -63,6 +65,9 @@ public class ActGame extends Game {
         assetManager = new AssetManager();
         audioManager = new AudioManager();
         btManager = new BTManager();
+        if (gameInstance == null) {
+            gameInstance = this;
+        }
     }
 
     public AudioManager getAudioManager() {
