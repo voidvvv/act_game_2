@@ -1,10 +1,6 @@
 package com.voidvvv.game.context;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -19,7 +15,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.box2d.testt.CollisionListener;
@@ -110,7 +105,7 @@ public class VWorld {
         actorList.add(t);
         updateList.add(t);
         renderList.add(t);
-        t.getFixture().getBody().setActive(true);
+        t.getMainFixture().getBody().setActive(true);
         t.setWorld(this);
 
         return t;
@@ -345,7 +340,7 @@ public class VWorld {
             VMap currentMap = getMap();
 //            currentMap.
             currentMap.addObstacle(Box2dUnitConverter.worldToBox2d(initX - hx), Box2dUnitConverter.worldToBox2d(initY - hy), Box2dUnitConverter.worldToBox2d(hx * 2), Box2dUnitConverter.worldToBox2d(hy * 2));
-            t.setFixture(roleFixture);
+            t.setMainFixture(roleFixture);
             ((UserData) roleFixture.getUserData()).setActor(t);
 
             t.init();
@@ -388,7 +383,7 @@ public class VWorld {
 //            currentMap.
                 currentMap.addObstacle(helper.initX - helper.hx, helper.initY - helper.hy, helper.hx * 2, helper.hy * 2);
             }
-            t.setFixture(roleFixture);
+            t.setMainFixture(roleFixture);
             if (helper.userData == null) {
                 // default user data
                 ((UserData) roleFixture.getUserData()).setActor(t);
@@ -470,7 +465,7 @@ public class VWorld {
         userData.setActor(actor);
         fixture.setUserData(userData);
         polygonShape.dispose();
-
+        actor.setCollideFixture(fixture);
         // face
         polygonShape = new PolygonShape();
         float x1 = -Box2dUnitConverter.worldToBox2d(helper.hx);

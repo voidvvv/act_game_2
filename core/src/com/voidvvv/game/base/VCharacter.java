@@ -56,7 +56,6 @@ public class VCharacter extends VActor implements Attackable {
 
     private NormalDetector normalDetector;
 
-
     Vector3[] velAffect = new Vector3[10];
 
     private VPathFinder finder;
@@ -106,7 +105,7 @@ public class VCharacter extends VActor implements Attackable {
 
     protected void synchSpeedToBox2d() {
         this.getBody().setLinearVelocity(Box2dUnitConverter.worldToBox2d(this.velocity.x), Box2dUnitConverter.worldToBox2d(this.velocity.y));
-        if (this.velocity.len() > 0.1f) {
+        if (!MathUtils.isZero(this.velocity.len())) {
             postMove(this.velocity);
         }
     }

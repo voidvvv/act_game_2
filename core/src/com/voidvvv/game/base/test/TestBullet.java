@@ -1,15 +1,12 @@
 package com.voidvvv.game.base.test;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.voidvvv.game.ActGame;
-import com.voidvvv.game.base.Camp;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.b2d.UserData;
-import com.voidvvv.game.base.shape.VCube;
 import com.voidvvv.game.manager.event.attack.AttackEvent;
 import com.voidvvv.game.manager.event.attack.BasePhysicAttackEvent;
 import com.voidvvv.game.render.actor.test.bullet.TestBulletRender;
@@ -110,7 +107,7 @@ public class TestBullet extends VCharacter {
             return;
         }
         VCharacter character = ReflectUtil.cast(actor,VCharacter.class);
-        Fixture fixture = actor.getFixture();
+        Fixture fixture = actor.getMainFixture();
         short categoryBits = fixture.getFilterData().categoryBits;
         if (character != null && this.taregtCamp.compatible(character.camp)) {
             // enemy target character

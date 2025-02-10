@@ -37,10 +37,12 @@ public class DetectorListener extends VActorAdaptor {
         if (!character.taregtCamp.compatible(camp)) {
             return;
         }
-        if (detector.characters != null && ReflectUtil.cast(lastHitActor, VCharacter.class) != null) {
-            detector.characters.add(ReflectUtil.cast(lastHitActor, VCharacter.class));
+        VCharacter other = ReflectUtil.cast(lastHitActor, VCharacter.class);
+        if (detector.characters != null && other != null && lastOtherFixture == other.getMainFixture()) {
+            detector.characters.add(other);
+            System.out.println("detect intruder!");
         }
-        System.out.println("detect intruder!");
+
     }
 
     @Override
@@ -52,7 +54,9 @@ public class DetectorListener extends VActorAdaptor {
         if (lastThisFixture != detector.detectFixture) {
             return;
         }
-
+        if (lastOtherFixture != lastHitActor.getMainFixture()) {
+            return;
+        }
         Camp camp = lastHitActor.camp;
         detector.removeActor(ReflectUtil.cast(lastHitActor, VCharacter.class));
     }
