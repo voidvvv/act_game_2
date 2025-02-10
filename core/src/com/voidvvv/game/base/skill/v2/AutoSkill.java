@@ -8,4 +8,9 @@ public abstract class AutoSkill extends Skill{
             use();
         }
     }
+
+    @Override
+    public SkillType skillType() {
+        return SkillType.NOOP;
+    }
 }

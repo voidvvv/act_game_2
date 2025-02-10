@@ -19,7 +19,11 @@ public class BasePhysicAttackEvent extends AttackEvent  implements AttackCalcula
     public Behavior calculate(VActor from, VActor to) {
         VCharacter fromChar = ReflectUtil.cast(from, VCharacter.class);
         VCharacter toChar = ReflectUtil.cast(to, VCharacter.class);
+
         if (fromChar != null && toChar != null) {
+            if (!fromChar.isvActive() || !toChar.isvActive()) {
+                return null;
+            }
             BattleAttr fromBattle = fromChar.getActualBattleAttr();
             BattleAttr toBattle = toChar.getActualBattleAttr();
             DamageBehavior behavior = Pools.obtain(DamageBehavior.class);
@@ -49,9 +53,13 @@ public class BasePhysicAttackEvent extends AttackEvent  implements AttackCalcula
     @Override
     protected void spawnAndAttach() {
         behavior = calculate(fromActor, targetActor);
-        // attach attack behavior to target
-        targetActor.attachBehavior(behavior);
-        this.status = WorldEvent.ATTACHED;
+        if (behavior != null) {
+            // attach attack behavior to target
+            targetActor.attachBehavior(behavior);
+            this.status = WorldEvent.ATTACHED;
+        } else {
+            this.status = WorldEvent.FINISH;
+        }
     }
 
     @Override

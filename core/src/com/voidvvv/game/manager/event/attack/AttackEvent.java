@@ -21,7 +21,7 @@ public abstract class AttackEvent extends WorldEvent{
     public void apply() {
         if (this.status == WorldEvent.INIT_STATUS) {
             spawnAndAttach();
-            this.status = WorldEvent.ATTACHED;
+//            this.status = WorldEvent.ATTACHED;
         } else if (shouldDoPost()) {
             postApply();
         } else if (shouldStop()){
