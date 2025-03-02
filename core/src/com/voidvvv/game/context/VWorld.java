@@ -80,6 +80,15 @@ public class VWorld {
 
     protected List<Updateable> updateableList = new ArrayList<>();
 
+    public void addUpdateable(Updateable updateable) {
+        updateableList.add(updateable);
+    }
+
+    // remove updatable
+    public void removeUpdateable(Updateable updateable) {
+        updateableList.remove(updateable);
+    }
+
     public VMap getMap() {
         return map;
     }

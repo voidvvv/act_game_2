@@ -35,6 +35,7 @@ import com.voidvvv.game.context.input.CharacterInputListener;
 import com.voidvvv.game.base.debug.VDebugShapeRender;
 import com.voidvvv.game.base.test.Bob;
 import com.voidvvv.game.context.WorldContext;
+import com.voidvvv.game.context.machenism.SlimeGenerateMechanism;
 import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.render.actor.slime.SlimeSimpleRender;
 import com.voidvvv.game.screen.test.ui.TextMessageBar;
@@ -149,6 +150,9 @@ public class TestScreen extends ScreenAdapter implements Telegraph {
         vWorld.getStage().addActor(addSlimeTest);
         addSlimeTest.init();
 
+        SlimeGenerateMechanism slimeGenerateMechanism = new SlimeGenerateMechanism();
+        slimeGenerateMechanism.vWorld = vWorld;
+        vWorld.addUpdateable(slimeGenerateMechanism);
     }
 
     private VObstacle spawnObstacle(float x, float y) {

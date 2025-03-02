@@ -1,6 +1,8 @@
 package com.voidvvv.game.context.machenism;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.Camp;
 import com.voidvvv.game.base.Updateable;
@@ -19,8 +21,9 @@ public class SlimeGenerateMechanism implements Updateable {
     public void update(float delta) {
         // generate a slime every 5 seconds
         stopWatch += delta;
-        if (stopWatch >= 5f) {
+        if (stopWatch >= 1f) {
             addSlime();
+            stopWatch = 0;
         }
     }
 
@@ -33,6 +36,10 @@ public class SlimeGenerateMechanism implements Updateable {
 
     private void locateCoor() {
         VActor protagonist = vWorld.getProtagonist();
+        Vector3 position = protagonist.position;
+        float angular = MathUtils.random() * 360f;
+        float distance = MathUtils.random(100f, 200f);
+        coor.set(position.x + MathUtils.cosDeg(angular) * distance, position.y + MathUtils.sinDeg(angular) * distance);
     }
 
     public void addSlime(float x, float y) {
