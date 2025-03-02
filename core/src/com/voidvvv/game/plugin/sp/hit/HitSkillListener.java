@@ -77,7 +77,10 @@ public class HitSkillListener extends VActorAdaptor {
 
     @Override
     public void preUserSkill() {
-        this.hsp.stop();
+        if (owner.lastPreSkill != this.hitSkill) {
+            System.out.println(owner.lastPreSkill.getClass());
+//            this.hsp.stop();
+        }
     }
 
     @Override

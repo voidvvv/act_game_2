@@ -422,11 +422,7 @@ public class VCharacter extends VActor implements Attackable {
     @Override
     public void reset() {
         aiInit = false;
-        if (normalDetector != null) {
 
-            Pools.free(normalDetector);
-            normalDetector = null;
-        }
         for (Map.Entry<Integer, Deque<Behavior>> entry : behaviorMap.entrySet()) {
             Deque<Behavior> value = entry.getValue();
             for (Behavior b : value) {

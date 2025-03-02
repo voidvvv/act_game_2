@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.box2d.testt.CollisionListener;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.asset.AssetConstant;
+import com.voidvvv.game.base.Updateable;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.VPhysicAttr;
@@ -77,6 +78,7 @@ public class VWorld {
 
     private OrthogonalTiledMapRenderer tiledMapRenderer;
 
+    protected List<Updateable> updateableList = new ArrayList<>();
 
     public VMap getMap() {
         return map;
@@ -240,7 +242,7 @@ public class VWorld {
         verticesTmp[i++] = Box2dUnitConverter.worldToBox2d(helper.y2);
         verticesTmp[i++] = Box2dUnitConverter.worldToBox2d(helper.x2);
         verticesTmp[i++] = Box2dUnitConverter.worldToBox2d(helper.y1);
-        polygonShape.set(verticesTmp,offset, i - offset);
+        polygonShape.set(verticesTmp, offset, i - offset);
         i = 0;
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = polygonShape;
@@ -281,6 +283,11 @@ public class VWorld {
                 , 6);
         stage.act(delta);
         stage.getRoot().getChildren().sort(compare);
+
+        //other logic update
+        for (Updateable updateable : updateableList) {
+            updateable.update(delta);
+        }
     }
 
     private void addInit() {
@@ -331,7 +338,7 @@ public class VWorld {
             VCube cube = new VCube();
             cube.xLength = physicAttr.box2dHx * 2f;
             cube.yLength = physicAttr.box2dHy * 2f;
-            cube.zLength = this.unit() *2;
+            cube.zLength = this.unit() * 2;
             physicAttr.setBaseShape(cube);
             t.setPhysicAttr(physicAttr);
             Fixture roleFixture = createObstacle(BodyDef.BodyType.StaticBody, Box2dUnitConverter.worldToBox2d(initX), Box2dUnitConverter.worldToBox2d(initY),
@@ -352,6 +359,18 @@ public class VWorld {
         return null;
     }
 
+    public <T extends VActor> T spawnVActor(Class<T> clazz, float initX, float initY) {
+        VActorSpawnHelper helper = VActorSpawnHelper.builder()
+                .bodyType(BodyDef.BodyType.DynamicBody)
+                .category((short)(WorldContext.ROLE|WorldContext.WHITE)) // who am I
+                .mask((short)(WorldContext.OBSTACLE|WorldContext.BLACK|WorldContext.ROLE)) // who do I want to collision
+                .hx(this.unit()/2).hy(8f)
+                .hz(this.unit())
+                .initX(initX).initY(initY)
+                .build();
+        return spawnVActor(clazz, helper);
+    }
+
 
     public <T extends VActor> T spawnVActor(Class<T> clazz, VActorSpawnHelper helper) {
         if (!initialized) {
@@ -369,14 +388,14 @@ public class VWorld {
             cube.xLength = physicAttr.box2dHx * 2f;
             cube.yLength = physicAttr.box2dHy * 2f;
             if (helper.hz > 0f) {
-                cube.zLength = helper.hz *2 ;
+                cube.zLength = helper.hz * 2;
             } else {
-                cube.zLength = this.unit() *2;
+                cube.zLength = this.unit() * 2;
             }
             physicAttr.setBaseShape(cube);
 
             t.setPhysicAttr(physicAttr);
-            Fixture roleFixture = createFixture(helper, t );
+            Fixture roleFixture = createFixture(helper, t);
             if (helper.occupy) {
                 // fill map graph
                 VMap currentMap = getMap();
@@ -425,8 +444,8 @@ public class VWorld {
         polygonShape.setAsBox(hx, hy);
         fd.friction = 0;
         fd.density = 0.5f;
-        fd.filter.categoryBits = (short)(category | WorldContext.GROUND_COLLIDE);
-        fd.filter.maskBits = (short)(mask| WorldContext.GROUND_COLLIDE);
+        fd.filter.categoryBits = (short) (category | WorldContext.GROUND_COLLIDE);
+        fd.filter.maskBits = (short) (mask | WorldContext.GROUND_COLLIDE);
         fd.shape = polygonShape;
         Fixture fixture = body.createFixture(fd);
         UserData userData = new UserData();
@@ -439,6 +458,7 @@ public class VWorld {
 
     float[] verticesTmp = new float[600];
     int i = 0;
+
     public Fixture createFixture(VActorSpawnHelper helper, VActor actor) {
         World box2dWorld = this.getBox2dWorld();
         BodyDef bd = new BodyDef();
@@ -481,7 +501,7 @@ public class VWorld {
         verticesTmp[i++] = y2;
         verticesTmp[i++] = x2;
         verticesTmp[i++] = y1;
-        polygonShape.set(verticesTmp,offset, i - offset);
+        polygonShape.set(verticesTmp, offset, i - offset);
         i = 0;
         fd = new FixtureDef();
         fd.friction = helper.friction;

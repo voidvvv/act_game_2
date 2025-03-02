@@ -1,6 +1,7 @@
 package com.voidvvv.game.base.state.normal;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.msg.Telegram;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.state.VCharactorStatus;
 
@@ -22,7 +23,12 @@ public class NormalAttack extends VCharactorStatus {
 
     @Override
     public void exit(VCharacter entity) {
+        Gdx.app.log("NormalAttack", "exit statusProgress: " + entity.statusProgress);
         entity.statusTime = 0f;
         entity.statusProgress = 0f;
+    }
+
+    protected void exitCurrentProcess(VCharacter entity, Telegram telegram) {
+        entity.getStateMachine().changeState(Idle.INSTANCE);
     }
 }

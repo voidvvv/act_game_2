@@ -31,4 +31,8 @@ public interface VActorListener extends Pool.Poolable {
 
     void afterMove();
 
+    void setOwner(VActor owner);
+
+    VActor getOwner();
+
 }

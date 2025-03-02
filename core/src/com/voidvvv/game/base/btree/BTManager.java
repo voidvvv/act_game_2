@@ -77,7 +77,6 @@ public class BTManager implements Telegraph {
 
     @Override
     public boolean handleMessage(Telegram msg) {
-        System.out.println("BTManager handleMessage");
         if (msg.message == ActorConstants.MSG_RESET_ACTOR) {
             VActor actor = ReflectUtil.cast(msg.extraInfo, VActor.class);
             if (actor != null) {

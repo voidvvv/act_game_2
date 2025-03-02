@@ -141,7 +141,7 @@ public class TestScreen extends ScreenAdapter implements Telegraph {
         VObstacle vObstacle = spawnObstacle(50f,50f);
         vObstacle.setName("Rocky!");
 
-        addSlime();
+//        addSlime();
 
 
         AddSlimeTest addSlimeTest = new AddSlimeTest();
@@ -179,34 +179,7 @@ public class TestScreen extends ScreenAdapter implements Telegraph {
     }
 
     SlimeSimpleRender slimeSimpleRender;
-    public void addSlime() {
-        addSlime(100f,100f);
-    }
 
-    public void addSlime(float x, float y) {
-        if (slimeSimpleRender == null) {
-            slimeSimpleRender = new SlimeSimpleRender();
-            slimeSimpleRender.init();
-        }
-        VActorSpawnHelper helper = VActorSpawnHelper.builder()
-                .bodyType(BodyDef.BodyType.DynamicBody)
-                .category((short)(WorldContext.ROLE|WorldContext.WHITE)) // who am I
-                .mask((short)(WorldContext.OBSTACLE|WorldContext.BLACK|WorldContext.ROLE)) // who do I want to collision
-                .hx(vWorld.unit()/2).hy(8f)
-                .hz(vWorld.unit())
-                .initX(x).initY(y)
-                .build();
-        Slime slime = vWorld.spawnVActor(Slime.class,helper);
-        slime.setName("Slime");
-        slime.getActualBattleAttr().moveSpeed = 30f;
-        slime.getActualBattleAttr().attack = 1;
-        slime.getActualBattleAttr().maxHp = 10;
-        slime.getActualBattleAttr().hp = 10;
-        slime.camp.campBit = Camp.NEGATIVE;
-        slime.taregtCamp.campBit = Camp.POSITIVE;
-        slime.render = slimeSimpleRender;
-        ActGame.gameInstance().getBtManager().addTree(slime, BTManager.SLIME_SIMPLE);
-    }
 
 
     private void initParam() {
@@ -247,5 +220,27 @@ public class TestScreen extends ScreenAdapter implements Telegraph {
             return true;
         }
         return false;
+    }
+
+    public void addSlime(float x, float y) {
+        if (slimeSimpleRender == null) {
+            slimeSimpleRender = new SlimeSimpleRender();
+            slimeSimpleRender.init();
+        }
+
+        Slime slime = vWorld.spawnVActor(Slime.class, x, y);
+        settingForSlime(slime);
+    }
+
+    private void settingForSlime(Slime slime) {
+        slime.setName("Slime");
+        slime.getActualBattleAttr().moveSpeed = 30f;
+        slime.getActualBattleAttr().attack = 1;
+        slime.getActualBattleAttr().maxHp = 10;
+        slime.getActualBattleAttr().hp = 10;
+        slime.camp.campBit = Camp.NEGATIVE;
+        slime.taregtCamp.campBit = Camp.POSITIVE;
+        slime.render = slimeSimpleRender;
+        ActGame.gameInstance().getBtManager().addTree(slime, BTManager.SLIME_SIMPLE);
     }
 }

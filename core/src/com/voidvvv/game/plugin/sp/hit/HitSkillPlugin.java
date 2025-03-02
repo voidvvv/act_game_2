@@ -1,5 +1,7 @@
 package com.voidvvv.game.plugin.sp.hit;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.base.VCharacter;
@@ -7,6 +9,7 @@ import com.voidvvv.game.base.VPhysicAttr;
 import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.base.skill.v2.HitSkill;
+import com.voidvvv.game.base.state.StatusData;
 import com.voidvvv.game.context.FixtureHelper;
 import com.voidvvv.game.context.WorldContext;
 import com.voidvvv.game.plugin.SkillPlugin;
@@ -87,7 +90,7 @@ public class HitSkillPlugin extends SkillPlugin {
             generatedFix = owner.getWorld().addRectFixture(owner, helper);
         }
 
-        if (statusProgress >= 1f && hitStatus == GENERATE_HIT) {
+        if (statusProgress >= totalProgress && hitStatus == GENERATE_HIT) {
             stop();
         }
     }
@@ -122,15 +125,17 @@ public class HitSkillPlugin extends SkillPlugin {
 
         super.reset();
     }
-
+    public StatusData sd = new StatusData();
     @Override
     public void stop() {
+        System.out.println(currentProgress);
         // will call reset
         if (skill != null) {
             VCharacter owner = skill.getOwner();
             if (owner != null) {
                 owner.getPluginComponent().removePlugin(this);
-//                owner.changeStatus(ActorConstants.STATUS_IDLE);
+//                MessageManager.getInstance().dispatchMessage(null, owner.getStateMachine(), ActorConstants.EXIST_CURRENT_PROCESS, sd, false);
+                Gdx.app.log("HitSkillPlugin", "stop");
             }
         }
 

@@ -8,6 +8,8 @@ import com.voidvvv.game.base.skill.v2.Skill;
 import com.voidvvv.game.base.state.normal.DyingStatus;
 import com.voidvvv.game.utils.ReflectUtil;
 
+import static com.voidvvv.game.base.actors.ActorConstants.EXIST_CURRENT_PROCESS;
+
 public abstract class VCharactorStatus implements State<VCharacter> {
 
 
@@ -36,11 +38,17 @@ public abstract class VCharactorStatus implements State<VCharacter> {
             afterBeAttack(entity, telegram);
         } else if (message == ActorConstants.MSG_ACTOR_AFTER_DYING) {
             beDying(entity, telegram);
-        } else {
+        } else if (message == EXIST_CURRENT_PROCESS) {
+            exitCurrentProcess(entity, telegram);
+        }else {
             otherMessage(entity, telegram);
         }
 
         return false;
+    }
+
+    protected void exitCurrentProcess(VCharacter entity, Telegram telegram) {
+
     }
 
     public void beDying(VCharacter entity, Telegram telegram) {

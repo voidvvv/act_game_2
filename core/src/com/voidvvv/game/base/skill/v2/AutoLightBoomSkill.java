@@ -16,7 +16,7 @@ public class AutoLightBoomSkill extends AutoSkill{
         this.cooldown = maxCooldown;
     }
     public AutoLightBoomSkill() {
-        this.maxCooldown = 0.2f;
+        this.maxCooldown = 2f;
     }
     @Override
     protected boolean checkPrerequisites() {
