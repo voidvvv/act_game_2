@@ -60,6 +60,7 @@ public class SlimeGenerateMechanism implements Updateable {
         slime.getActualBattleAttr().hp = 10;
         slime.camp.campBit = Camp.NEGATIVE;
         slime.taregtCamp.campBit = Camp.POSITIVE;
+        // something
         slime.render = slimeSimpleRender;
         ActGame.gameInstance().getBtManager().addTree(slime, BTManager.SLIME_SIMPLE);
     }
