@@ -26,7 +26,7 @@ import com.voidvvv.game.base.actors.slime.Slime;
 import com.voidvvv.game.base.btree.BTManager;
 import com.voidvvv.game.base.test.VObstacle;
 import com.voidvvv.game.context.world.VActorSpawnHelper;
-import com.voidvvv.game.context.world.VWorld;
+import com.voidvvv.game.context.world.VActWorld;
 import com.voidvvv.game.context.world.WorldHelper;
 import com.voidvvv.game.context.input.CharacterInputListener;
 import com.voidvvv.game.base.debug.VDebugShapeRender;
@@ -64,7 +64,7 @@ public class TestScreen extends ScreenAdapter implements Telegraph {
         systemNotifyMessageManager.update(delta);
         uiStage.act(delta);
 
-        VWorld vWorld = ActGame.gameInstance().currentWorld();
+        VActWorld vWorld = ActGame.gameInstance().currentWorld();
         vWorld.update(delta);
         orthographicCamera.position.lerp(cameraPosLerp.set(vWorld.getProtagonist().position.x,vWorld.getProtagonist().position.y,0.f),0.1f);
         vWorld.draw();
@@ -74,7 +74,7 @@ public class TestScreen extends ScreenAdapter implements Telegraph {
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-        VWorld vWorld = ActGame.gameInstance().currentWorld();
+        VActWorld vWorld = ActGame.gameInstance().currentWorld();
 
         vWorld.getStage().getViewport().update(width, height, false);
         uiStage.getViewport().update(width, height, false);
@@ -99,7 +99,7 @@ public class TestScreen extends ScreenAdapter implements Telegraph {
         ActGame.gameInstance().addInputProcessor(vWorld.getStage());
     }
 
-    VWorld vWorld;
+    VActWorld vWorld;
     private void initWorld() {
         WorldHelper worldHelper = WorldHelper.builder()
                 .build();

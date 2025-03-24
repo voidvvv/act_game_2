@@ -5,7 +5,7 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.voidvvv.game.context.world.VWorld;
+import com.voidvvv.game.context.world.VActWorld;
 
 public class VMap {
     // finder
@@ -13,13 +13,13 @@ public class VMap {
 
     VMapIndexGraph mapGraph;
 
-    VWorld world;
+    VActWorld world;
 
     public VMap() {
 
     }
 
-    public void init (VWorld world) {
+    public void init (VActWorld world) {
         mapGraph = new VMapIndexGraph();
         mapGraph.init(world);
         this.world = world;

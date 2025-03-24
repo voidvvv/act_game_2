@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.VCharacter;
-import com.voidvvv.game.context.world.VWorld;
+import com.voidvvv.game.context.world.VActWorld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class VPathFinder {
     int currentIndex = 0;
     VMap contextMap;
 
-    public VPathFinder(VCharacter character, VWorld world) {
+    public VPathFinder(VCharacter character, VActWorld world) {
         this.character = character;
         contextMap = world.getMap();
         heuristic = new Heuristic<VMapNode>() {

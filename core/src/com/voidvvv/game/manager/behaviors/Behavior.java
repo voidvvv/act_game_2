@@ -2,11 +2,11 @@ package com.voidvvv.game.manager.behaviors;
 
 import com.badlogic.gdx.utils.Pool;
 import com.voidvvv.game.base.VActor;
-import com.voidvvv.game.context.world.VWorld;
+import com.voidvvv.game.context.world.VActWorld;
 import com.voidvvv.game.manager.event.WorldEvent;
 
 public interface Behavior extends Pool.Poolable {
-    public VWorld world();
+    public VActWorld world();
     void setOwner(VActor owner);
     public VActor owner();
     public void does();

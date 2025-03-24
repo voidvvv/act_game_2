@@ -22,15 +22,15 @@ public class WorldContext {
 
     public static final BodyDef.BodyType defaultBodyType = BodyDef.BodyType.DynamicBody;
 
-    private  VWorld world;
+    private VActWorld world;
 
-    public  VWorld currentWorld() {
+    public VActWorld currentWorld() {
         return world;
     }
 
     public void init() {
         if (world == null) {
-            world = new VWorld();
+            world = new VActWorld();
         }
     }
 }

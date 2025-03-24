@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class VWorld {
+public class VActWorld {
 
 
     public static final VActor.VActorCompare DEFAULT_ACTOR_COMPARE = new VActor.VActorCompare();
@@ -100,7 +100,7 @@ public class VWorld {
         return boundingBox;
     }
 
-    public VWorld() {
+    public VActWorld() {
         map = new VMap();
         pinpointData = new PinpointData();
     }

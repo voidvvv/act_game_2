@@ -9,12 +9,12 @@ import com.voidvvv.game.base.Updateable;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.actors.slime.Slime;
 import com.voidvvv.game.base.btree.BTManager;
-import com.voidvvv.game.context.world.VWorld;
+import com.voidvvv.game.context.world.VActWorld;
 import com.voidvvv.game.render.actor.slime.SlimeSimpleRender;
 
 public class SlimeGenerateMechanism implements Updateable {
     SlimeSimpleRender slimeSimpleRender;
-    public VWorld vWorld;
+    public VActWorld vWorld;
 
     float stopWatch = 0f;
     @Override
@@ -65,7 +65,7 @@ public class SlimeGenerateMechanism implements Updateable {
         ActGame.gameInstance().getBtManager().addTree(slime, BTManager.SLIME_SIMPLE);
     }
 
-    public VWorld thisWorld() {
+    public VActWorld thisWorld() {
         return vWorld;
     }
 }

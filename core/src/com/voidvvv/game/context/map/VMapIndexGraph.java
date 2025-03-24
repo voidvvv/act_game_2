@@ -4,13 +4,13 @@ import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.voidvvv.game.context.world.VWorld;
+import com.voidvvv.game.context.world.VActWorld;
 
 public class VMapIndexGraph implements IndexedGraph<VMapNode> {
     int nodeCount;
     Rectangle boundingBox;
     VMapNode[][] nodeMap;
-    public void init (VWorld world) {
+    public void init (VActWorld world) {
         this.boundingBox = world.getBoundingBox();
         float unit = world.unit();
         float width = boundingBox.getWidth();

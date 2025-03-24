@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.asset.AssetConstant;
-import com.voidvvv.game.context.world.VWorld;
+import com.voidvvv.game.context.world.VActWorld;
 
 public class AddSlimeTest extends Actor implements Telegraph {
     public static final int PRE_ADD_SLIME = 0xFFFF-1;
@@ -21,7 +21,7 @@ public class AddSlimeTest extends Actor implements Telegraph {
     private TextureRegion slimeTexture;
     private float x;
     private float y;
-    public VWorld world;
+    public VActWorld world;
     public void init () {
         MessageManager.getInstance().addListener(this, PRE_ADD_SLIME);
         getStage().addListener(new InputListener(){

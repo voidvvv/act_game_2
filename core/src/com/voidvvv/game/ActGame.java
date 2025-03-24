@@ -11,7 +11,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.MathUtils;
 import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.btree.BTManager;
-import com.voidvvv.game.context.world.VWorld;
+import com.voidvvv.game.context.world.VActWorld;
 import com.voidvvv.game.context.world.WorldContext;
 import com.voidvvv.game.manager.AudioManager;
 import com.voidvvv.game.manager.CameraManager;
@@ -167,7 +167,7 @@ public class ActGame extends Game {
         inputMultiplexer.removeProcessor(inputProcessor);
     }
 
-    public VWorld currentWorld() {
+    public VActWorld currentWorld() {
         return worldContext.currentWorld();
     }
 

@@ -12,7 +12,7 @@ import com.voidvvv.game.base.VPhysicAttr;
 import com.voidvvv.game.base.shape.VBaseShape;
 import com.voidvvv.game.base.shape.VCube;
 import com.voidvvv.game.base.shape.VSphere;
-import com.voidvvv.game.context.world.VWorld;
+import com.voidvvv.game.context.world.VActWorld;
 import com.voidvvv.game.context.map.VMapNode;
 import com.voidvvv.game.utils.ReflectUtil;
 
@@ -41,7 +41,7 @@ public class VDebugShapeRender {
         shapeRenderer.end();
     }
 
-    public void render(VWorld vWorld) {
+    public void render(VActWorld vWorld) {
         for (VActor act : vWorld.allActors()) {
             if (act.isVisible())
                 render(act);

@@ -4,13 +4,13 @@ import com.badlogic.gdx.ai.utils.Collision;
 import com.badlogic.gdx.ai.utils.Ray;
 import com.badlogic.gdx.ai.utils.RaycastCollisionDetector;
 import com.badlogic.gdx.math.Vector2;
-import com.voidvvv.game.context.world.VWorld;
+import com.voidvvv.game.context.world.VActWorld;
 
 public class RaycastCollisionDetectorImpl implements RaycastCollisionDetector<Vector2> {
 
-    VWorld world;
+    VActWorld world;
 
-    public RaycastCollisionDetectorImpl(VWorld world) {
+    public RaycastCollisionDetectorImpl(VActWorld world) {
         this.world = world;
     }
 

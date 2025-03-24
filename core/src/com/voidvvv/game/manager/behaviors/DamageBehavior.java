@@ -4,7 +4,7 @@ import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.battle.BattleComponent;
-import com.voidvvv.game.context.world.VWorld;
+import com.voidvvv.game.context.world.VActWorld;
 import com.voidvvv.game.manager.event.WorldEvent;
 import com.voidvvv.game.manager.event.attack.AttackEvent;
 import com.voidvvv.game.utils.ReflectUtil;
@@ -14,7 +14,7 @@ public class DamageBehavior implements Behavior {
 
     AttackEvent attackEvent;
 
-    VWorld world;
+    VActWorld world;
     int attackType; // magic? physic? real?
     VActor from;
     VActor to;
@@ -45,11 +45,11 @@ public class DamageBehavior implements Behavior {
         return from;
     }
 
-    public VWorld world() {
+    public VActWorld world() {
         return world;
     }
 
-    public void setWorld(VWorld world) {
+    public void setWorld(VActWorld world) {
         this.world = world;
     }
 

@@ -13,7 +13,7 @@ import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.buff.Buff;
 import com.voidvvv.game.manager.behaviors.Behavior;
-import com.voidvvv.game.context.world.VWorld;
+import com.voidvvv.game.context.world.VActWorld;
 import com.voidvvv.game.manager.event.attack.AttackEvent;
 import com.voidvvv.game.screen.test.ui.Box2dUnitConverter;
 import lombok.Getter;
@@ -24,7 +24,7 @@ import java.util.Comparator;
 public abstract class VActor extends Actor implements Pool.Poolable, Telegraph {
     protected int version = 0;
 
-    private VWorld world;
+    private VActWorld world;
 
     public long currentFrame = 0;
 
@@ -190,11 +190,11 @@ public abstract class VActor extends Actor implements Pool.Poolable, Telegraph {
         }
     }
 
-    public VWorld getWorld() {
+    public VActWorld getWorld() {
         return world;
     }
 
-    public void setWorld(VWorld world) {
+    public void setWorld(VActWorld world) {
         this.world = world;
     }
 
