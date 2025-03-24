@@ -5,7 +5,7 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.voidvvv.game.context.VWorld;
+import com.voidvvv.game.context.world.VWorld;
 
 public class VMap {
     // finder

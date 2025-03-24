@@ -8,8 +8,8 @@
 //import com.voidvvv.game.base.skill.Skill;
 //import com.voidvvv.game.base.test.TestBullet;
 //import com.voidvvv.game.battle.BattleComponent;
-//import com.voidvvv.game.context.VActorSpawnHelper;
-//import com.voidvvv.game.context.WorldContext;
+//import com.voidvvv.game.context.world.VActorSpawnHelper;
+//import com.voidvvv.game.context.world.WorldContext;
 //
 //public class TestSkill implements Skill {
 //    public float triggerTime = 0.7f;

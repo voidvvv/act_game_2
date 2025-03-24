@@ -2,7 +2,7 @@ package com.voidvvv.game.manager.behaviors;
 
 import com.badlogic.gdx.utils.Pool;
 import com.voidvvv.game.base.VActor;
-import com.voidvvv.game.context.VWorld;
+import com.voidvvv.game.context.world.VWorld;
 import com.voidvvv.game.manager.event.WorldEvent;
 
 public interface Behavior extends Pool.Poolable {

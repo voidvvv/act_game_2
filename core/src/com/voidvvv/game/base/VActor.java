@@ -13,7 +13,7 @@ import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.buff.Buff;
 import com.voidvvv.game.manager.behaviors.Behavior;
-import com.voidvvv.game.context.VWorld;
+import com.voidvvv.game.context.world.VWorld;
 import com.voidvvv.game.manager.event.attack.AttackEvent;
 import com.voidvvv.game.screen.test.ui.Box2dUnitConverter;
 import lombok.Getter;

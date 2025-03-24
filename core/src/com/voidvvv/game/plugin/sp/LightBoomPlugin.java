@@ -6,11 +6,10 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.base.VActorAdaptor;
 import com.voidvvv.game.base.VCharacter;
-import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.base.test.TestBullet;
-import com.voidvvv.game.context.VActorSpawnHelper;
-import com.voidvvv.game.context.WorldContext;
+import com.voidvvv.game.context.world.VActorSpawnHelper;
+import com.voidvvv.game.context.world.WorldContext;
 import com.voidvvv.game.plugin.SkillPlugin;
 
 public class LightBoomPlugin extends SkillPlugin {

@@ -1,4 +1,4 @@
-package com.voidvvv.game.context;
+package com.voidvvv.game.context.world;
 
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.voidvvv.game.base.b2d.UserData;

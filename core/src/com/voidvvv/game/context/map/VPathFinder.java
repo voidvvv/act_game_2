@@ -1,7 +1,5 @@
 package com.voidvvv.game.context.map;
 
-import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
-import com.badlogic.gdx.ai.pfa.GraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.ai.pfa.PathSmoother;
 import com.badlogic.gdx.graphics.Color;
@@ -10,7 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.VCharacter;
-import com.voidvvv.game.context.VWorld;
+import com.voidvvv.game.context.world.VWorld;
 
 import java.util.ArrayList;
 import java.util.List;

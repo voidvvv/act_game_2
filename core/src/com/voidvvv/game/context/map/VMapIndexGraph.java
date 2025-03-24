@@ -1,13 +1,10 @@
 package com.voidvvv.game.context.map;
 
 import com.badlogic.gdx.ai.pfa.Connection;
-import com.badlogic.gdx.ai.pfa.DefaultConnection;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.voidvvv.game.context.VWorld;
-
-import java.util.List;
+import com.voidvvv.game.context.world.VWorld;
 
 public class VMapIndexGraph implements IndexedGraph<VMapNode> {
     int nodeCount;

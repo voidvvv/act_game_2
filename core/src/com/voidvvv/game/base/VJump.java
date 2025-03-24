@@ -1,7 +1,7 @@
 package com.voidvvv.game.base;
 
 import com.badlogic.gdx.math.Vector3;
-import com.voidvvv.game.context.WorldContext;
+import com.voidvvv.game.context.world.WorldContext;
 
 public class VJump {
     public float time;

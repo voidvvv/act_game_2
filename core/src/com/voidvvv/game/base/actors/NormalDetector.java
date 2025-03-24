@@ -5,13 +5,12 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Pool;
-import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.base.Camp;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VActorAdaptor;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.b2d.UserData;
-import com.voidvvv.game.context.WorldContext;
+import com.voidvvv.game.context.world.WorldContext;
 import com.voidvvv.game.screen.test.ui.Box2dUnitConverter;
 import com.voidvvv.game.utils.ReflectUtil;
 

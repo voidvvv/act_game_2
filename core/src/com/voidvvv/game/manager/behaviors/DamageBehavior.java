@@ -4,7 +4,7 @@ import com.voidvvv.game.ActGame;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.battle.BattleComponent;
-import com.voidvvv.game.context.VWorld;
+import com.voidvvv.game.context.world.VWorld;
 import com.voidvvv.game.manager.event.WorldEvent;
 import com.voidvvv.game.manager.event.attack.AttackEvent;
 import com.voidvvv.game.utils.ReflectUtil;

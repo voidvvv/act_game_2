@@ -9,7 +9,7 @@ import com.voidvvv.game.base.Updateable;
 import com.voidvvv.game.base.VActor;
 import com.voidvvv.game.base.actors.slime.Slime;
 import com.voidvvv.game.base.btree.BTManager;
-import com.voidvvv.game.context.VWorld;
+import com.voidvvv.game.context.world.VWorld;
 import com.voidvvv.game.render.actor.slime.SlimeSimpleRender;
 
 public class SlimeGenerateMechanism implements Updateable {

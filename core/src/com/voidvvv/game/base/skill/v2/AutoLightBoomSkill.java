@@ -2,13 +2,10 @@ package com.voidvvv.game.base.skill.v2;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.voidvvv.game.ActGame;
-import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.base.test.TestBullet;
-import com.voidvvv.game.context.VActorSpawnHelper;
-import com.voidvvv.game.context.WorldContext;
-import com.voidvvv.game.plugin.sp.LightBoomPlugin;
+import com.voidvvv.game.context.world.VActorSpawnHelper;
+import com.voidvvv.game.context.world.WorldContext;
 
 public class AutoLightBoomSkill extends AutoSkill{
     @Override

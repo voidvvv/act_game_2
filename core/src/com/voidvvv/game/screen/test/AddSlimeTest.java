@@ -1,6 +1,5 @@
 package com.voidvvv.game.screen.test;
 
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
@@ -14,11 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.voidvvv.game.ActGame;
 import com.voidvvv.game.asset.AssetConstant;
-import com.voidvvv.game.base.Camp;
-import com.voidvvv.game.base.actors.slime.Slime;
-import com.voidvvv.game.base.btree.BTManager;
-import com.voidvvv.game.context.VWorld;
-import com.voidvvv.game.render.actor.slime.SlimeSimpleRender;
+import com.voidvvv.game.context.world.VWorld;
 
 public class AddSlimeTest extends Actor implements Telegraph {
     public static final int PRE_ADD_SLIME = 0xFFFF-1;

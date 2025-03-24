@@ -1,4 +1,4 @@
-package com.voidvvv.game.context;
+package com.voidvvv.game.context.world;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -27,6 +27,9 @@ import com.voidvvv.game.base.VPhysicAttr;
 import com.voidvvv.game.base.b2d.UserData;
 import com.voidvvv.game.base.shape.VCube;
 import com.voidvvv.game.base.wall.Wall;
+import com.voidvvv.game.context.BaseBattleContext;
+import com.voidvvv.game.context.BattleContext;
+import com.voidvvv.game.context.FixtureHelper;
 import com.voidvvv.game.context.input.Pinpoint;
 import com.voidvvv.game.context.input.PinpointData;
 import com.voidvvv.game.context.map.VMap;

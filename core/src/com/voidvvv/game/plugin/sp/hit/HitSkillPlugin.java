@@ -1,19 +1,15 @@
 package com.voidvvv.game.plugin.sp.hit;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.VPhysicAttr;
 import com.voidvvv.game.base.actors.ActorConstants;
-import com.voidvvv.game.base.b2d.UserData;
-import com.voidvvv.game.base.skill.v2.HitSkill;
 import com.voidvvv.game.base.state.StatusData;
 import com.voidvvv.game.context.FixtureHelper;
-import com.voidvvv.game.context.WorldContext;
+import com.voidvvv.game.context.world.WorldContext;
 import com.voidvvv.game.plugin.SkillPlugin;
-import com.voidvvv.game.utils.ReflectUtil;
 
 public class HitSkillPlugin extends SkillPlugin {
     public final static int INIT = 0;
