@@ -25,6 +25,13 @@ public class PluginComponent {
     }
 
     public void update (float delta) {
+        if (!trashBin.isEmpty()) {
+            for (Plugin plugin : trashBin) {
+                Pools.free(plugin);
+            }
+            plugins.removeAll(trashBin);
+            trashBin.clear();
+        }
         for (Plugin plugin : plugins) {
             plugin.update(delta);
         }
@@ -35,13 +42,7 @@ public class PluginComponent {
             plugins.addAll(initList);
             initList.clear();
         }
-        if (!trashBin.isEmpty()) {
-            for (Plugin plugin : trashBin) {
-                Pools.free(plugin);
-            }
-            plugins.removeAll(trashBin);
-            trashBin.clear();
-        }
+
     }
 
     public void reset () {

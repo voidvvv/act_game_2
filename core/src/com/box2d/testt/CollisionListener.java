@@ -42,17 +42,17 @@ public class CollisionListener implements ContactListener {
         UserData dataA = ReflectUtil.cast(contact.getFixtureA().getUserData(), UserData.class);
         UserData dataB = ReflectUtil.cast(contact.getFixtureB().getUserData(), UserData.class);
 
-        if (dataA != null && dataB != null) {
-            VCharacter castA = ReflectUtil.cast(dataA.getActor(), VCharacter.class);
-            VCharacter castB = ReflectUtil.cast(dataB.getActor(), VCharacter.class);
-            if (castA != null && castB != null) {
-                contact.setEnabled(false);
-                return;
-            }
-            if (!dataA.getActor().shoulCollide(dataB.getActor())  || !dataB.getActor().shoulCollide(dataA.getActor())) {
-                contact.setEnabled(false);
-            }
-        }
+//        if (dataA != null && dataB != null) {
+//            VCharacter castA = ReflectUtil.cast(dataA.getActor(), VCharacter.class);
+//            VCharacter castB = ReflectUtil.cast(dataB.getActor(), VCharacter.class);
+//            if (castA != null && castB != null) {
+//                contact.setEnabled(false);
+//                return;
+//            }
+//            if (!dataA.getActor().shoulCollide(dataB.getActor())  || !dataB.getActor().shoulCollide(dataA.getActor())) {
+//                contact.setEnabled(false);
+//            }
+//        }
     }
 
     @Override

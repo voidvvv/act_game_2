@@ -61,6 +61,16 @@ public class VActorAdaptor implements VActorListener {
 
     }
 
+    @Override
+    public void setOwner(VActor owner) {
+
+    }
+
+    @Override
+    public VActor getOwner() {
+        return null;
+    }
+
 
     @Override
     public void reset() {

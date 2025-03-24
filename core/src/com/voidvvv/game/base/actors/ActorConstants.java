@@ -25,6 +25,8 @@ public class ActorConstants {
     public static final int MSG_ACTOR_AFTER_BE_DAMAGED;
     public static final int MSG_ACTOR_AFTER_BE_ATTACK;
     public static final int MSG_ACTOR_AFTER_DYING;
+    public static final int EXIST_CURRENT_PROCESS;
+
 
 
     public static final int ACTOR_TYPE_CHARACTER;
@@ -54,6 +56,7 @@ public class ActorConstants {
         MSG_ACTOR_AFTER_BE_DAMAGED = s++;
         MSG_ACTOR_AFTER_BE_ATTACK = s++;
         MSG_ACTOR_AFTER_DYING = s++;
+        EXIST_CURRENT_PROCESS = s++;
 
         ACTOR_TYPE_CHARACTER = s++;
         ACTOR_TYPE_BULLET = s++;

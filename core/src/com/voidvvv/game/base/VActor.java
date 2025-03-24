@@ -16,6 +16,8 @@ import com.voidvvv.game.manager.behaviors.Behavior;
 import com.voidvvv.game.context.VWorld;
 import com.voidvvv.game.manager.event.attack.AttackEvent;
 import com.voidvvv.game.screen.test.ui.Box2dUnitConverter;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Comparator;
 
@@ -36,7 +38,10 @@ public abstract class VActor extends Actor implements Pool.Poolable, Telegraph {
 
     public int actorType;
 
-    private Fixture fixture;
+    private Fixture mainFixture;
+    @Getter
+    @Setter
+    private Fixture collideFixture;
 
     private Body body;
 
@@ -74,8 +79,8 @@ public abstract class VActor extends Actor implements Pool.Poolable, Telegraph {
         this.physicAttr = physicAttr;
     }
 
-    public Fixture getFixture() {
-        return fixture;
+    public Fixture getMainFixture() {
+        return mainFixture;
     }
 
     public Body getBody() {
@@ -87,9 +92,9 @@ public abstract class VActor extends Actor implements Pool.Poolable, Telegraph {
         setvActive(true);
     }
 
-    public void setFixture(Fixture fixture) {
-        this.fixture = fixture;
-        this.body = fixture.getBody();
+    public void setMainFixture(Fixture mainFixture) {
+        this.mainFixture = mainFixture;
+        this.body = mainFixture.getBody();
     }
 
     public void act(float delta) {

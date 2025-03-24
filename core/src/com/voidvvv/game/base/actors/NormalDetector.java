@@ -6,21 +6,23 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
+import com.voidvvv.game.base.Camp;
+import com.voidvvv.game.base.VActor;
+import com.voidvvv.game.base.VActorAdaptor;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.b2d.UserData;
-import com.voidvvv.game.base.btree.DetectorListener;
 import com.voidvvv.game.context.WorldContext;
 import com.voidvvv.game.screen.test.ui.Box2dUnitConverter;
+import com.voidvvv.game.utils.ReflectUtil;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class NormalDetector implements Pool.Poolable {
+public class NormalDetector extends VActorAdaptor implements Pool.Poolable {
     public Fixture detectFixture;
-    DetectorListener listener;
     int recordActorVersion;
     VCharacter character;
-    public Set<VCharacter> characters = new HashSet<>();
+    public Set<VCharacter> characters;
 
     public float radius;
 
@@ -82,25 +84,22 @@ public class NormalDetector implements Pool.Poolable {
     Vector2 tmp = new Vector2();
 
     public void init(VCharacter character) {
+        characters = new HashSet<>();
         this.recordActorVersion = character.getVersion();
         this.character = character;
         if (radius <= 0) {
             radius = Vector2.len(character.physicAttr.box2dHx, character.physicAttr.box2dHz);
         }
-        DetectorListener dl = Pools.obtain(DetectorListener.class);
-        dl.detector = this;
-        listener = dl;
+
         generateCircleRange();
-
-
-        dl.character = character;
-        character.getListenerComponent().addAndFlush(dl);
+        character.getListenerComponent().addAndFlush(this);
 
     }
 
     @Override
     public void reset() {
-        if (character != null && character.getVersion() == recordActorVersion) {
+        super.reset();
+        if (character != null && character.isvActive()) {
             if (detectFixture != null) {
                 character.getBody().destroyFixture(detectFixture);
                 detectFixture = null;
@@ -108,8 +107,10 @@ public class NormalDetector implements Pool.Poolable {
             character = null;
         }
         target = null;
-        listener = null;
         characters.clear();
+        character = null;
+
+        characters = null;
     }
 
     public void removeActor(VCharacter cast) {
@@ -117,5 +118,46 @@ public class NormalDetector implements Pool.Poolable {
         if (cast == target) {
             target = null;
         }
+    }
+
+
+    @Override
+    public void afterHitOnActor() {
+        VActor lastHitActor = character.lastHitActor;
+        Fixture lastThisFixture = character.lastThisFixture;
+        Fixture lastOtherFixture = character.lastOtherFixture;
+        if (lastThisFixture != this.detectFixture) {
+            return;
+        }
+        UserData ud = ReflectUtil.cast(lastOtherFixture.getUserData(), UserData.class);
+        if (ud == null || ud.isDerivative() || ud.getType() == UserData.B2DType.SENSOR) {
+            return;
+        }
+        Camp camp = lastHitActor.camp;
+        if (!character.taregtCamp.compatible(camp)) {
+            return;
+        }
+        VCharacter other = ReflectUtil.cast(lastHitActor, VCharacter.class);
+        if (this.characters != null && other != null && lastOtherFixture == other.getMainFixture()) {
+            this.characters.add(other);
+            System.out.println("detect intruder!");
+        }
+
+    }
+
+    @Override
+    public void afterHitOver() {
+        VActor lastHitActor = character.lastHitActor;
+        Fixture lastThisFixture = character.lastThisFixture;
+        Fixture lastOtherFixture = character.lastOtherFixture;
+
+        if (lastThisFixture != this.detectFixture) {
+            return;
+        }
+        if (lastOtherFixture != lastHitActor.getMainFixture()) {
+            return;
+        }
+        Camp camp = lastHitActor.camp;
+        this.removeActor(ReflectUtil.cast(lastHitActor, VCharacter.class));
     }
 }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Pools;
 import com.voidvvv.game.base.VCharacter;
 import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.shape.VCube;
+import com.voidvvv.game.base.skill.v2.AutoLightBoomSkill;
 import com.voidvvv.game.base.skill.v2.HitSkill;
 import com.voidvvv.game.base.skill.v2.LightBoomSkill;
 import com.voidvvv.game.base.skill.v2.Skill;
@@ -62,7 +63,7 @@ public class Bob extends VCharacter {
             defaultBobRender = new DefaultBobRender();
         }
         if (skill == null) {
-            skill = new LightBoomSkill();
+            skill = new AutoLightBoomSkill();
             skill.setOwner(this);
         }
 
