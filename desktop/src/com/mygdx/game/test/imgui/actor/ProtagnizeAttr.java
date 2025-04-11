@@ -1,5 +1,6 @@
 package com.mygdx.game.test.imgui.actor;
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.utils.Pools;
@@ -12,6 +13,9 @@ import com.voidvvv.game.base.buff.BasicMoveSpeedIncreaseBuff;
 import com.voidvvv.game.base.buff.Buff;
 import com.voidvvv.game.base.state.VCharactorStatus;
 import com.voidvvv.game.battle.BattleAttr;
+import com.voidvvv.game.context.world.VActWorld;
+import com.voidvvv.game.context.world.VWorld;
+import com.voidvvv.game.context.world.VWorldContextScreen;
 import com.voidvvv.game.screen.test.AddSlimeTest;
 import com.voidvvv.game.utils.ReflectUtil;
 import imgui.ImGui;
@@ -25,7 +29,18 @@ public class ProtagnizeAttr implements UIRender {
     ImFloat speed = new ImFloat();
     @Override
     public void render() {
-        VActor protagonist = ActGame.gameInstance().currentWorld().getProtagonist();
+        VActor protagonist = null;
+        Screen screen = ActGame.gameInstance().getScreen();
+        VWorld world = null;
+        if (screen != null && VWorldContextScreen.class.isAssignableFrom(screen.getClass())) {
+            world = ((VWorldContextScreen) screen).getWorldContext().getWorld();
+            if (world != null && VActWorld.class.isAssignableFrom(world.getClass())) {
+                protagonist = ((VActWorld)world).getProtagonist();
+            }
+        }
+        if (protagonist == null) {
+            return;
+        }
         VCharacter character = ReflectUtil.cast(protagonist, VCharacter.class);
 
 
@@ -61,7 +76,7 @@ public class ProtagnizeAttr implements UIRender {
                 MessageManager.getInstance().dispatchMessage(AddSlimeTest.PRE_ADD_SLIME);
             }
 
-            List<VActor> vActors = ActGame.gameInstance().currentWorld().allActors();
+            List<VActor> vActors = world.allActors();
             for (VActor a : vActors) {
                 VCharacter c = ReflectUtil.cast(a, VCharacter.class);
                 if (c != null) {

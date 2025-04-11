@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class VActWorld {
+public class VActWorld implements VWorld{
 
 
     public static final VActor.VActorCompare DEFAULT_ACTOR_COMPARE = new VActor.VActorCompare();
@@ -222,7 +222,7 @@ public class VActWorld {
         stage.addActor(new Pinpoint());
     }
 
-    protected void initWorld() {
+    public void initWorld() {
         box2dWorld = new World(new Vector2(0, 0), false);
         if (helper.collisionListener != null) {
             box2dWorld.setContactListener(helper.collisionListener);

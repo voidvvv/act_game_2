@@ -25,20 +25,19 @@ import com.voidvvv.game.base.Camp;
 import com.voidvvv.game.base.actors.slime.Slime;
 import com.voidvvv.game.base.btree.BTManager;
 import com.voidvvv.game.base.test.VObstacle;
-import com.voidvvv.game.context.world.VActorSpawnHelper;
-import com.voidvvv.game.context.world.VActWorld;
-import com.voidvvv.game.context.world.WorldHelper;
+import com.voidvvv.game.context.world.*;
 import com.voidvvv.game.context.input.CharacterInputListener;
 import com.voidvvv.game.base.debug.VDebugShapeRender;
 import com.voidvvv.game.base.test.Bob;
-import com.voidvvv.game.context.world.WorldContext;
 import com.voidvvv.game.context.machenism.SlimeGenerateMechanism;
 import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.render.actor.slime.SlimeSimpleRender;
 import com.voidvvv.game.screen.test.ui.TextMessageBar;
 import com.voidvvv.game.utils.ReflectUtil;
 
-public class TestScreen extends ScreenAdapter implements Telegraph {
+public class TestScreen extends VWorldContextScreen implements Telegraph {
+
+    WorldContext worldContext;
 
     VDebugShapeRender debugShapeRender;
 
@@ -64,17 +63,19 @@ public class TestScreen extends ScreenAdapter implements Telegraph {
         systemNotifyMessageManager.update(delta);
         uiStage.act(delta);
 
-        VActWorld vWorld = ActGame.gameInstance().currentWorld();
+        if (VActWorld.class.isAssignableFrom(vWorld.getClass())) {
+            orthographicCamera.position.lerp(cameraPosLerp.set(((VActWorld)vWorld).getProtagonist().position.x,((VActWorld)vWorld).getProtagonist().position.y,0.f),0.1f);
+            ((VActWorld)vWorld).draw();
+        }
+
+
         vWorld.update(delta);
-        orthographicCamera.position.lerp(cameraPosLerp.set(vWorld.getProtagonist().position.x,vWorld.getProtagonist().position.y,0.f),0.1f);
-        vWorld.draw();
         uiStage.getViewport().apply();
         uiStage.draw();
     }
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-        VActWorld vWorld = ActGame.gameInstance().currentWorld();
 
         vWorld.getStage().getViewport().update(width, height, false);
         uiStage.getViewport().update(width, height, false);
@@ -101,6 +102,10 @@ public class TestScreen extends ScreenAdapter implements Telegraph {
 
     VActWorld vWorld;
     private void initWorld() {
+        worldContext = new WorldContext();
+        this.setWorldContext(worldContext);
+        vWorld = new VActWorld();
+        worldContext.setWorld(vWorld);
         WorldHelper worldHelper = WorldHelper.builder()
                 .build();
         vWorld.init(worldHelper);
@@ -190,7 +195,6 @@ public class TestScreen extends ScreenAdapter implements Telegraph {
         systemNotifyMessageManager = ActGame.gameInstance().getSystemNotifyMessageManager();
         debugShapeRender = new VDebugShapeRender();
         orthographicCamera = ActGame.gameInstance().getCameraManager().getMainCamera();
-        vWorld = ActGame.gameInstance().currentWorld();
 
     }
 
@@ -243,5 +247,10 @@ public class TestScreen extends ScreenAdapter implements Telegraph {
         slime.taregtCamp.campBit = Camp.POSITIVE;
         slime.render = slimeSimpleRender;
         ActGame.gameInstance().getBtManager().addTree(slime, BTManager.SLIME_SIMPLE);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
     }
 }

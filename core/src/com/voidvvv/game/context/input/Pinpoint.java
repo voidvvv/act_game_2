@@ -23,7 +23,7 @@ public class Pinpoint extends Actor {
     }
 
     public Pinpoint() {
-        pinpointData = ActGame.gameInstance().currentWorld().getPinpointData();
+        pinpointData = new PinpointData();
     }
 
     @Override

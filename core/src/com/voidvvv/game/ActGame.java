@@ -12,6 +12,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.voidvvv.game.base.actors.ActorConstants;
 import com.voidvvv.game.base.btree.BTManager;
 import com.voidvvv.game.context.world.VActWorld;
+import com.voidvvv.game.context.world.VWorld;
+import com.voidvvv.game.context.world.VWorldContextScreen;
 import com.voidvvv.game.context.world.WorldContext;
 import com.voidvvv.game.manager.AudioManager;
 import com.voidvvv.game.manager.CameraManager;
@@ -53,6 +55,7 @@ public class ActGame extends Game {
     // delta time
 
     private ActGame() {
+        Abc abc = new Abc();
         drawManager = new DrawManager();
         fontManager = new FontManager();
         cameraManager = new CameraManager();
@@ -167,10 +170,6 @@ public class ActGame extends Game {
         inputMultiplexer.removeProcessor(inputProcessor);
     }
 
-    public VActWorld currentWorld() {
-        return worldContext.currentWorld();
-    }
-
     public VWorldEventManager getvWorldEventManager() {
         return vWorldEventManager;
     }
@@ -182,4 +181,5 @@ public class ActGame extends Game {
     public void setAssetManager(AssetManager assetManager) {
         this.assetManager = assetManager;
     }
+
 }
