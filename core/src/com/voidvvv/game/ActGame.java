@@ -55,7 +55,6 @@ public class ActGame extends Game {
     // delta time
 
     private ActGame() {
-        Abc abc = new Abc();
         drawManager = new DrawManager();
         fontManager = new FontManager();
         cameraManager = new CameraManager();
