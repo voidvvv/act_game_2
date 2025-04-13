@@ -76,7 +76,7 @@ public class ProtagnizeAttr implements UIRender {
                 MessageManager.getInstance().dispatchMessage(AddSlimeTest.PRE_ADD_SLIME);
             }
 
-            List<VActor> vActors = world.allActors();
+            List<? extends VActor> vActors = world.allActors();
             for (VActor a : vActors) {
                 VCharacter c = ReflectUtil.cast(a, VCharacter.class);
                 if (c != null) {

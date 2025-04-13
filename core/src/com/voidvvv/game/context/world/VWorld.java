@@ -8,13 +8,12 @@ import java.util.List;
 
 public interface VWorld {
     void initWorld();
-    List<VActor> allActors();
+    List<? extends VActor> allActors();
 
     <T extends VActor> T spawnVActor(Class<T> clazz, VActorSpawnHelper helper);
 
     public void update(float delta);
 
-    World getBox2dWorld();
 
     public void addUpdateable(Updateable updateable);
 

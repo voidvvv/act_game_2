@@ -21,6 +21,7 @@ import com.voidvvv.game.manager.DrawManager;
 import com.voidvvv.game.manager.FontManager;
 import com.voidvvv.game.manager.SystemNotifyMessageManager;
 import com.voidvvv.game.manager.event.VWorldEventManager;
+import com.voidvvv.game.screen.menu.StartScreen;
 import com.voidvvv.game.screen.test.TestScreen;
 
 import java.security.SecureRandom;
@@ -32,8 +33,6 @@ public class ActGame extends Game {
     private long frameId = 0;
     private static ActGame gameInstance;
 
-    // context
-    private WorldContext worldContext;
 
 
     // input
@@ -52,14 +51,20 @@ public class ActGame extends Game {
     // screen
     private TestScreen testScreen;
 
-    // delta time
+    public TestScreen getTestScreen() {
+        return testScreen;
+    }
+
+    public void setTestScreen(TestScreen testScreen) {
+        this.testScreen = testScreen;
+    }
+// delta time
 
     private ActGame() {
         drawManager = new DrawManager();
         fontManager = new FontManager();
         cameraManager = new CameraManager();
         vWorldEventManager = new VWorldEventManager();
-        worldContext = new WorldContext();
         inputMultiplexer = new InputMultiplexer();
         systemNotifyMessageManager = new SystemNotifyMessageManager();
         assetManager = new AssetManager();
@@ -91,7 +96,8 @@ public class ActGame extends Game {
         initOpt();
 
         testScreen = new TestScreen();
-        setScreen(testScreen);
+//        setScreen(testScreen);
+        setScreen(new StartScreen(this));
         // other
 
     }
@@ -113,7 +119,6 @@ public class ActGame extends Game {
         fontManager.initFont();
         cameraManager.init();
         vWorldEventManager.init();
-        worldContext.init();
         systemNotifyMessageManager.init();
         assetManager.setLoader(TiledMap.class,new TmxMapLoader());
 
