@@ -24,6 +24,8 @@ public abstract class Buff implements Pool.Poolable {
 
     public abstract boolean expire();
 
+    public abstract void merge(Buff other);
+
     public int type() {
         return 0;
     };

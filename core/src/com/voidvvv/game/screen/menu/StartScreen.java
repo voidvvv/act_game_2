@@ -11,6 +11,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -32,12 +33,6 @@ public class StartScreen extends ScreenAdapter {
     public void render(float delta) {
         ScreenUtils.clear(0.2f, 0.5f, 0.5f, 1);
 
-        super.render(delta);
-        SpriteBatch spriteBatch = actGame.getDrawManager().getSpriteBatch();
-        spriteBatch.setProjectionMatrix(screenViewport.getCamera().combined);
-        spriteBatch.begin();
-        spriteBatch.draw(testPic, 0, 0, testPic.getWidth(), testPic.getHeight());
-        spriteBatch.end();
         baseStage.draw();
     }
 
@@ -45,10 +40,9 @@ public class StartScreen extends ScreenAdapter {
     public void resize(int width, int height) {
         super.resize(width, height);
         screenViewport.update(width,height, true);
-
-
+        button.setPosition(width/2 - button.getWidth()/2, height/2 - button.getHeight()/2);
     }
-
+    TextButton button;
     @Override
     public void show() {
         loadAssets();
@@ -59,7 +53,7 @@ public class StartScreen extends ScreenAdapter {
         baseStage = new Stage(screenViewport);
         Texture texture = actGame.getAssetManager().get("badlogic.jpg", Texture.class);
         Sprite sprite = new Sprite(texture);
-        TextButton button = new TextButton("Start", new Skin(Gdx.files.internal("image/actor/ui/skin/neon/neon-ui.json")));
+        button = new TextButton("Start", new Skin(Gdx.files.internal("image/actor/ui/skin/neon/neon-ui.json")));
 
 //        button.setBounds(20,20,50,50);
         button.addListener(new ClickListener(){
@@ -69,7 +63,6 @@ public class StartScreen extends ScreenAdapter {
                 actGame.setScreen(actGame.getTestScreen());
             }
         });
-//        button.setName("asda");
         baseStage.addActor(button);
         actGame.addInputProcessor(baseStage);
     }

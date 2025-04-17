@@ -7,6 +7,18 @@ public class BasicMoveSpeedIncreaseBuff extends ExpireBuff{
     public float moveSpeedAdd = 0f;
 
     @Override
+    public void merge(Buff other) {
+        BasicMoveSpeedIncreaseBuff otherBuff = ReflectUtil.cast(other, BasicMoveSpeedIncreaseBuff.class);
+        if (otherBuff.moveSpeedAdd > this.moveSpeedAdd
+        || (otherBuff.moveSpeedAdd == this.moveSpeedAdd && otherBuff.time > this.time)) {
+            this.exit();
+            this.moveSpeedAdd = otherBuff.moveSpeedAdd;
+            this.time = otherBuff.time;
+            this.enter();
+        }
+    }
+
+    @Override
     public BuffOrder getOrder() {
         return BuffOrder.ATTR_PLUS;
     }

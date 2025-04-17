@@ -1,6 +1,5 @@
-package com.voidvvv.game.v2;
+package com.voidvvv.game.v2.base;
 
-import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
 
 public interface VActor extends Pool.Poolable {

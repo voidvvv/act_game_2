@@ -1,4 +1,4 @@
-package com.voidvvv.game.v2;
+package com.voidvvv.game.v2.base;
 
 public enum VActorMetaState {
     CONSTRUCTED,

@@ -10,6 +10,16 @@ public class BasicAttrIncreaseBuff extends ExpireBuff{
     public float attackAdd = 0f;
 
     @Override
+    public void merge(Buff other) {
+        BasicAttrIncreaseBuff otherBuff = ReflectUtil.cast(other, BasicAttrIncreaseBuff.class);
+        if (otherBuff.attackAdd > this.attackAdd
+                || (otherBuff.attackAdd == this.attackAdd && otherBuff.time > this.time)) {
+            this.attackAdd = otherBuff.attackAdd;
+            this.time = otherBuff.time;
+        }
+    }
+
+    @Override
     public BuffOrder getOrder() {
         return BuffOrder.ATTR_PLUS;
     }

@@ -1,4 +1,4 @@
-package com.voidvvv.game.v2.world;
+package com.voidvvv.game.v2.base.world;
 
 public abstract class VRenderdWorld implements VWorld {
     protected WorldRender worldRender;

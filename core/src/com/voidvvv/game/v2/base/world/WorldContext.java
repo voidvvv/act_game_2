@@ -1,4 +1,4 @@
-package com.voidvvv.game.v2.world;
+package com.voidvvv.game.v2.base.world;
 
 
 import com.badlogic.gdx.physics.box2d.BodyDef;

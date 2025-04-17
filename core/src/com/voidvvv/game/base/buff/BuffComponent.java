@@ -50,13 +50,20 @@ public class BuffComponent {
         }
         if (!init.isEmpty()) {
             for (Buff buff : init) {
-                boolean add = buffs.add(buff);
-                if (add) {
+                Iterator<Buff> iterator = buffs.iterator();
+                boolean isNew = true;
+                while (iterator.hasNext()) {
+                    Buff b = iterator.next();
+                    if (b.equals(buff)) {
+                        b.merge(buff);
+                        isNew = false;
+                        break;
+                    }
+                }
+                if (isNew) {
+                    buffs.add(buff);
                     buff.setOwner(owner);
                     buff.enter();
-                } else {
-                    // add fail!
-                    Pools.free(buff);
                 }
             }
             init.clear();

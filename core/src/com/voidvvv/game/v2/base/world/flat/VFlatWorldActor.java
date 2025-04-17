@@ -1,9 +1,8 @@
-package com.voidvvv.game.v2.world.flat;
+package com.voidvvv.game.v2.base.world.flat;
 
-import com.badlogic.gdx.physics.box2d.World;
-import com.voidvvv.game.v2.VActorMetaState;
-import com.voidvvv.game.v2.VActorRender;
-import com.voidvvv.game.v2.world.VWorldActor;
+import com.voidvvv.game.v2.base.VActorMetaState;
+import com.voidvvv.game.v2.base.VActorRender;
+import com.voidvvv.game.v2.base.world.VWorldActor;
 
 public class VFlatWorldActor extends VWorldActor {
     public static class Attribute {

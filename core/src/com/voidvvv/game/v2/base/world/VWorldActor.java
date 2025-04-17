@@ -1,8 +1,7 @@
-package com.voidvvv.game.v2.world;
+package com.voidvvv.game.v2.base.world;
 
 import com.voidvvv.game.context.world.WorldContext;
-import com.voidvvv.game.v2.VActor;
-import com.voidvvv.game.v2.VAttrActor;
+import com.voidvvv.game.v2.base.VAttrActor;
 
 public abstract class VWorldActor extends VAttrActor {
     protected WorldContext worldContext;

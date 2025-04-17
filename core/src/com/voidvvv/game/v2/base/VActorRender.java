@@ -1,6 +1,4 @@
-package com.voidvvv.game.v2;
-
-import com.voidvvv.game.v2.world.VWorld;
+package com.voidvvv.game.v2.base;
 
 public interface VActorRender {
     public abstract void init();
